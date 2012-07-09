@@ -1,0 +1,61 @@
+
+<zk>
+    <panel id="questionPanel" border="none" width="100%">
+        <panelchildren>
+		
+            <vlayout id="questionArea" style="padding: 0px 0px 0px 30px">	
+		        <hbox id="questionCaption" width="100%" style="background-color: #e4f0fb">	
+		        	<hbox hflex="1" align="center">
+		        		<button sclass="questionnumber" id="questionNumber" label="question number"/>
+		        		<label sclass="questionlabel" id="questionLabel" value="question label"/>		        	
+		        	</hbox>	
+		        	
+		        	<hbox id="toolbar" style="float:right">
+			            <button id="helpBtn" label="?" visible="false"/>	        	
+		        	</hbox>
+		        </hbox>             
+                <html id="instruction"/>		
+                <label id="msg" visible="false"/>
+						
+                <hlayout valign="middle">
+                    <listbox id="selectedContactsBox" height="500px" width="200px" checkmark="true"/>
+
+                    <vbox width="50px" align="center">
+                        <button id="deselectBtn" label="&gt;" width="30px"/>
+                        <button id="selectBtn" label="&lt;" width="30px"/>
+                    </vbox>
+
+                    <listbox id="availableContactsBox" height="500px" hflex="1" checkmark="true">
+                        <auxhead id="auxhead">
+
+                        </auxhead>
+                        <listhead id="listhead" sizable="true">
+							
+                        </listhead>
+                        <listfoot>
+                            <listfooter id="footer"/>
+                        </listfoot>
+                    </listbox>						
+					
+                    <vlayout id="filterArea" width="200px" height="500px">
+                        <hlayout>
+                            Filter By:
+                            <listbox id="filterBox" mold="select" rows="1">
+
+                            </listbox>						
+                        </hlayout>		
+                        <grid id="filterGrid" vflex="1" hflex="1">
+                            <rows/>
+                        </grid>					
+                    </vlayout>
+                </hlayout>		
+            </vlayout>
+			
+        </panelchildren>
+    </panel>
+	
+    <window id="helpWin" title="Help Information" closable="true">
+    	<iframe id="helpFrame" src="http://ciknow.northwestern.edu/documentation"
+    			 width="998px" height="600px"/>	
+  	</window>
+</zk>

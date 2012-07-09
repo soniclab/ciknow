@@ -1,0 +1,10 @@
+${user.firstName} ${user.lastName},
+
+You have been invited to participate survey ${survey.name}:${survey.description}.
+website: ${url}
+username: ${user.username}
+password: ${user.password}
+
+Thanks for your participation!
+
+CIKNOW Administrator

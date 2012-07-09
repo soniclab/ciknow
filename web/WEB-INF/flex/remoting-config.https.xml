@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<service id="remoting-service" 
+    class="flex.messaging.services.RemotingService">
+
+    <adapters>
+        <adapter-definition id="java-object" class="flex.messaging.services.remoting.adapters.JavaAdapter" default="true"/>
+    </adapters>
+
+    <default-channels>
+    	<channel ref="my-secure-amf"/>
+    </default-channels>  
+
+	<destination id="recommenderServiceImpl">
+		<properties>
+            <factory>spring</factory>
+            <source>recommenderServiceImpl</source>
+        </properties>
+	</destination>
+
+    <destination id="genericRO">
+		<properties>
+            <factory>spring</factory>
+            <source>genericRO</source>
+        </properties>
+	</destination>
+
+    <destination id="networkAnalyticsRO">
+		<properties>
+            <factory>spring</factory>
+            <source>networkAnalyticsRO</source>
+        </properties>
+	</destination>
+	
+    <destination id="nodeRO">
+		<properties>
+            <factory>spring</factory>
+            <source>nodeRO</source>
+        </properties>
+	</destination>
+
+	<destination id="edgeRO">
+		<properties>
+            <factory>spring</factory>
+            <source>edgeRO</source>
+        </properties>
+	</destination>
+
+	<destination id="groupRO">
+		<properties>
+            <factory>spring</factory>
+            <source>groupRO</source>
+        </properties>
+	</destination>
+
+	<destination id="nodeTaggingRO">
+		<properties>
+            <factory>spring</factory>
+            <source>nodeTaggingRO</source>
+        </properties>
+	</destination>
+
+	<destination id="nodeTagRO">
+		<properties>
+            <factory>spring</factory>
+            <source>nodeTagRO</source>
+        </properties>
+	</destination>
+
+	<destination id="optionRO">
+		<properties>
+            <factory>spring</factory>
+            <source>optionRO</source>
+        </properties>
+	</destination>
+
+    <destination id="questionRO">
+		<properties>
+            <factory>spring</factory>
+            <source>questionRO</source>
+        </properties>
+	</destination>
+
+	<destination id="roleRO">
+		<properties>
+            <factory>spring</factory>
+            <source>roleRO</source>
+        </properties>
+	</destination>
+
+	<destination id="surveyRO">
+		<properties>
+            <factory>spring</factory>
+            <source>surveyRO</source>
+        </properties>
+	</destination>
+	
+	<destination id="gmapRO">
+		<properties>
+            <factory>spring</factory>
+            <source>gmapRO</source>
+        </properties>
+	</destination>	
+
+	<destination id="flareRO">
+		<properties>
+            <factory>spring</factory>
+            <source>flareRO</source>
+        </properties>
+	</destination>	
+		
+	<!-- added by Jun Wang (Dec 2, 2008) -->
+	<destination id="gameRO">
+		<properties>
+			<factory>spring</factory>
+			<source>gameRO</source>
+		</properties>
+	</destination>	
+</service>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+     
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+						http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+						http://www.springframework.org/schema/context
+						http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	    
+
+
+    <!---															-->
+	<!--- 					DATASOURCE	       						-->
+	<!---															-->	
+	
+    <bean id="transactionManager"
+          class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    
+    <bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+        <property name="dataSource">
+        	<ref local="dataSource"/>
+        </property>
+        
+        <property name="mappingLocations">
+        	<value>classpath:ciknow/domain/*.hbm.xml</value>
+        </property>
+        
+        
+        <property name="hibernateProperties">
+        	<props>
+        		<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+        		<prop key="hibernate.bytecode.use_reflection_optimizer">false</prop>
+        		<prop key="hibernate.current_session_context_class">thread</prop>
+        		<prop key="hibernate.show_sql">false</prop>
+        		<prop key="hibernate.format_sql">false</prop>
+        		<prop key="hibernate.use_sql_comments">false</prop>
+        		<prop key="hibernate.generate_statistics">false</prop>
+        		<prop key="hibernate.max_fetch_depth">2</prop>
+        		<prop key="hibernate.default_batch_fetch_size">8</prop>
+        		<prop key="hibernate.jdbc.batch_size">25</prop>
+        		<prop key="hibernate.order_inserts">true</prop>
+        		<prop key="hibernate.order_updates">true</prop>
+        		<prop key="hibernate.connection.isolation">2</prop>
+        		<prop key="hibernate.hbm2ddl.auto">update</prop>
+        	</props>
+        </property>
+    </bean>
+    
+
+	<!-- see c3p0 documentation: http://www.mchange.com/projects/c3p0/index.html -->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+    	<property name="driverClass" value="com.mysql.jdbc.Driver" />
+    	<property name="jdbcUrl" value="jdbc:mysql://127.0.0.1/_ciknow?useEncoding=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true" />
+    	<property name="user" value="sonic" />
+    	<property name="password" value="sonic" />
+    	
+    	<property name="initialPoolSize" value="2"/>
+    	<property name="minPoolSize" value="1"/>
+    	<property name="maxPoolSize" value="25"/>    	
+    	<property name="acquireIncrement" value="2"/>
+    	<property name="maxIdleTime" value="25200"/>
+    	<property name="idleConnectionTestPeriod" value="14400"/>
+    	<property name="preferredTestQuery" value="SELECT 1;"/>
+    	<property name="maxStatements" value="0"/>
+    	<property name="numHelperThreads" value="5"/>
+    	<property name="maxAdministrativeTaskTime" value="0"/> 
+    </bean>
+
+</beans>

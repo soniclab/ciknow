@@ -1,0 +1,128 @@
+<zk>
+	<grid emptyMessage="No Options Available" height="300px">
+		<columns>
+			<column width="200px" />
+			<column />
+		</columns>
+
+		<rows>
+			<!-- choice -->
+			<row id="isSingleChoiceItem" visible="false">
+				<label value="Is Single Choice?" />
+				<checkbox id="isSingleChoiceBox" />
+			</row>
+			<row id="singleChoiceRenderItem" visible="false">
+				<label value="Show Single Choice In Drop Down List?" />
+				<checkbox id="singleChoiceRenderBox" />
+			</row>
+			<row id="maxChoiceItem" visible="false">
+				<label value="Maximum Number of Choices" />
+				<spinner id="maxChoiceSpinner" />
+			</row>             		
+			<row id="jumpConditionItem" visible="false">
+				<label value="Jump Condition"/>
+				<listbox id="jumpConditionBox" mold="select" rows="1" width="300px"/>        			
+			</row>			
+			<row id="jumpQuestionItem" visible="false">
+				<label value="Jump Question"/>
+				<listbox id="jumpQuestionBox" mold="select" rows="1" width="300px"/>        			
+			</row>	
+
+			<!-- choice and relational choice -->
+			<row id="selectAllItem" visible="false">
+				<label value="Show 'Select All'" />
+				<checkbox id="selectAllBox" />
+			</row>
+
+			<!-- rating -->
+			<row id="ratingDisplayItem" visible="false">
+				<label value="Display Rating As Dropdown List" />
+				<checkbox id="ratingDisplayBox" />
+			</row>
+
+			<!-- is attribute question -->
+			<row id="allowCreateChoiceItem" visible="false">
+				<label value="Allow User Creating New Choices" />
+				<checkbox id="allowCreateChoiceBox" />
+			</row>
+
+			<!-- relational continuous -->
+			<row id="recordDurationItem" visible="false">
+				<label value="Record Duration" />
+				<checkbox id="recordDurationBox" />
+			</row>
+
+			<!-- perceived choice, relational choice multiple -->
+			<row id="singleChoicePerLineItem" visible="false">
+				<label value="Single Choice Per Line" />
+				<checkbox id="singleChoicePerLineBox" />
+			</row>
+
+			<!-- is relational -->
+			<row id="contactProviderItem" visible="false">
+				<label value="Contact Provider" />
+				<vlayout>
+					<listbox id="contactProviderBox" mold="select" rows="1" width="100px"/>
+					<label style="color:blue; font-style:italic" multiline="true">
+						If selected, contact chooser will be ignored.
+						And Row/Column Group be must the type group of ContactProvider for correct Import/Export
+					</label>					
+				</vlayout>			
+			</row>
+			
+			<row id="contactChooserItem" visible="false">
+				<label value="Contact Chooser" />
+				<listbox id="contactChooserBox" mold="select" rows="1" width="100px"/>
+			</row>
+			<row id="negateItem" visible="false">
+				<label value="Inverse Contact Chooser" />
+				<checkbox id="negateBox" />
+			</row>
+			<row id="skipOnEmptyItem" visible="false">
+				<label
+					value="Skip the question if respondent does not select any contact and contact chooser is used." />
+				<checkbox id="skipOnEmptyBox" />
+			</row>
+			<row id="hideContactChooserInstructionItem"
+				visible="false">
+				<label value="Hide Contact Chooser Instruction" />
+				<checkbox id="hideContactChooserInstructionBox" />
+			</row>
+
+			<!-- contact chooser -->
+			<row id="emptyStrategyItem" visible="false">
+				<label value="What If No Contact Choosen?" />
+				<listbox id="emptyStrategyBox" mold="select" rows="1" />
+			</row>
+			<row id="defaultContactTypeItem" visible="false">
+				<label value="Default Contact Type" />
+				<listbox id="defaultContactTypeBox" mold="select"
+					rows="1" />
+			</row>
+			<row id="showImageItem" visible="false">
+				<label value="Show Image" />
+				<checkbox id="showImageBox" />
+			</row>
+			<row id="selectedContactsHeaderItem" visible="false">
+				<label value="Selected Contact Header" />
+				<textbox id="selectedContactsHeaderTi" />
+			</row>
+
+			<!-- contact chooser and relational -->
+			<row id="showSelfItem" visible="false">
+				<label value="Show Self" />
+				<checkbox id="showSelfBox" />
+			</row>
+			<row id="allowCreateNodeItem" visible="false">
+				<label value="Allow User Creating New Contact" />
+				<checkbox id="allowCreateNodeBox" />
+			</row>
+
+			<!-- general options -->
+			<row id="hiddenFromVisItem" visible="false">
+				<label value="Hidden from Visualization" />
+				<checkbox id="hiddenFromVisBox" />
+			</row>
+		</rows>
+	</grid>
+</zk>

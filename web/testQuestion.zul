@@ -1,0 +1,10 @@
+<?page title="C-IKNOW Question" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<zscript>
+	<![CDATA[	    
+
+	]]>
+	</zscript>
+	
+	<div id="questionArea" apply="ciknow.zk.controller.TestQuestionController"/>
+</zk>

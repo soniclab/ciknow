@@ -1,0 +1,259 @@
+<?page title="C-IKNOW" contentType="text/html;charset=UTF-8"?>
+
+<zk xmlns:n="native">
+
+    <style>
+	body{
+	    padding: 0 0;
+	    overflow:hidden;
+	}
+	
+	
+	/* popup windows */
+	.surveyOverviewWindow{
+	    width: 800px;
+	    height: 550px;            
+	}
+	        
+	.addQuestionWindow{
+	    width: 500px;
+	    height: 470px;            
+	} 
+	
+	.questionSettingsWindow{
+	    width: 800px;
+	    height: 550px;
+	} 
+	
+	
+	/* branding top bar */
+	.topbar {
+		background-image:url('images/top.png'); 
+		background-repeat: repeat-x;
+		/*background:#dddddd;*/ 
+	}	
+	.topbar button {
+	    background: none;
+	    border: none;
+	    font-size: 15px;
+	    font-weight: bold;
+	    color: #5D5E6B;
+	    cursor: pointer;
+	    height: 24px;
+	}	
+	.topbar button.active {
+	    background-color: #5D5E6B;
+	    color: white;
+	}
+	.topbar .topright button {
+	    color: black;
+	    font-size: 10px;
+	    font-weight: normal;
+	}
+	
+	
+	
+	/* project banner */
+	.projectBanner {
+		background-color:#333399;	
+	}
+	.projectBanner .projectTitle {
+		color:white; 
+		font-weight:normal; 
+		font-size:36px; 
+		text-shadow: 1px 2px #043A6B;	
+	}
+	.projectBanner .projectDescription{
+		color:#679fd2; 
+		font-size: 14px; 
+		font-style: italic;
+	}
+	
+	/* project button bar */
+	.projectBar {
+		background-color:#6699FF;	
+	}
+	.projectBar button {
+		background:none;
+		border: none;
+	    border-right: 1px solid white;
+	    font-size: 12px;
+	    font-weight: bold;
+	    color: white;
+	    cursor: pointer;
+	    height: 24px;
+	}
+	.projectBar button.last {
+	  	border-right: none;
+	}	
+	/*
+	.z-combobox {
+		background: #095399;
+		color: white;
+	}	  
+	.z-combobox-inp {
+	  	border: none;
+	  	font-weight: bold;
+	  	background: transparent;
+	  	color: white;
+	}	  
+	.z-combobox-btn {
+	  	background: url('images/downarrow.png') !important;
+	  	background-repeat: no-repeat !important;
+	  	background-position: 0px 1px !important;
+	  	border: none !important;
+	}	  
+	.z-combobox-btn-over {
+	  	border: none !important;
+	}
+	.z-combobox-readonly {
+		background: #095399;
+	}	  
+	*/
+	
+	  
+	/* navigation buttons at the South region */
+	.bottombtn {
+	  	font-size: 16px; 
+	}
+
+
+	/* styling questions */
+	.questionnumber {
+		font-weight: bold;
+		background: none;
+		border: 2px solid black;
+		margin-left: -30px;
+	}	
+	.questionlabel {
+	  	font-weight: bold;
+	}
+	
+	/* text wrap in the header */
+	div.z-grid-header th.z-column, div.z-grid-header th.z-auxheader {
+		white-space: pre-wrap;
+	}
+		
+    </style>
+ 
+    <borderlayout id="stage"
+    	apply="ciknow.zk.controller.SurveyController" 
+    	width="100%" height="100%">
+    	
+    	<north size="24px" border="none">    		
+ 
+    		<borderlayout>
+    			<west width="5%" border="none">
+    				<div style="background-image:url('images/top.png')" width="100%" height="100%"/>
+    			</west>
+    			
+    			<center border="none">
+		    		<hbox width="100%" height="100%" sclass="topbar">
+		    			<button id="surveyBtn" label="Survey" sclass="active"/>
+		    			<hbox hflex="1" sclass="topright" pack="right">
+		    				<combobutton id="accountBtn" label="Account" mold="tbbtn">
+		    					<popup>
+		    						<vbox>
+		    							<grid width="250px">
+		    								<columns>
+		    									<column width="90px"/>
+		    									<column width="99%"/>
+		    								</columns>
+		    								<rows>
+			    								<row id="impersonateRow">
+				    								<label value="Impersonate"/>
+				    								<combobox id="nodeBox" autodrop="true"/>    								
+			    								</row>
+			    								<row id="myProjectsRow">
+				    								<label value="My Projects"/>
+				    								<combobox id="projectBox" autodrop="true" readonly="true"/>    								
+			    								</row>    								
+		    								</rows>
+		    							</grid>
+					    				<button id="ciknowmgrBtn" label="CIKNOW MANAGER"/>		    							   						
+		    						</vbox>
+		    					</popup>
+		    				</combobutton>
+		    				<button id="logoutBtn" label="Logout" />
+		    				<button id="helpBtn" label="Help" popup="helpPopup, position=after_end" visible="false"/> 		
+		    			</hbox>
+		    		</hbox>  
+    			</center>
+    			
+    			<east width="5%" border="none">
+    				<div style="background-image:url('images/top.png')" width="100%" height="100%"/>
+    			</east>
+    		</borderlayout>
+
+    	</north>
+        	
+
+		
+    	<west width="5%" border="none">
+    		<div style="background:#dddddd;" width="100%" height="100%"/>
+    	</west>
+
+    	<center border="none">
+    		<borderlayout>
+    			<north border="none">
+    				<vlayout spacing="0px">		    				
+    					<hbox width="100%" sclass="projectBanner">
+    						<vbox hflex="1" align="left">
+    							<label id="surveyName" 
+    								value="Your Survey Name"
+    								sclass="projectTitle"/>
+    							<label id="surveyDescription"
+    								value="Your Survey Description"
+    								sclass="projectDescription" />
+    						</vbox>
+    						<vbox width="200px" align="right">
+    							<label id="impersonateMsg" style="color: yellow; font-style: italic; margin: 5px"/>
+    							
+    							<listbox id="themeBox" mold="select"
+    								rows="1" width="100%" style="display: none;" />
+    							<progressmeter id="progressMeter"
+    								value="0" width="100%" style="display: none;" />
+    						</vbox>
+    					</hbox>
+    					<hbox id="projectBar" sclass="projectBar"
+    						align="center" width="100%" height="28px">
+    						<button id="projectAdminBtn" label="Administration" href="/admin.html"/>
+    						<button id="overviewBtn" label="Overview" />
+    						<button id="newPageBtn" label="Add New Page" width="110px" />
+    						<button id="newQuestionBtn" label="Add New Question" width="130px" sclass="last"/>
+    						
+    						<hbox hflex="1" pack="right">
+    							<combobox id="pagesBox" readonly="true"/>
+    						</hbox>
+    					</hbox>
+    				</vlayout>
+    			</north>
+    			
+    			<center autoscroll="true" flex="true" border="none">
+    				<div sclass="pageArea" id="pageArea" />
+    			</center>
+    			
+    			<south border="none">
+    				<hbox width="100%" style="background:#dddddd;">
+   						<button sclass="bottombtn" id="prevBtn" label="Prev" />
+   						<button sclass="bottombtn" id="nextBtn" label="Next" />
+   						<button sclass="bottombtn" id="finishBtn" label="Finish" />
+    				</hbox>
+    			</south>
+    		</borderlayout>
+    	</center>
+
+    	<east width="5%" border="none">
+    		<div style="background:#dddddd;" width="100%" height="100%"/>
+    	</east>
+
+    </borderlayout>
+
+
+    <popup id="helpPopup" width="400px" height="300px">
+    	<vbox style="" width="100%" height="100%">
+    		This is help information.
+    		<a href="http://www.google.com" target="_blank">More</a>
+    	</vbox>
+    </popup>
+</zk>

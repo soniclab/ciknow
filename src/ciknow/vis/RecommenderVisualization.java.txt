@@ -1,0 +1,993 @@
+package ciknow.vis;
+
+import java.util.*;
+import java.awt.Color;
+import java.io.Writer;
+import java.io.BufferedWriter;
+import java.io.IOException;
+
+import org.apache.log4j.Logger;
+import ciknow.dao.NodeDao;
+import ciknow.dao.QuestionDao;
+import ciknow.domain.Edge;
+import ciknow.domain.Field;
+import ciknow.domain.Node;
+import ciknow.domain.Question;
+import ciknow.domain.Scale;
+import ciknow.util.*;
+
+/**
+ * Created by IntelliJ IDEA. User: jinling Date: Mar 20, 2008 Time: 11:32:17 AM
+ * To change this template use File | Settings | File Templates.
+ */
+
+public class RecommenderVisualization {
+	private Logger logger = Logger.getLogger(this.getClass());
+	private static Color[] colors = {
+
+	VisUtil.HEX2COLOR("00FFFF"), VisUtil.HEX2COLOR("a4d3ee"),
+			VisUtil.HEX2COLOR("ffff66"), VisUtil.HEX2COLOR("DAC4E5"),
+			VisUtil.HEX2COLOR("B272A6"), VisUtil.HEX2COLOR("8FBC8F"),
+			VisUtil.HEX2COLOR("EE9A49"), VisUtil.HEX2COLOR("C1FFC1"),
+			VisUtil.HEX2COLOR("FFBBFF"), VisUtil.HEX2COLOR("BEBEBE"),
+			VisUtil.HEX2COLOR("5F9EA0"), VisUtil.HEX2COLOR("0000FF"),
+			VisUtil.HEX2COLOR("C71585"), VisUtil.HEX2COLOR("FFFF00"),
+			VisUtil.HEX2COLOR("ADFF2F"), VisUtil.HEX2COLOR("00BFFF"),
+			VisUtil.HEX2COLOR("9932CC"), VisUtil.HEX2COLOR("98FB98"),
+			VisUtil.HEX2COLOR("FFE4E1"), VisUtil.HEX2COLOR("9370D8"),
+			VisUtil.HEX2COLOR("B0C4DE"), VisUtil.HEX2COLOR("FAFAD2"),
+			VisUtil.HEX2COLOR("BA55D3"), VisUtil.HEX2COLOR("7B68EE"),
+			VisUtil.HEX2COLOR("6B8E23"), VisUtil.HEX2COLOR("483D8B"),
+			VisUtil.HEX2COLOR("00FA9A"), VisUtil.HEX2COLOR("90EE90"),
+			VisUtil.HEX2COLOR("FFD700"), VisUtil.HEX2COLOR("87CEFA"),
+			VisUtil.HEX2COLOR("FFDAB9"), VisUtil.HEX2COLOR("DDA0DD"),
+			VisUtil.HEX2COLOR("D8BFD8"), VisUtil.HEX2COLOR("F5F5F5"),
+			VisUtil.HEX2COLOR("4682B4"), VisUtil.HEX2COLOR("20B2AA"),
+			VisUtil.HEX2COLOR("FFA07A"), VisUtil.HEX2COLOR("E0FFFF"),
+			VisUtil.HEX2COLOR("E6E6FA"), VisUtil.HEX2COLOR("4B0082"),
+			VisUtil.HEX2COLOR("E9967A"), VisUtil.HEX2COLOR("556B2F"),
+			VisUtil.HEX2COLOR("BDB76B"), VisUtil.HEX2COLOR("00008B"),
+			VisUtil.HEX2COLOR("5F9EA0"), VisUtil.HEX2COLOR("DEB887"),
+			VisUtil.HEX2COLOR("8A2BE2"), VisUtil.HEX2COLOR("E6E6FA"),
+			VisUtil.HEX2COLOR("000080"), VisUtil.HEX2COLOR("FFA500"),
+			VisUtil.HEX2COLOR("808000"), VisUtil.HEX2COLOR("D87093"),
+			VisUtil.HEX2COLOR("800080"), VisUtil.HEX2COLOR("A0522D"),
+			VisUtil.HEX2COLOR("C0C0C0"), VisUtil.HEX2COLOR("87CEEB"),
+			VisUtil.HEX2COLOR("708090"), VisUtil.HEX2COLOR("EE9A49"),
+			VisUtil.HEX2COLOR("008080"), VisUtil.HEX2COLOR("FF6347"),
+			VisUtil.HEX2COLOR("40E0D0"), VisUtil.HEX2COLOR("EE82EE"),
+			VisUtil.HEX2COLOR("F5DEB3"), VisUtil.HEX2COLOR("9ACD32"),
+			VisUtil.HEX2COLOR("00FFFF"), VisUtil.HEX2COLOR("a4d3ee"),
+			VisUtil.HEX2COLOR("ffff66"), VisUtil.HEX2COLOR("DAC4E5"),
+			VisUtil.HEX2COLOR("B272A6"), VisUtil.HEX2COLOR("8FBC8F"),
+			VisUtil.HEX2COLOR("EE9A49"), VisUtil.HEX2COLOR("C1FFC1"),
+			VisUtil.HEX2COLOR("FFBBFF"), VisUtil.HEX2COLOR("BEBEBE"),
+			VisUtil.HEX2COLOR("5F9EA0"), VisUtil.HEX2COLOR("0000FF"),
+			VisUtil.HEX2COLOR("C71585"), VisUtil.HEX2COLOR("FFFF00"),
+			VisUtil.HEX2COLOR("ADFF2F"), VisUtil.HEX2COLOR("00BFFF"),
+			VisUtil.HEX2COLOR("9932CC") };
+	
+	private Node targetNode;
+	private Node sourceNode;
+	private Node recNode;
+	// edges between source and rec nodes(from 
+	// or to) that contain edges whose node
+	// is target.
+	// or edges between rec and target nodes(from or to) that contains edges
+	// whose node is source.
+	private String nodeURLPrefix;
+	private String linkURLPrefix;
+	private String colorQuestionId;
+	private String groupAttriId;
+	private String sizeQuestionId;
+	private String sizeQuestionId2;
+	// prepare colorMap
+	private Map<String, String> colorMap = null;
+	private Map<String, String> sequMap = null;
+	private Map<String, String> fieldLabel = null;
+	private ArrayList<String> fieldKeys = null;
+	
+	private Map<String, String> g_colorMap = null;
+    private Map<String, String> g_sequMap = null;
+    private Map<String, String> g_fieldLabel = null;
+    private ArrayList<String> g_fieldKeys = null;
+    
+    
+	private QuestionDao questionDao;
+	private NodeDao nodeDao;
+	private RecommenderNetwork rn;
+	private Map<String, String> etp;
+	
+	public RecommenderVisualization(String sourceId, String recId, List<Node> targetNodes, String urlBaseDir, String colorQuestionId, String groupAttriId, String sizeQuestionId, String sizeQuestionId2) {
+	 	
+		Long source = Long.parseLong(sourceId);
+		Long rec = Long.parseLong(recId);
+		
+		this.groupAttriId = groupAttriId;
+		this.colorQuestionId = colorQuestionId;
+		this.sizeQuestionId = sizeQuestionId;
+		this.sizeQuestionId2 = sizeQuestionId2;
+		nodeDao = (NodeDao) Beans.getBean("nodeHibernateDao");
+		questionDao = (QuestionDao) Beans.getBean("questionHibernateDao");
+		sourceNode = nodeDao.findById(source);
+		recNode = nodeDao.findById(rec);
+		targetNode = targetNodes.get(0);
+		nodeURLPrefix = urlBaseDir + "/vis_get_node_info.jsp?";
+		linkURLPrefix = urlBaseDir + "/vis_get_link_info.jsp?";
+		 rn = new RecommenderNetwork(sourceNode, recNode,targetNodes);
+		etp = GeneralUtil.getEdgeDescriptions();
+	}
+
+	private Set<String> getEdgeTypes(Set<Edge> edges) {
+		Set<String> edgeTypes = new HashSet<String>();
+
+		try {
+			for (Edge e : edges) {
+
+				String edgeType = e.getType();
+				edgeTypes.add(edgeType);
+			}
+			
+			
+
+		} catch (Exception e) {
+			logger.info("Exception when getting EdgeType");
+		}
+
+		return edgeTypes;
+	}
+
+	public void write(Writer writer) {
+		
+		logger.info("Writing graph");
+
+		StringBuffer html = new StringBuffer();
+
+		Set<Edge> edgeSet = new HashSet<Edge>();
+		
+		Set<Node> user_recNodes = rn.getUser_RecNodes();
+		Set<Node> rec_targetNodes = rn.getRec_targetNodes();
+		Set<Node> hiddenNodes = rn.getHiddenNodes();
+		Set<Edge> edges = rn.getEdges();
+		
+		edgeSet.addAll(edges);
+		
+		
+		html.append(getAppletHTML(user_recNodes, rec_targetNodes, hiddenNodes, edgeSet,rn.getUr_depth(), rn.getRt_depth(), rn.getUr_hidden(), rn.getRt_hidden()));
+
+		logger.info("\tHTML Generated");
+
+		try {
+			BufferedWriter bw = new BufferedWriter(writer);
+			bw.write(html.toString());
+			bw.close();
+		} catch (IOException e) {
+			logger.error("Could not generate graph applet html");
+			logger.error(e.toString());
+		}
+
+	}
+
+	/**
+	 * Returns a String containing the applet HTML section
+	 * 
+	 * @return
+	 */
+	
+	public int test(){
+		return 999;
+	}
+	public String getAppletHTML(Set<Node> user_rec, Set<Node> rec_target,Set<Node> hiddenNodes, Set<Edge> edges, int ur_depth, int rt_depth, boolean ur_hidden, boolean rt_hidden) {
+		
+		logger.debug("load full nodes...");
+		// put node in a List for recommender layout
+		List<Node> fullNodeList = new ArrayList<Node>();
+		
+	
+		if(user_rec.contains(sourceNode))
+			user_rec.remove(sourceNode);
+		if(user_rec.contains(recNode))
+			user_rec.remove(recNode);
+		if(user_rec.contains(targetNode))
+			user_rec.remove(targetNode);
+		
+			
+		if(rec_target.contains(recNode))
+			rec_target.remove(recNode);
+		if(rec_target.contains(targetNode))
+			rec_target.remove(targetNode);
+		if(rec_target.contains(sourceNode))
+			rec_target.remove(sourceNode);
+		
+		fullNodeList.add(sourceNode);
+		
+		fullNodeList.addAll(user_rec);
+		fullNodeList.add(recNode);
+		
+		for(Node n: rec_target){
+			if(!user_rec.contains(n)){
+				fullNodeList.add(n);
+			}else{
+				
+			}
+			
+		}
+		fullNodeList.add(targetNode);
+		
+ 
+    /*	Set<Node> fullHiddenNodes = new HashSet<Node>();	
+    	for (Node node : hiddenNodes){
+    		fullHiddenNodes.add(nodeDao.loadById(node.getId()));
+    	}
+		*/
+		StringBuffer html = new StringBuffer();
+
+		logger.info("\tLoading graph...");
+		// Get the parameters
+
+		StringBuffer titleStr, nodeSizeStr, nodeSizeStr2, nodeAttriStr, groupStr, edgeTypeDis, edgeLabelStr, nodeIdStr, nodeStr, edgeStr, colorStr, boldStr, italicStr, strengthsStr, underlineStr, hiddenNodesStr, hiddenEdgesStr, edgeColorStr, legendStr, nodeTypesStr, edgeTypesStr, linkLegendStr;
+		
+		titleStr = new StringBuffer();
+		nodeSizeStr = new StringBuffer();
+		nodeSizeStr2 = new StringBuffer();
+		nodeAttriStr = new StringBuffer();
+        groupStr = new StringBuffer();
+		edgeTypeDis = new StringBuffer();
+		edgeLabelStr = new StringBuffer();
+		nodeTypesStr = new StringBuffer();
+		edgeTypesStr = new StringBuffer();
+		nodeIdStr = new StringBuffer();
+		nodeStr = new StringBuffer();
+		edgeStr = new StringBuffer();
+		colorStr = new StringBuffer();
+		boldStr = new StringBuffer();
+		italicStr = new StringBuffer();
+		underlineStr = new StringBuffer();
+		strengthsStr = new StringBuffer();
+		hiddenNodesStr = new StringBuffer();
+		hiddenEdgesStr = new StringBuffer();
+		edgeColorStr = new StringBuffer();
+		legendStr = new StringBuffer();
+		linkLegendStr = new StringBuffer();
+
+		HashMap<Node, Integer> nodeMap = new HashMap<Node, Integer>();
+
+		Set<String> legendSet = new HashSet<String>();
+		Set<String> groupSet = new HashSet<String>();
+		String focallegend;
+		int count = 1;
+
+		preNodeLegend(colorQuestionId);
+		String legendLabel = "";
+		String nodeColor;
+		String disLegend;
+		
+		String sizeLabel ="", size2Label = "";
+        
+        //get sizeLabel
+        if(sizeQuestionId != null ){
+        	Question qu1 = questionDao.findById(Long.parseLong(sizeQuestionId));
+        	sizeLabel = qu1.getLabel();
+        	nodeSizeStr.append(sizeLabel + "||");
+        }
+        if(sizeQuestionId2 != null ){
+        	Question qu2 = questionDao.findById(Long.parseLong(sizeQuestionId2));
+        	size2Label = qu2.getLabel();
+        	nodeSizeStr2.append(size2Label + "||");
+        }
+        
+		// iterate nodes
+		for (Node n : fullNodeList) {
+			Long nodeId = n.getId();
+	
+			String nodeName = n.getLabel();
+			
+			Set<String> attrKeys = new HashSet<String>();
+	            try {
+	                 attrKeys = n.getAttributes().keySet();
+	            
+	        } catch (Exception e) {
+	            logger.info("Exception when getting attrKeys set");
+	        }
+	        
+			// colors for node and legend
+
+			if (n.equals(sourceNode)) {
+			
+				nodeColor = VisUtil.COLOR2HEX(Color.red);
+				legendLabel = "User";
+				focallegend = legendLabel + "-" + nodeColor;
+				legendSet.add(focallegend);
+				disLegend = legendLabel;
+
+			} else if (n.equals(recNode)) {
+			
+				nodeColor = VisUtil.COLOR2HEX(Color.GREEN);
+				legendLabel = "Rec";
+				focallegend = legendLabel + "-" + nodeColor;
+				legendSet.add(focallegend);
+				disLegend = legendLabel;
+
+			} else if (n.equals(targetNode)) {
+				
+				nodeColor = VisUtil.COLOR2HEX(Color.yellow);
+				legendLabel = "Target";
+				focallegend = legendLabel + "-" + nodeColor;
+				legendSet.add(focallegend);
+				disLegend = legendLabel;
+
+			} else {
+				
+				legendLabel = getNodeLegendLabel(attrKeys);
+				
+				if (colorQuestionId != null) {
+					if(colorQuestionId.equalsIgnoreCase("NodeType"))
+            		legendLabel = n.getType();
+				}
+				if (colorQuestionId != null) {
+					 nodeColor = getColor(legendLabel, colorMap, false);
+				} else {
+					nodeColor = VisUtil.COLOR2HEX(VisUtil.DEFAULT_NODE_COLOR);
+				}
+				if (!legendLabel.equalsIgnoreCase("Other") && !colorQuestionId.equalsIgnoreCase("NodeType")) {
+					disLegend = fieldLabel.get(legendLabel);
+				} else {
+					disLegend = legendLabel;
+				}
+
+				String legend = disLegend + "-" + nodeColor;
+
+				legendSet.add(legend);
+			} // end if
+			
+			//group 
+	           
+            String groupLabel;
+            String groupColor;
+            String disGroup;
+            preGroup(groupAttriId);
+            groupLabel = getGroupLabel(attrKeys);
+            if(groupAttriId != null){
+            	if(groupAttriId.equalsIgnoreCase("NodeType"))
+            		groupLabel = n.getType();
+        	}
+            if(groupAttriId != null){
+            	groupColor = getColor(groupLabel, g_colorMap, true);
+       
+            }else{
+            	groupColor = VisUtil.COLOR2HEX(VisUtil.DEFAULT_NODE_COLOR);
+            }
+            if (!groupLabel.equalsIgnoreCase("Other")&& !groupAttriId.equalsIgnoreCase("NodeType")) {
+            	disGroup = g_fieldLabel.get(groupLabel);
+       
+            } else {
+            	disGroup = groupLabel;
+            	
+            }
+
+            String group = disGroup  + "-" + groupColor;
+        
+
+            groupSet.add(group);
+            
+          //reSize node
+
+            String scaleValue = "";
+            String scaleValue2 = "";
+            if(sizeQuestionId != null && attrKeys.size() > 0){
+            	scaleValue = getScale(questionDao, sizeQuestionId, attrKeys, n);
+            }
+            
+            if(sizeQuestionId2 != null && attrKeys.size() > 0){
+            	scaleValue2 = getScale(questionDao, sizeQuestionId2, attrKeys, n);
+            }
+            
+			String nodeBold = "0";
+			String nodeItalic = "0";
+			String nodeUnderline = "0";
+			String nodeHidden = "0";
+			String nodeType = "";
+			String nodeAttri = "";
+			if (disLegend != null) {
+				nodeType = disLegend;
+			}
+			if (disGroup != null) {
+            	nodeAttri = disGroup;
+            }
+			if (nodeId != null) {
+				nodeIdStr.append(nodeId + "||");
+			} else
+				nodeIdStr.append(VisUtil.DEFAULT_NODE_ID + "||");
+
+			if(sizeQuestionId != null){
+	            if (scaleValue.length() > 0) {
+	            	nodeSizeStr.append(scaleValue + "||");
+	            } else
+	            	nodeSizeStr.append(VisUtil.DEFAULT_SCALE_VALUE + "||");
+	            }
+	            
+	            if(sizeQuestionId2 != null){
+	                if (scaleValue2.length() > 0) {
+	                	nodeSizeStr2.append(scaleValue2 + "||");
+	                } else
+	                	nodeSizeStr2.append(VisUtil.DEFAULT_SCALE_VALUE + "||");
+	                }
+	            
+	            
+			if (nodeName != null && !nodeName.equals("")) {
+				String temp = nodeName.replaceAll("||", "");
+				temp = temp.replaceAll("\"", "'");
+				nodeStr.append(temp + "||");
+			} else
+				nodeStr.append(VisUtil.DEFAULT_NODE_NAME + "||");
+
+			// hidden nodes
+			 if (hiddenNodes.contains(n)) {
+	                nodeHidden = "1";
+	            }
+			
+			 
+			 
+			nodeTypesStr.append(nodeType + "||");
+			nodeAttriStr.append(nodeAttri + "||");
+			colorStr.append(nodeColor + "||");
+			boldStr.append(nodeBold + "||");
+			italicStr.append(nodeItalic + "||");
+			underlineStr.append(nodeUnderline + "||");
+			hiddenNodesStr.append(nodeHidden + "||");
+
+			nodeMap.put(n, count);
+			count++;
+		}
+
+		// append legend strings from legend set.Put "User", "Rec" and "Target" legend at the beginning of the legend
+		
+		String[] reservedLegend = new String[3];
+		for (String legend : legendSet) {
+			if(legend.startsWith("User")){
+				reservedLegend[0] = legend;
+			}else if(legend.startsWith("Rec")){
+				reservedLegend[1] = legend;
+			}else if(legend.startsWith("Target")){
+				reservedLegend[2] = legend;
+			}
+		}
+		legendStr.append(reservedLegend[0] + "||");
+		legendStr.append(reservedLegend[1] + "||");
+		legendStr.append(reservedLegend[2] + "||");
+		
+		for (String legend : legendSet) {
+			if(!legend.startsWith("User")&& (!legend.startsWith("Rec")) && (!legend.startsWith("Target"))){
+				legendStr.append(legend + "||");
+			}
+		}
+		
+		
+		// append node group string from group set.
+        for (String group : groupSet) {
+
+            groupStr.append(group + "||");
+        }
+		logger.info("\tProcessed " + nodeMap.size() + " nodes");
+
+		// get edge types
+		Set<String> edgeTypes = getEdgeTypes(edges);
+
+		// get edgeColorMap
+		Map<String, String> edgeColorMap = getColorMap(edgeTypes);
+
+		List<Question> questions = questionDao.getAll();
+
+		// append linkLegend strings from typesIt set.
+		String legend;
+		Question question;
+		String linkLegend;
+		String edgeColor;
+
+		Map<String, String> linkTypeLabel = new HashMap<String, String>();
+		for (String type : edgeTypes) {
+			question = questionDao.findByShortName(type);
+
+			linkLegend = type;
+			try {
+				linkLegend = question.getLabel();
+			} catch (NullPointerException ne) {
+
+			}
+
+			linkTypeLabel.put(type, linkLegend);
+		}
+
+		Map<List<String>, Edge> edgeMap = new HashMap<List<String>, Edge>();
+
+		for (Edge edge : edges) {
+
+			try {
+				String from = edge.getFromNode().getId().toString();
+				String to = edge.getToNode().getId().toString();
+				String type = edge.getType();
+				List<String> endpointstype = new ArrayList<String>();
+
+				endpointstype.add(from);
+				endpointstype.add(to);
+				endpointstype.add(type);
+
+				if (edgeMap.containsKey(endpointstype)) {
+					Edge testEdge = edgeMap.get(endpointstype);
+
+					if (edge.getWeight() > testEdge.getWeight()) {
+						edgeMap.put(endpointstype, edge);
+					}
+				} else {
+					edgeMap.put(endpointstype, edge);
+				}
+			} catch (Exception e) {
+				logger.info("Exception when processing edgeMap");
+			}
+
+		}
+
+		Set<String> noselfLinkType = new HashSet<String>();
+		String directedGraph = "false";
+		Set<List<String>> keys = edgeMap.keySet();
+		Iterator<List<String>> iter = keys.iterator();
+		int edgeCount = edgeMap.size();
+		String weight = "";
+
+		// iterator the keys(List(from, to, type)).
+		Node from, to;
+		Edge e;
+		String edgeType;
+		String edgeLabel = "";
+		while (iter.hasNext()) {
+			e = edgeMap.get(iter.next());
+
+			from = e.getFromNode();
+			to = e.getToNode();
+					
+			 String edgeHidden = "0";
+
+	            if (hiddenNodes.contains(from) || hiddenNodes.contains(to)) {
+	                edgeHidden = "1";
+	            }
+	          //  logger.info("edge:" + nodeMap.get(from).toString() + "-" + nodeMap.get(to).toString() + "hiddenStatus:" + edgeHidden);
+
+	            
+			edgeType = e.getType();
+			
+			try {
+                edgeLabel = etp.get(edgeType);
+                if(edgeLabel == null || edgeLabel.isEmpty()) edgeLabel = edgeType;	
+            } catch (Exception ex) {
+
+            }
+
+			// logger.info("******************************* start get weight");
+
+			for (Question qu : questions) {
+
+                try {
+                	if(edgeType.equalsIgnoreCase(qu.getEdgeType())){
+                		weight = qu.getEdgeWeight(e).toString();
+                	}
+                   
+                } catch (Exception ex) {
+                    logger.info(ex.getMessage());
+                    ex.printStackTrace();
+                }
+            }
+            if (e.getType().startsWith(Constants.TAGGING_PREFIX)) 
+            	weight = e.getWeight().toString();
+            
+			String fromNumber = nodeMap.get(from).toString();
+			String toNumber = nodeMap.get(to).toString();
+			// logger.info("******************************* end get weight");
+			// ignore node self link
+			if (!fromNumber.equalsIgnoreCase(toNumber)) {
+				edgeCount--;
+
+				edgeStr.append(fromNumber + "-" + toNumber + "||");
+
+				edgeColor = getEdgeColor(edgeType, edgeColorMap);
+
+				edgeTypeDis.append(linkTypeLabel.get(edgeType) + "||");
+				edgeLabelStr.append(edgeLabel + "||");
+				edgeTypesStr.append(edgeType + "||");
+
+				strengthsStr.append(weight + "||");
+				edgeColorStr.append(edgeColor + "||");
+				noselfLinkType.add(edgeType);
+				
+				   hiddenEdgesStr.append(edgeHidden + "||");
+				
+			}
+			if (e.isDirected())
+				directedGraph = "true";
+
+		}
+
+		for (String type : linkTypeLabel.keySet()) {
+			if (noselfLinkType.contains(type)) {
+				edgeColor = getEdgeColor(type, edgeColorMap);
+				legend = linkTypeLabel.get(type) + "-" + edgeColor;
+
+				linkLegendStr.append(legend + "||");
+			}
+		}
+		
+		titleStr.append("Recommendation" + "||");
+		titleStr.append(ur_depth + "||");
+		titleStr.append(ur_hidden + "||");
+		titleStr.append(rt_depth + "||");
+		titleStr.append(rt_hidden + "||");
+		
+		
+		logger.info("\tProcessed " + edgeMap.size() + " edges");
+		logger.info("\tProcessed " + edgeCount + " self-link edges");
+
+		// remove invalid chracters for the use of prefuse lib
+		String nodeString = nodeStr.toString();
+		nodeString = nodeString.replaceAll("'", "");
+
+		if (edgeStr.toString().trim().length() > 0) {
+
+			html
+					.append("<applet archive=\"./graphApplet.jar, ./images.jar, ./prefuse.jar\" code=\"admin.MainFrame.class\" width=\"100%\" height=\"100%\">\n\n");
+			html.append("<param name=nodes value=\"" + nodeString + "\">\n");
+			 if(sizeQuestionId != null)
+		            html.append("<param name=nodeSize value=\"" + nodeSizeStr.toString() + "\">\n");
+		            if(sizeQuestionId2 != null)
+		                html.append("<param name=nodeSize2 value=\"" + nodeSizeStr2.toString() + "\">\n");
+		            
+			html.append("<param name=login value=\"" + nodeIdStr.toString()
+					+ "\">\n");
+			html.append("<param name=colors value=\"" + colorStr.toString()
+					+ "\">\n");
+			html.append("<param name=bold value=\"" + boldStr.toString()
+					+ "\">\n");
+			html.append("<param name=italic value=\"" + italicStr.toString()
+					+ "\">\n");
+			html.append("<param name=underline value=\""
+					+ underlineStr.toString() + "\">\n");
+			html.append("<param name=hiddenNodes value=\""
+					+ hiddenNodesStr.toString() + "\">\n");
+			html.append("<param name=edges value=\"" + edgeStr.toString()
+					+ "\">\n");
+			html.append("<param name=strengths value=\""
+					+ strengthsStr.toString() + "\">\n");
+			html.append("<param name=edgeColors value=\""
+					+ edgeColorStr.toString() + "\">\n");
+			html.append("<param name=hiddenEdges value=\""
+					+ hiddenEdgesStr.toString() + "\">\n");
+			html.append("<param name=nodeTypes value=\""
+					+ nodeTypesStr.toString() + "\">\n");
+			html.append("<param name=edgeTypes value=\""
+					+ edgeTypesStr.toString() + "\">\n");
+			html.append("<param name=edgeTypeDis value=\""
+					+ edgeTypeDis.toString() + "\">\n");
+			html.append("<param name=edgeLabel value=\""
+					+ edgeLabelStr.toString() + "\">\n");
+			html.append("<param name=nodeAttri value=\"" + nodeAttriStr.toString() + "\">\n");
+	        html.append("<param name=group value=\"" + groupStr.toString() + "\">\n");
+			html.append("<param name=thelegend value=\"" + legendStr.toString()
+					+ "\">\n");
+			html.append("<param name=linkLegend value=\""
+					+ linkLegendStr.toString() + "\">\n");
+			html
+					.append("<param name=title value=\"" + titleStr.toString() + "\">\n");
+			html.append("<param name=link_prefix value=\"" + linkURLPrefix
+					+ "\">\n");
+			html.append("<param name=node_prefix value=\"" + nodeURLPrefix
+					+ "\">\n");
+			html.append("<param name=cgi_url value=\"\">\n");
+			html.append("<param name=directional value=" + directedGraph
+					+ ">\n");
+			html.append("<param name=default_width value=1200>\n");
+			html.append("<param name=default_height value=800>\n");
+
+			html.append("</applet>");
+
+		} else {
+			html
+					.append("There is no valid node for visualization, please close this window and try again!");
+		}
+
+		return html.toString();
+
+	}
+	
+	private String getScale(QuestionDao questionDao, String sizeQuestionId, Set<String> attrKeys, Node n){
+    	String scaleValue = "";
+    	Question qu = questionDao.findById(Long.parseLong(sizeQuestionId));
+      	Set<Scale> scales = qu.getScales();
+    		
+      	for (String attribute : attrKeys) {
+      	
+      		String scaleName = "";
+      		try{
+      			scaleName = Question.getScaleNameFromAttriValue(n.getAttributes().get(attribute));
+      		}catch(Exception e){
+      			
+      		}
+        		if(scaleName.length() > 0){
+        		
+        			for (Scale sc : scales) {
+        				String _scaleName = sc.getName();
+        		
+        				if (scaleName.equalsIgnoreCase(_scaleName)) {
+        					// plus 1.0 to distinguish with default value (1.0)if the scaleValue is 1.0.
+          					scaleValue = Double.toString(sc.getValue());
+        				
+        				}//if
+        			}//for
+        		}
+        	}
+      	return scaleValue;
+    }
+	
+	  private String getColor(String attri, Map<String, String> colorMap, boolean isGroupColor) {
+
+		int index = attri.lastIndexOf(Constants.SEPERATOR);
+		String newattri = attri.substring(index + 1);
+
+		if (!newattri.equalsIgnoreCase("other")) {
+			if (colorMap != null) {
+				for (String nodeAttribute : colorMap.keySet()) {
+
+					if (attri.equalsIgnoreCase(nodeAttribute)) {
+						return colorMap.get(nodeAttribute);
+					}
+				}
+			}
+		}else{
+        	if(isGroupColor)
+        		return VisUtil.COLOR2HEX(VisUtil.HEX2COLOR("FFF8DC"));	
+		}
+		return VisUtil.COLOR2HEX(VisUtil.DEFAULT_NODE_COLOR);
+	}
+
+	private String getEdgeColor(String edgeType, Map<String, String> colorMap) {
+		if (colorMap != null && edgeType != null) {
+			for (String type : colorMap.keySet()) {
+				if (type.equalsIgnoreCase(edgeType))
+					return colorMap.get(type);
+			}
+		}
+		return VisUtil.COLOR2HEX(VisUtil.DEFAULT_NODE_COLOR);
+	}
+
+	private Map<String, String> getColorMap(Set<String> types) {
+
+		Map<String, String> colorMap = new HashMap<String, String>();
+		int index = 80;
+		for (String type : types) {
+
+			colorMap.put(type, VisUtil.COLOR2HEX(colors[index]));
+			index--;
+		}
+		return colorMap;
+	}
+
+	private String getNodeLegendLabel(Set<String> attrs) {
+
+		String legendLabel = "Other";
+		
+		if (colorMap != null) {
+			
+			// attributes for this node
+			String attrForthisNode = null;
+			try {
+				Set<String> attrKeys = new HashSet<String>();
+                attrKeys.addAll(attrs);
+                
+				// attr keys included in both giving colorquestion and node.
+				attrKeys.retainAll(fieldKeys);
+				int attrKeysSize = attrKeys.size();
+
+				// field_sequ---append sequence to attribute
+				String[] field_sequ = new String[attrKeysSize];
+				// get sequence list
+				Iterator<String> itr = attrKeys.iterator();
+				int[] fieldSeqs = new int[attrKeysSize];
+				int i = 0;
+				String attrString;
+				while (itr.hasNext()) {
+
+					attrString = itr.next().toString();
+					// logger.info("attrString: " + attrString);
+
+					fieldSeqs[i] = (Integer.parseInt(sequMap.get(attrString)));
+					field_sequ[i] = (fieldSeqs[i] + "-" + attrString);
+
+					i++;
+				}
+
+				Arrays.sort(fieldSeqs);
+				if (attrKeysSize > 0) {
+					// find the min number of sequence
+					int minSequ = fieldSeqs[0];
+					// get field for legend
+					for (String fs : field_sequ) {
+						if (String.valueOf(minSequ).equals(fs.split("-", 2)[0])) {
+							attrForthisNode = fs.split("-", 2)[1];
+						}
+					}
+
+					if (attrForthisNode != null) {
+
+						legendLabel = attrForthisNode;
+					}
+				}
+			} catch (Exception e) {
+				logger.info("Exception when getting legend label:" + e);
+			}
+		}
+		return legendLabel;
+	}
+	
+	private String getGroupLabel( Set<String> attrKeys) {
+
+        String groupLabel = "Other";
+        if (g_colorMap != null) {
+        	//logger.info("g_colorMap is not null");
+            // attributes for this node
+            String attrForthisNode = null;
+            try {
+            	
+                //attr keys included in both giving colorquestion and node.
+                attrKeys.retainAll(g_fieldKeys);
+                int attrKeysSize = attrKeys.size();
+               
+                // field_sequ---append sequence to attribute
+                String[] field_sequ = new String[attrKeysSize];
+                // get sequence list
+                Iterator itr = attrKeys.iterator();
+                int[] fieldSeqs = new int[attrKeysSize];
+                int i = 0;
+                String attrString;
+                while (itr.hasNext()) {
+
+                    attrString = itr.next().toString();
+                    //    logger.info("attrString: " + attrString);
+
+                    fieldSeqs[i] = (Integer.parseInt(g_sequMap.get(attrString)));
+                    field_sequ[i] = (fieldSeqs[i] + "-" + attrString);
+                  //  logger.info("JJJJJJJJJ  field_sequ[i]: " +  field_sequ[i]);
+                    i++;
+                }
+
+                Arrays.sort(fieldSeqs);
+                if (attrKeysSize > 0) {
+                    // find the min number of sequence
+                    int minSequ = fieldSeqs[0];
+                    // get field for legend
+                    for (String fs : field_sequ) {
+                        if (String.valueOf(minSequ).equals(fs.split("-", 2)[0])) {
+                            attrForthisNode = fs.split("-", 2)[1];
+                        }
+                    }
+
+                    if (attrForthisNode != null) {
+
+                        groupLabel = attrForthisNode;
+                    }
+                }
+            } catch (Exception e) {
+                logger.info("Exception when getting group label");
+            }
+        }
+        return groupLabel;
+    }
+
+	private void preNodeLegend(String colorQuestionId) {
+	
+		if (colorQuestionId != null) {
+			colorMap = new HashMap<String, String>();
+			sequMap = new HashMap<String, String>();
+			fieldKeys = new ArrayList<String>();
+			fieldLabel = new HashMap<String, String>();
+
+			Question question;
+			int index = 0;
+			
+			if (colorQuestionId.equalsIgnoreCase("NodeType")) {
+				List<String> nodetypes = nodeDao.getNodeTypes();
+				for (String nType : nodetypes) {
+
+				colorMap.put(nType, VisUtil.COLOR2HEX(colors[index]));
+
+				index++;
+				}
+			} else {
+				question = questionDao
+						.findById(Long.parseLong(colorQuestionId));	
+			
+			try {
+
+				Set<Field> fields = question.getFields();
+			
+				if (fields.size() > 0) {
+					String key; // the value of the "key" is the same as the
+					// value of node attribute
+					// for the use of legend
+					String fieldSeq;
+					for (Field field : fields) {
+
+						key = question.makeFieldKey(field); // the value of the
+						// "key" is the same
+						// as the value of
+						// node attribute
+						// for the use of legend
+						fieldSeq = String.valueOf(field.getSequenceNumber());
+						fieldLabel.put(key, field.getLabel());
+						fieldKeys.add(key);
+						sequMap.put(key, fieldSeq);
+					
+						
+						colorMap.put(key, VisUtil.COLOR2HEX(colors[index]));
+
+						index++;
+					}
+				}
+			} catch (Exception e) {
+				logger.debug("Exception when processing preNodeLegend method: " + e);
+			}
+		}
+		}
+	}
+	
+	 private void preGroup(String groupAttriId) {
+
+	        if (groupAttriId != null) {
+	            g_colorMap = new HashMap<String, String>();
+	           g_sequMap = new HashMap<String, String>();
+	           g_fieldKeys = new ArrayList<String>();
+	           g_fieldLabel = new HashMap<String, String>();
+	           
+	           Question question;
+	           int index = 80;
+				
+				if (groupAttriId.equalsIgnoreCase("NodeType")) {
+					List<String> nodetypes = nodeDao.getNodeTypes();
+					for (String nType : nodetypes) {
+
+						g_colorMap.put(nType, VisUtil.COLOR2HEX(colors[index]));
+
+					index--;
+					}
+				} else {
+					question = questionDao.findById(Long.parseLong(groupAttriId));
+				
+				
+	            try {
+
+	                Set<Field> fields = question.getFields();
+
+	                if (fields.size() > 0) {
+	                    String key;        // the value of the "key" is the same as the value of node attribute
+	                    // for the use of legend
+	                    String fieldSeq;
+	                    for (Field field : fields) {
+
+	                        key = question.makeFieldKey(field);        // the value of the "key" is the same as the value of node attribute
+	                       
+	                        // for the use of legend
+	                       fieldSeq = String.valueOf(field.getSequenceNumber());
+	                       
+	                       g_fieldLabel.put(key, field.getLabel());
+	                        g_fieldKeys.add(key);
+	                        g_sequMap.put(key, fieldSeq);
+	                        g_colorMap.put(key, VisUtil.COLOR2HEX(colors[index]));
+	                     
+	                        index--;
+	                    }
+	                }
+	            } catch (Exception e) {
+
+	            }
+	        }
+	    }
+	 }
+
+
+}

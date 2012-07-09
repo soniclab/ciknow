@@ -1,0 +1,38 @@
+
+<zk>
+
+    <panel id="questionPanel" border="none" width="100%">
+        <panelchildren>
+            <vlayout id="questionArea" style="padding: 0px 0px 0px 30px;">
+		        <hbox id="questionCaption" style="background-color: #e4f0fb" width="100%">	
+		        	<hbox hflex="1" align="center">
+		        		<button sclass="questionnumber" id="questionNumber" label="question number"/>
+		        		<label sclass="questionlabel" id="questionLabel" value="question label"/>		        	
+		        	</hbox>	
+		        	
+		        	<hbox id="toolbar" style="float:right">
+			            <button id="helpBtn" label="?" visible="false"/>	        	
+		        	</hbox>
+		        </hbox>     	
+                		
+                <html id="instruction"/>
+                <label id="msg" visible="false"/>				
+				
+				<!-- choice or relational choice question -->
+                <checkbox id="selectAllBox" label="Select All" visible="false"/>
+				
+                <grid id="grid">
+
+                </grid>	
+				
+                <space id="bottomSpacer" orient="vertical" height="10px"/>
+            </vlayout>
+			
+        </panelchildren>
+    </panel>
+    
+    <window id="helpWin" title="Help Information" closable="true">
+    	<iframe id="helpFrame" src="http://ciknow.northwestern.edu/documentation"
+    			 width="998px" height="600px"/>	
+  	</window>
+</zk>

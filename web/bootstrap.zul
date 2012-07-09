@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<?page title="C-IKNOW" contentType="text/html;charset=UTF-8"?>
+<?meta name="viewport" content="width=device-width, initial-scale=1.0"?>
+<zk xmlns:n="native" xmlns:c="client">
+	<style src="css/bootstrap.css"/>
+    <style>
+      body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+    </style>
+    
+    <zscript>
+    	void onClick(){
+    		Messagebox.show("hi2");
+    	}
+    	
+    </zscript>
+    <n:div class="navbar navbar-fixed-top">
+      <n:div class="navbar-inner">
+        <n:div class="container">
+          <n:a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <n:span class="icon-bar"></n:span>
+            <n:span class="icon-bar"></n:span>
+            <n:span class="icon-bar"></n:span>
+          </n:a>
+          <n:a class="brand" href="#">Project name</n:a>
+          <n:div class="nav-collapse">
+            <n:ul class="nav">
+              <n:li class="active"><n:a href="#">Home</n:a></n:li>
+              <n:li><n:a href="#about">About</n:a></n:li>
+              <n:li><n:a href="#contact">Contact</n:a></n:li>
+            </n:ul>
+          </n:div><!--/.nav-collapse -->
+        </n:div>
+      </n:div>
+    </n:div>
+
+    <n:div class="container">
+      Bootstrap starter template
+      <button id="btn" label="hi" c:onClick="alert('hi')"/>
+      <button id="btn2" label="hi2" onClick="onClick()"/>
+				        <n:div class="btn-group">
+				          <n:button class="btn btn-danger">Danger</n:button>
+				          <n:button class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
+				          	<n:span class="caret"></n:span>
+				          </n:button>
+				          <n:ul class="dropdown-menu">
+				            <n:li><n:a href="#">Action</n:a></n:li>
+				            <n:li><n:a href="#">Another action</n:a></n:li>
+				            <n:li><n:a href="#">Something else here</n:a></n:li>
+				            <n:li class="divider"></n:li>
+				            <n:li><n:a href="#">Separated link</n:a></n:li>
+				          </n:ul>
+				        </n:div>     
+    </n:div> <!-- /container -->
+
+	
+	
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.js"></script>    
+</zk>

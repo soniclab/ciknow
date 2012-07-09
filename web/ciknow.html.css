@@ -1,0 +1,185 @@
+body
+{
+  background-color: white;
+  font-family: Arial,Helvetica,sans-serif;
+  font-size: 12px;
+  text-align: center;
+}
+
+
+table{
+  	border-style: solid;
+  	border-width: 1;
+  	border-color: black;
+}
+
+th{
+	
+}
+
+tr{
+	
+}
+
+td{
+	
+}
+
+a:link {color: #000000; text-decoration: none}
+a:visited {color: #000000; text-decoration: none}
+a:hover {color: navy; text-decoration: underline; font-weight: bold} /* mouse over link */
+a:active {color:#FF0000} /* selected link */
+
+.surveyTitle{
+	font-size:24px;
+	font-family: Verdana, Arial, sans-serif;
+}
+
+.surveyPower{
+	font-size:10px;
+	font-family: Verdana, Arial, sans-serif;
+}
+
+.surveyDescription{
+	font-size:12px;
+	font-family: Verdana, Arial, sans-serif;
+}
+
+.surveyContact{
+	font-size:10px;
+	color: #4169E1;
+	font-family: Verdana, Arial, sans-serif;
+}
+
+.loginForm
+{
+  background-color: #E6E6FA; /* lavender */
+  border-width: 0;
+  margin: auto; /* firefox need this to center the table */
+}
+
+.error{
+	font-size:15px;
+	color:red;
+}
+
+.credit{
+	font-size: 10px;
+}
+
+.timestamp{
+	font-size: 10px;
+	font-style: italic;
+	color: green;
+}
+
+.copyright{
+	font-size: 10px;
+	font-weight:bold;
+}
+
+
+.loginTable
+{
+  	border-style: solid;
+  	border-width: 2;
+	margin: auto; /* firefox need this to center the table */
+	text-align: center;
+	width: 450px;
+	background-color: #F5F5DC; /* Beige */
+}
+
+
+
+
+
+/* for node.jsp */
+.nodeTable
+{
+  	border-style: solid;
+  	border-width: 0;
+  	border-color: black;
+  	width: 900px;
+	margin: auto;
+	text-align: left;
+}
+
+.nodeInfoHeader{
+	background-color: #666666;
+	color: white;
+  	font-weight: bold;	
+}
+
+.evenNodeLine{
+	background-color: #F5F5DC;
+}
+
+.oddNodeLine{
+	
+}
+
+.evenEdgeLine{
+	background-color: #F0E68C;
+}
+
+.oddEdgeLine{
+	
+}
+
+.leftCell{
+	font-style: italic;
+	vertical-align: top;
+	width: 200px;
+}
+
+.rightCell{
+	vertical-align: top;	
+	width: 600px;
+}
+
+
+
+/* for edge.jsp */
+.edgeTable
+{
+  	border-style: solid;
+  	border-width: 0;
+  	border-color: black;
+  	min-width: 900px;
+	margin: auto;
+	text-align: left;
+}
+
+.edgeCompareTable
+{
+	display: none;
+}
+
+.edgeCompareCell
+{
+	width: 250px;	
+	background-color: #E6E6FA; /* lavender */
+}
+
+.edgeCompareCommonCell
+{
+	width: 250px;	
+	background-color: #9ACD32; /* YellowGreen */
+}
+
+.edgeInfoHeader{
+	background-color: #666666; /* green yellow */
+	color: white;
+  	font-weight: bold;	
+}
+
+.leftCell{
+	font-style: italic;
+	vertical-align: top;
+	width: 200px;
+}
+
+.rightCell{
+	vertical-align: top;	
+	width: 600px;
+}

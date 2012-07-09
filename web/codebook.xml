@@ -1,0 +1,1078 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="codebook.xsl"?>
+
+<!--System group 'All' and 'User' cannot be modified.-->
+<!--This utility is best for import survey metadata into a fresh ciknow instance; Use with caution when import metadata into an existing ciknow instance. Always backup data first.-->
+<ciknow>
+  <survey name="NMC Course Survey">
+    <description>Survey for the Course New Media &amp; Communication 2010-2011</description>
+    <attributes>
+      <attribute key="SURVEY_ALLOW_SNAPSHOT" value="N"/>
+      <attribute key="SURVEY_DEFAULT_LOGIN_MODE" value="default"/>
+      <attribute key="SURVEY_POST_NOTICE" value="0"/>
+      <attribute key="SURVEY_SHOW_NAVIGATION_DURING" value="N"/>
+      <attribute key="SURVEY_FORCE_NEW_USER_CHANGE_PASSWORD" value="N"/>
+      <attribute key="SURVEY_ALLOW_SELF_REGISTER" value="N"/>
+      <attribute key="SURVEY_SHOW_RAW_ATTRIBUTES_IN_REPORT" value="N"/>
+      <attribute key="SURVEY_DEFAULT_LOCALE" value="en_US"/>
+      <attribute key="SURVEY_SHOW_REC" value="N"/>
+      <attribute key="SURVEY_SHOW_NAVIGATION_AFTER" value="N"/>
+      <attribute key="SURVEY_DEFAULT_PASSWORD" value="hello"/>
+      <attribute key="SURVEY_SELF_REGISTER_GROUPS" value="ALL"/>
+      <attribute key="SURVEY_SHOW_REPORT" value="N"/>
+      <attribute key="SURVEY_SHOW_LOGIN_LIST" value="N"/>
+      <attribute key="SURVEY_LAST_LOGIN_USERNAME" value="admin"/>
+      <attribute key="SURVEY_DISABLE_USER_ON_FINISH" value="N"/>
+      <attribute key="SURVEY_ALLOW_USER_CREATED_NODE" value="N"/>
+      <attribute key="SURVEY_ADMIN_EMAIL" value="wpieterson@gmail.com"/>
+      <attribute key="SURVEY_SHOW_SURVEY" value="N"/>
+      <attribute key="SURVEY_SHOW_VIS" value="N"/>
+      <attribute key="SURVEY_SHOW_GAME" value="N"/>
+    </attributes>
+    <longAttributes/>
+    <pages>
+      <page name="page: 1" label="page: 1">
+        <instruction>this is page 1</instruction>
+        <attributes/>
+        <questions>
+          <question shortName="Welcome" label="Welcome" type="DisplayPage" rowPerPage="20">
+            <htmlInstruction>&lt;p&gt; &lt;textformat leading="2"&gt;&lt;/textformat&gt;&lt;/p&gt; &lt;p align="LEFT"&gt; this is from york&lt;/p&gt; &lt;p align="LEFT"&gt; &lt;span style="font-size:12px;"&gt;&lt;font color="#0B333C" face="Arial,Verdana,Courier,Georgia" kerning="0" letterspacing="0"&gt;Welcome at the New Media &amp;amp; Communication Survey. In this survey we&amp;#39;ll ask you several questions regarding the new media in general. This course, the &amp;#39;new media&amp;#39; mastertrack at the University of Twente and finally your use of the new media. Filling in this survey should not take you more than 10 minutes. Your answers will be treated confidentially.&lt;/font&gt;&lt;/span&gt;&lt;/p&gt; &lt;p&gt; &lt;textformat leading="2"&gt;&lt;span style="font-size:12px;"&gt; &lt;/span&gt;&lt;/textformat&gt;&lt;/p&gt; &lt;p&gt; &lt;textformat leading="2"&gt;&lt;/textformat&gt;&lt;/p&gt; &lt;p align="LEFT"&gt; &lt;span style="font-size:12px;"&gt;&lt;font color="#0B333C" face="Arial,Verdana,Courier,Georgia" kerning="0" letterspacing="0"&gt;The first 5 questions are about the (new media) master program at the University of Twente.&lt;/font&gt;&lt;/span&gt;&lt;/p&gt; &lt;p&gt; &amp;nbsp;&lt;/p&gt;</htmlInstruction>
+            <attributes/>
+            <longAttributes/>
+            <rowGroups>
+              <group name="ALL"/>
+            </rowGroups>
+            <respondentGroups>
+              <group name="TYPE_Student"/>
+              <group name="USER"/>
+            </respondentGroups>
+          </question>
+        </questions>
+      </page>
+      <page name="a" label="a">
+        <instruction></instruction>
+        <attributes/>
+        <questions>
+          <question shortName="q" label="q" type="Choice" rowPerPage="20">
+            <htmlInstruction/>
+            <attributes/>
+            <longAttributes/>
+            <rowGroups>
+              <group name="ALL"/>
+            </rowGroups>
+            <respondentGroups>
+              <group name="ALL"/>
+            </respondentGroups>
+          </question>
+        </questions>
+      </page>
+      <page name="jdfsalkf" label="jdfsalkf">
+        <instruction></instruction>
+        <attributes/>
+        <questions/>
+      </page>
+      <page name="newpage2" label="newpage2">
+        <instruction>&lt;p&gt; get&lt;/p&gt;</instruction>
+        <attributes/>
+        <questions>
+          <question shortName="rating2" label="rating2" type="Rating" rowPerPage="20">
+            <htmlInstruction>&lt;p&gt; a&lt;/p&gt;</htmlInstruction>
+            <attributes/>
+            <longAttributes/>
+            <fields>
+              <field name="f1" label="f1"/>
+              <field name="f2" label="f2"/>
+              <field name="f3" label="f3"/>
+              <field name="f4" label="f4"/>
+            </fields>
+            <scales>
+              <scale name="s1" label="s1" value="0.0"/>
+              <scale name="s2" label="s2" value="1.0"/>
+            </scales>
+            <rowGroups>
+              <group name="ALL"/>
+            </rowGroups>
+            <respondentGroups>
+              <group name="ALL"/>
+            </respondentGroups>
+          </question>
+          <question shortName="continuous" label="continuous" type="Continuous" rowPerPage="20">
+            <htmlInstruction>&lt;p&gt; this is a test again&lt;/p&gt;</htmlInstruction>
+            <attributes/>
+            <longAttributes/>
+            <fields>
+              <field name="f2" label="f2"/>
+              <field name="f1" label="f1"/>
+            </fields>
+            <rowGroups>
+              <group name="ALL"/>
+            </rowGroups>
+            <respondentGroups>
+              <group name="ALL"/>
+            </respondentGroups>
+          </question>
+          <question shortName="text2" label="text2" type="Text" rowPerPage="20">
+            <htmlInstruction/>
+            <attributes/>
+            <longAttributes/>
+            <textFields>
+              <textField name="t1" label="t1" large="false"/>
+            </textFields>
+            <rowGroups>
+              <group name="ALL"/>
+            </rowGroups>
+            <respondentGroups>
+              <group name="ALL"/>
+            </respondentGroups>
+          </question>
+          <question shortName="contactinfo2" label="contactinfo2" type="ContactInfo" rowPerPage="20">
+            <htmlInstruction/>
+            <attributes/>
+            <longAttributes/>
+            <contactFields>
+              <contactField name="Address 1" label="Address 1"/>
+              <contactField name="City" label="City"/>
+              <contactField name="test" label="test"/>
+            </contactFields>
+            <rowGroups>
+              <group name="ALL"/>
+            </rowGroups>
+            <respondentGroups>
+              <group name="ALL"/>
+            </respondentGroups>
+          </question>
+        </questions>
+      </page>
+      <page name="this is a test page" label="this is a test page">
+        <instruction>&lt;p&gt; this is a getstdlkjlsajfdsa&lt;/p&gt; &lt;p&gt; &amp;nbsp;&lt;/p&gt;</instruction>
+        <attributes/>
+        <questions>
+          <question shortName="hello test" label="hello test" type="Choice" rowPerPage="20">
+            <htmlInstruction>&lt;p&gt; &lt;strong&gt;this is a instruction&lt;/strong&gt;&lt;/p&gt;</htmlInstruction>
+            <attributes/>
+            <longAttributes/>
+            <fields>
+              <field name="swinmming" label="swinmming"/>
+              <field name="safd" label="safd"/>
+            </fields>
+            <rowGroups>
+              <group name="ALL"/>
+            </rowGroups>
+            <respondentGroups>
+              <group name="ALL"/>
+            </respondentGroups>
+          </question>
+          <question shortName="rating" label="rating" type="Rating" rowPerPage="20">
+            <htmlInstruction/>
+            <attributes/>
+            <longAttributes/>
+            <fields>
+              <field name="f1" label="f1"/>
+              <field name="f2" label="f2"/>
+            </fields>
+            <scales>
+              <scale name="s1" label="s1" value="0.0"/>
+              <scale name="s2" label="s2" value="1.0"/>
+              <scale name="s3" label="s3" value="2.0"/>
+            </scales>
+            <rowGroups>
+              <group name="ALL"/>
+            </rowGroups>
+            <respondentGroups>
+              <group name="USER"/>
+            </respondentGroups>
+          </question>
+        </questions>
+      </page>
+      <page name="page: 2" label="page: 2">
+        <instruction>this is page 2</instruction>
+        <attributes/>
+        <questions>
+          <question shortName="StudentType" label="StudentType" type="Choice" rowPerPage="20">
+            <htmlInstruction>&lt;TEXTFORMAT LEADING="2"&gt;&lt;P ALIGN="LEFT"&gt;&lt;FONT FACE="Arial,Verdana,Courier,Georgia" SIZE="12" COLOR="#0B333C" LETTERSPACING="0" KERNING="0"&gt;What type of student are you?&lt;/FONT&gt;&lt;/P&gt;&lt;/TEXTFORMAT&gt;&lt;TEXTFORMAT LEADING="2"&gt;&lt;P ALIGN="LEFT"&gt;&lt;FONT FACE="Arial,Verdana,Courier,Georgia" SIZE="12" COLOR="#0B333C" LETTERSPACING="0" KERNING="0"&gt;&lt;/FONT&gt;&lt;/P&gt;&lt;/TEXTFORMAT&gt;&lt;TEXTFORMAT LEADING="2"&gt;&lt;P ALIGN="LEFT"&gt;&lt;FONT FACE="Arial,Verdana,Courier,Georgia" SIZE="12" COLOR="#0B333C" LETTERSPACING="0" KERNING="0"&gt;&lt;I&gt;Please select only the most appropriate answer.&lt;/I&gt;&lt;/FONT&gt;&lt;/P&gt;&lt;/TEXTFORMAT&gt;</htmlInstruction>
+            <attributes>
+              <attribute key="showSelectAll" value="1"/>
+              <attribute key="Option_IsSingleChoice" value="1"/>
+              <attribute key="Option_AllowUserCreateChoice" value="1"/>
+            </attributes>
+            <longAttributes/>
+            <fields>
+              <field name="Retaker" label="Bachelor Communication student  who re-takes (part) of the course"/>
+              <field name="Premaster" label="Premaster student Communication Studies"/>
+              <field name="MasterSC" label="Master student Communication Studies"/>
+              <field name="BachelorInf" label="Bachelor student Computer Science"/>
+              <field name="(pre)MasterInf" label="(pre)Master student Computer Science"/>
+              <field name="BachelorUT" label="Bachelor student University of Twente from any other study"/>
+              <field name="MasterUT" label="Master student University of Twente from any other study"/>
+              <field name="BachelorOther" label="Bachelor student from another University"/>
+              <field name="MasterOther" label="Master student from another University"/>
+            </fields>
+            <rowGroups>
+              <group name="ALL"/>
+            </rowGroups>
+            <respondentGroups>
+              <group name="TYPE_Student"/>
+              <group name="USER"/>
+            </respondentGroups>
+          </question>
+        </questions>
+      </page>
+      <page name="page: 3" label="page: 3">
+        <instruction>this is page 3</instruction>
+        <attributes/>
+        <questions>
+          <question shortName="Master" label="Master" type="Choice" rowPerPage="20">
+            <htmlInstruction>&lt;TEXTFORMAT LEADING="2"&gt;&lt;P ALIGN="LEFT"&gt;&lt;FONT FACE="Arial,Verdana,Courier,Georgia" SIZE="14" COLOR="#0B333C" LETTERSPACING="0" KERNING="0"&gt;Do you intend to get your masters degree?&lt;FONT SIZE="12"&gt;&lt;/FONT&gt;&lt;/FONT&gt;&lt;/P&gt;&lt;/TEXTFORMAT&gt;</htmlInstruction>
+            <attributes/>
+            <longAttributes/>
+            <fields>
+              <field name="Bachelor" label="No, I will stop when I have my Bachelor's degree"/>
+              <field name="MasterCSUT" label="Yes, I want to get my communication master at the University of Twente"/>
+              <field name="MasterUT" label="Yes, I will get another master's degree at the University of Twente"/>
+              <field name="MasterElse" label="Yes, but it will probably not be at the University of Twente"/>
+              <field name="NoDecision" label="I haven't decided yet"/>
+              <field name="a" label="a"/>
+            </fields>
+            <rowGroups>
+              <group name="ALL"/>
+            </rowGroups>
+            <respondentGroups>
+              <group name="TYPE_Student"/>
+              <group name="USER"/>
+            </respondentGroups>
+          </question>
+        </questions>
+      </page>
+      <page name="page: 4" label="page: 4">
+        <instruction>this is page 4</instruction>
+        <attributes/>
+        <questions>
+          <question shortName="MasterTrack" label="MasterTrack" type="Choice" rowPerPage="20">
+            <htmlInstruction>&lt;TEXTFORMAT LEADING="2"&gt;&lt;P ALIGN="LEFT"&gt;&lt;FONT FACE="Arial,Verdana,Courier,Georgia" SIZE="14" COLOR="#0B333C" LETTERSPACING="0" KERNING="0"&gt;If your were to pick any of the available Communication master programs at the University of Twente, which one would you pick?&lt;/FONT&gt;&lt;/P&gt;&lt;/TEXTFORMAT&gt;&lt;TEXTFORMAT LEADING="2"&gt;&lt;P ALIGN="LEFT"&gt;&lt;FONT FACE="Arial,Verdana,Courier,Georgia" SIZE="12" COLOR="#0B333C" LETTERSPACING="0" KERNING="0"&gt;&lt;/FONT&gt;&lt;/P&gt;&lt;/TEXTFORMAT&gt;&lt;TEXTFORMAT LEADING="2"&gt;&lt;P ALIGN="LEFT"&gt;&lt;FONT FACE="Arial,Verdana,Courier,Georgia" SIZE="12" COLOR="#0B333C" LETTERSPACING="0" KERNING="0"&gt;(none Communication Students, please skip this question)&lt;/FONT&gt;&lt;/P&gt;&lt;/TEXTFORMAT&gt;</htmlInstruction>
+            <attributes>
+              <attribute key="Option_IsSingleChoice" value="1"/>
+              <attribute key="showSingleChoiceAsList" value="1"/>
+            </attributes>
+            <longAttributes/>
+            <fields>
+              <field name="CorpComm" label="Corporate Communication"/>
+              <field name="MarkComm" label="Marketing Communication"/>
+              <field name="NewMedia" label="New Media and Communication"/>
+              <field name="HealthComm" label="Health Communication"/>
+            </fields>
+            <rowGroups>
+              <group name="ALL"/>
+            </rowGroups>
+            <respondentGroups>
+              <group name="TYPE_Student"/>
+              <group name="USER"/>
+            </respondentGroups>
+          </question>
+        </questions>
+      </page>
+      <page name="page: 5" label="page: 5">
+        <instruction>this is page 5</instruction>
+        <attributes/>
+        <questions>
+          <question shortName="MasterPercep" label="MasterPerceptions" type="Rating" rowPerPage="20">
+            <htmlInstruction>&lt;TEXTFORMAT LEADING="2"&gt;&lt;P ALIGN="LEFT"&gt;&lt;FONT FACE="Arial,Verdana,Courier,Georgia" SIZE="14" COLOR="#0B333C" LETTERSPACING="0" KERNING="0"&gt;How do you see the ‘new media’ masters’ program? &lt;/FONT&gt;&lt;/P&gt;&lt;/TEXTFORMAT&gt;</htmlInstruction>
+            <attributes>
+              <attribute key="Option_AllowUserCreateChoice" value="1"/>
+            </attributes>
+            <longAttributes/>
+            <fields>
+              <field name="Nerdy" label="It is nerdy"/>
+              <field name="Interesting" label="I find it personally interesting"/>
+              <field name="Society" label="Relevant for today's society"/>
+              <field name="Knowledge" label="I know a lot about this program"/>
+              <field name="JobMarket" label="This program gives me good opportunities on the job market"/>
+              <field name="Sexy" label="It is not sexy"/>
+              <field name="Technological" label="It is very technological"/>
+              <field name="Boring" label="It is boring"/>
+              <field name="test_choice" label="test choice"/>
+              <field name="name10" label="label10"/>
+            </fields>
+            <scales>
+              <scale name="TotallyDisagree" label="Totally Disagree" value="1.0"/>
+              <scale name="Disagree" label="Disagree" value="2.0"/>
+              <scale name="Neutral" label="Neutral" value="3.0"/>
+              <scale name="Agree" label="Agree" value="4.0"/>
+              <scale name="TotallyAgree" label="Totally Agree" value="5.0"/>
+              <scale name="name6" label="label666" value="6.0"/>
+            </scales>
+            <rowGroups>
+              <group name="ALL"/>
+            </rowGroups>
+            <respondentGroups>
+              <group name="TYPE_Student"/>
+              <group name="USER"/>
+            </respondentGroups>
+          </question>
+        </questions>
+      </page>
+      <page name="page: 6" label="page: 6">
+        <instruction>this is page 6</instruction>
+        <attributes/>
+        <questions>
+          <question shortName="Coverage" label="Coverage" type="Rating" rowPerPage="20">
+            <htmlInstruction>&lt;TEXTFORMAT LEADING="2"&gt;&lt;P ALIGN="LEFT"&gt;&lt;FONT FACE="Arial,Verdana,Courier,Georgia" SIZE="14" COLOR="#0B333C" LETTERSPACING="0" KERNING="0"&gt;To what degree do you expect the following to be covered in the new media mastertrack?&lt;/FONT&gt;&lt;/P&gt;&lt;/TEXTFORMAT&gt;</htmlInstruction>
+            <attributes>
+              <attribute key="Option_AllowUserCreateChoice" value="1"/>
+              <attribute key="displayRatingAsDropdownList" value="1"/>
+            </attributes>
+            <longAttributes/>
+            <fields>
+              <field name="NMtheories" label="New media theories"/>
+              <field name="Adoption" label="Adoption and Acceptance of Technology"/>
+              <field name="Use" label="The use of new media in society"/>
+              <field name="Application" label="Fields of application (e.g e-Commerce, e-Government)"/>
+              <field name="Design" label="Design of electronic tools"/>
+              <field name="Websites" label="Building websites"/>
+              <field name="SotA" label="State of the art of new tools (e.g. Twitter, Social Networking)"/>
+              <field name="Discussion" label="(active) Discussion about future developments of the new media"/>
+              <field name="Research" label="Doing new media research"/>
+              <field name="Advisor" label="Training in becoming a new media advisor/consultant"/>
+            </fields>
+            <scales>
+              <scale name="Not at All" label="Not at All" value="1.0"/>
+              <scale name="Very little" label="Very little" value="2.0"/>
+              <scale name="Somewhat" label="Somewhat" value="3.0"/>
+              <scale name="Great extent" label="To a great extent" value="4.0"/>
+              <scale name="Completely" label="Completely" value="5.0"/>
+            </scales>
+            <respondentGroups>
+              <group name="TYPE_Student"/>
+              <group name="USER"/>
+            </respondentGroups>
+          </question>
+        </questions>
+      </page>
+      <page name="page: 7" label="page: 7">
+        <instruction>this is page 7</instruction>
+        <attributes/>
+        <questions>
+          <question shortName="Degrees" label="derived attributes: Degrees" type="Continuous" rowPerPage="20">
+            <htmlInstruction>&lt;TEXTFORMAT LEADING="2"&gt;&lt;P ALIGN="LEFT"&gt;&lt;FONT FACE="Arial,Verdana,Courier,Georgia" SIZE="12" COLOR="#000000" LETTERSPACING="0" KERNING="0"&gt;This is a auto generated question when creating derived attribute.&lt;/FONT&gt;&lt;/P&gt;&lt;/TEXTFORMAT&gt;</htmlInstruction>
+            <attributes>
+              <attribute key="Option_AllowUserCreateChoice" value="1"/>
+            </attributes>
+            <longAttributes/>
+            <fields>
+              <field name="Degrees" label="Degrees"/>
+            </fields>
+            <respondentGroups>
+              <group name="USER"/>
+            </respondentGroups>
+          </question>
+        </questions>
+      </page>
+      <page name="page: 8" label="page: 8">
+        <instruction>this is page 8</instruction>
+        <attributes/>
+        <questions>
+          <question shortName="Degree" label="derived attributes: Degree" type="Continuous" rowPerPage="20">
+            <htmlInstruction>&lt;TEXTFORMAT LEADING="2"&gt;&lt;P ALIGN="LEFT"&gt;&lt;FONT FACE="Arial,Verdana,Courier,Georgia" SIZE="12" COLOR="#000000" LETTERSPACING="0" KERNING="0"&gt;This is a auto generated question when creating derived attribute.&lt;/FONT&gt;&lt;/P&gt;&lt;/TEXTFORMAT&gt;</htmlInstruction>
+            <attributes>
+              <attribute key="Option_AllowUserCreateChoice" value="1"/>
+            </attributes>
+            <longAttributes/>
+            <fields>
+              <field name="Degrees" label="Degrees"/>
+              <field name="hello" label="hello"/>
+            </fields>
+            <respondentGroups>
+              <group name="USER"/>
+            </respondentGroups>
+          </question>
+        </questions>
+      </page>
+      <page name="page: 9" label="page: 9">
+        <instruction>this is page 9</instruction>
+        <attributes/>
+        <questions>
+          <question shortName="text" label="text" type="Text" rowPerPage="20">
+            <htmlInstruction/>
+            <attributes>
+              <attribute key="Option_AllowUserCreateChoice" value="1"/>
+            </attributes>
+            <longAttributes/>
+            <textFields>
+              <textField name="name5" label="label5" large="false"/>
+              <textField name="name6" label="label6" large="true"/>
+              <textField name="t1" label="t1" large="false"/>
+              <textField name="t2" label="t2" large="false"/>
+              <textField name="t3" label="t3" large="false"/>
+              <textField name="t4" label="t4" large="false"/>
+            </textFields>
+            <rowGroups>
+              <group name="ALL"/>
+            </rowGroups>
+            <respondentGroups>
+              <group name="USER"/>
+            </respondentGroups>
+          </question>
+        </questions>
+      </page>
+      <page name="page: 10" label="page: 10">
+        <instruction>this is page 10</instruction>
+        <attributes/>
+        <questions>
+          <question shortName="MasterWhy" label="MasterWhy" type="TextLong" rowPerPage="20">
+            <htmlInstruction>&lt;TEXTFORMAT LEADING="2"&gt;&lt;P ALIGN="LEFT"&gt;&lt;FONT FACE="Arial,Verdana,Courier,Georgia" SIZE="14" COLOR="#0B333C" LETTERSPACING="0" KERNING="0"&gt;Why would you pick this master program?&lt;/FONT&gt;&lt;/P&gt;&lt;/TEXTFORMAT&gt;</htmlInstruction>
+            <attributes>
+              <attribute key="Option_AllowUserCreateChoice" value="1"/>
+            </attributes>
+            <longAttributes/>
+            <fields>
+              <field name="WhyMaster" label="Why would you pick this master program?"/>
+              <field name="a" label="a"/>
+            </fields>
+            <rowGroups>
+              <group name="ALL"/>
+            </rowGroups>
+            <respondentGroups>
+              <group name="TYPE_Student"/>
+              <group name="USER"/>
+            </respondentGroups>
+          </question>
+        </questions>
+      </page>
+      <page name="page: 11" label="page: 11">
+        <instruction>this is page 11</instruction>
+        <attributes/>
+        <questions>
+          <question shortName="ci" label="ci" type="ContactInfo" rowPerPage="20">
+            <htmlInstruction/>
+            <attributes>
+              <attribute key="Option_AllowUserCreateChoice" value="1"/>
+            </attributes>
+            <longAttributes/>
+            <contactFields>
+              <contactField name="Address 1" label="Address 1"/>
+              <contactField name="Email" label="Email"/>
+              <contactField name="Fax" label="Faxxxxx"/>
+              <contactField name="name4" label="label44"/>
+              <contactField name="Organization" label="ojsdga"/>
+            </contactFields>
+            <rowGroups>
+              <group name="ALL"/>
+            </rowGroups>
+            <respondentGroups>
+              <group name="USER"/>
+            </respondentGroups>
+          </question>
+        </questions>
+      </page>
+      <page name="page: 12" label="page: 12">
+        <instruction>this is page 12</instruction>
+        <attributes/>
+        <questions>
+          <question shortName="duration" label="duration" type="DurationChooser" rowPerPage="20">
+            <htmlInstruction/>
+            <attributes>
+              <attribute key="Option_AllowUserCreateChoice" value="1"/>
+            </attributes>
+            <longAttributes/>
+            <fields>
+              <field name="f1" label="f1"/>
+              <field name="f2" label="f2"/>
+              <field name="test" label="test"/>
+              <field name="f4" label="f4"/>
+            </fields>
+            <rowGroups>
+              <group name="ALL"/>
+            </rowGroups>
+            <respondentGroups>
+              <group name="USER"/>
+            </respondentGroups>
+          </question>
+        </questions>
+      </page>
+      <page name="page: 13" label="page: 13">
+        <instruction>this is page 13</instruction>
+        <attributes/>
+        <questions>
+          <question shortName="xxx" label="mc" type="MultipleChoice" rowPerPage="20">
+            <htmlInstruction/>
+            <attributes>
+              <attribute key="Option_AllowUserCreateChoice" value="1"/>
+            </attributes>
+            <longAttributes/>
+            <fields>
+              <field name="f1" label="f1"/>
+              <field name="f2" label="f2"/>
+              <field name="f3" label="f3"/>
+              <field name="f4" label="f4"/>
+            </fields>
+            <textFields>
+              <textField name="tf1" label="tf1" large="false"/>
+              <textField name="tf2" label="tf2" large="false"/>
+              <textField name="tf3" label="tf3" large="false"/>
+            </textFields>
+            <rowGroups>
+              <group name="ALL"/>
+            </rowGroups>
+            <respondentGroups>
+              <group name="USER"/>
+            </respondentGroups>
+          </question>
+        </questions>
+      </page>
+      <page name="page: 14" label="page: 14">
+        <instruction>this is page 14</instruction>
+        <attributes/>
+        <questions>
+          <question shortName="mr" label="mr" type="MultipleRating" rowPerPage="20">
+            <htmlInstruction/>
+            <attributes>
+              <attribute key="Option_AllowUserCreateChoice" value="1"/>
+            </attributes>
+            <longAttributes/>
+            <fields>
+              <field name="f1" label="f1"/>
+              <field name="f2" label="f2"/>
+              <field name="f3" label="f3"/>
+              <field name="f4" label="f4"/>
+            </fields>
+            <textFields>
+              <textField name="t1" label="t1" large="false"/>
+              <textField name="t2" label="t2" large="false"/>
+              <textField name="t3" label="t3" large="false"/>
+            </textFields>
+            <scales>
+              <scale name="s1" label="s1" value="1.0"/>
+              <scale name="s2" label="s2" value="2.0"/>
+              <scale name="s3" label="s3" value="3.0"/>
+            </scales>
+            <rowGroups>
+              <group name="ALL"/>
+            </rowGroups>
+            <respondentGroups>
+              <group name="USER"/>
+            </respondentGroups>
+          </question>
+        </questions>
+      </page>
+      <page name="page: 15" label="page: 15">
+        <instruction>this is page 15</instruction>
+        <attributes/>
+        <questions>
+          <question shortName="Intro Usage" label="Intro Usage" type="DisplayPage" rowPerPage="20">
+            <htmlInstruction>&lt;TEXTFORMAT LEADING="2"&gt;&lt;P ALIGN="LEFT"&gt;&lt;FONT FACE="Arial,Verdana,Courier,Georgia" SIZE="14" COLOR="#0B333C" LETTERSPACING="0" KERNING="0"&gt;The following questions deal with your usage of the new media&lt;FONT SIZE="12"&gt;&lt;/FONT&gt;&lt;/FONT&gt;&lt;/P&gt;&lt;/TEXTFORMAT&gt;</htmlInstruction>
+            <attributes/>
+            <longAttributes/>
+            <rowGroups>
+              <group name="ALL"/>
+            </rowGroups>
+            <respondentGroups>
+              <group name="TYPE_Student"/>
+              <group name="USER"/>
+            </respondentGroups>
+          </question>
+        </questions>
+      </page>
+      <page name="page: 16" label="page: 16">
+        <instruction>this is page 16</instruction>
+        <attributes/>
+        <questions>
+          <question shortName="Usage" label="Usage" type="Rating" rowPerPage="20">
+            <htmlInstruction>&lt;TEXTFORMAT LEADING="2"&gt;&lt;P ALIGN="LEFT"&gt;&lt;FONT FACE="Arial,Verdana,Courier,Georgia" SIZE="14" COLOR="#0B333C" LETTERSPACING="0" KERNING="0"&gt;Please respond to the statements below&lt;FONT SIZE="12"&gt;&lt;/FONT&gt;&lt;/FONT&gt;&lt;/P&gt;&lt;/TEXTFORMAT&gt;</htmlInstruction>
+            <attributes/>
+            <longAttributes/>
+            <fields>
+              <field name="eavy user" label="I consider myself a heavy user of the new media"/>
+              <field name="expert" label="I consider myself an expert on the field of new media"/>
+              <field name="digital skills" label="I consider myself heaving high digital skills"/>
+            </fields>
+            <scales>
+              <scale name="Not at all" label="Not at all" value="1.0"/>
+              <scale name="Very little" label="Very little" value="2.0"/>
+              <scale name="Somewhat" label="Somewhat" value="3.0"/>
+              <scale name="great extent" label="To a great extent" value="4.0"/>
+              <scale name="Totally" label="Totally" value="5.0"/>
+            </scales>
+            <rowGroups>
+              <group name="ALL"/>
+            </rowGroups>
+            <respondentGroups>
+              <group name="TYPE_Student"/>
+              <group name="USER"/>
+            </respondentGroups>
+          </question>
+        </questions>
+      </page>
+      <page name="page: 17" label="page: 17">
+        <instruction>this is page 17</instruction>
+        <attributes/>
+        <questions>
+          <question shortName="OnlineTools" label="OnlineTools" type="Rating" rowPerPage="20">
+            <htmlInstruction>&lt;TEXTFORMAT LEADING="2"&gt;&lt;P ALIGN="LEFT"&gt;&lt;FONT FACE="Arial,Verdana,Courier,Georgia" SIZE="14" COLOR="#0B333C" LETTERSPACING="0" KERNING="1"&gt;Have you ever used the following online sites and/or services? &lt;FONT SIZE="12"&gt;&lt;/FONT&gt;&lt;/FONT&gt;&lt;/P&gt;&lt;/TEXTFORMAT&gt;</htmlInstruction>
+            <attributes>
+              <attribute key="rowPerHeader" value="14"/>
+            </attributes>
+            <longAttributes/>
+            <fields>
+              <field name="Hyves" label="Hyves"/>
+              <field name="Facebook" label="Facebook"/>
+              <field name="MySpace" label="MySpace"/>
+              <field name="YouTube" label="YouTube"/>
+              <field name="WikiPedia" label="WikiPedia"/>
+              <field name="Twitter" label="Twitter"/>
+              <field name="IM" label="Instant messaging (e.g. Messenger, Google Talk)"/>
+              <field name="Skype" label="Skype"/>
+              <field name="Blogs" label="Blogs (i.e. writing a weblog)"/>
+              <field name="User Profiles" label="User profiles so that the communication can be tailored to the individual customer (e.g. MS Passport)"/>
+              <field name="GIS" label="Geographical applications, like Google maps, GPS, GIS systems"/>
+              <field name="Tagging" label="Tagging options"/>
+              <field name="Transactions" label="Transaction applications (for example for making payments, subscribing for services)"/>
+              <field name="Websites" label="Informational websites"/>
+            </fields>
+            <scales>
+              <scale name="No" label="No" value="1.0"/>
+              <scale name="Never" label="I know what it is, but I've never used it" value="2.0"/>
+              <scale name="Once" label="I've tried it once, but ave never used it since" value="3.0"/>
+              <scale name="Yes" label="Yes, I've used it in the past, but I don't use it nowadays" value="4.0"/>
+              <scale name="Sometimes" label="Yes, I currently use it sometimes" value="5.0"/>
+              <scale name="Often" label="Yes, I currently use it often" value="6.0"/>
+            </scales>
+            <rowGroups>
+              <group name="ALL"/>
+            </rowGroups>
+            <respondentGroups>
+              <group name="TYPE_Student"/>
+              <group name="USER"/>
+            </respondentGroups>
+          </question>
+        </questions>
+      </page>
+      <page name="page: 18" label="page: 18">
+        <instruction>this is page 18</instruction>
+        <attributes/>
+        <questions>
+          <question shortName="Know More" label="Know More" type="TextLong" rowPerPage="20">
+            <htmlInstruction>&lt;TEXTFORMAT LEADING="2"&gt;&lt;P ALIGN="LEFT"&gt;&lt;FONT FACE="Arial,Verdana,Courier,Georgia" SIZE="14" COLOR="#0B333C" LETTERSPACING="0" KERNING="0"&gt;About what aspects of the new media in general would you like to know more?&lt;/FONT&gt;&lt;/P&gt;&lt;/TEXTFORMAT&gt;</htmlInstruction>
+            <attributes/>
+            <longAttributes/>
+            <fields>
+              <field name="Know More 2" label="Please tell us what you miss in the current program and what you'd like to know/learn about the new media in general."/>
+            </fields>
+            <rowGroups>
+              <group name="ALL"/>
+            </rowGroups>
+            <respondentGroups>
+              <group name="TYPE_Student"/>
+              <group name="USER"/>
+            </respondentGroups>
+          </question>
+        </questions>
+      </page>
+      <page name="page: 19" label="page: 19">
+        <instruction>this is page 19</instruction>
+        <attributes/>
+        <questions>
+          <question shortName="StudentSelect" label="StudentSelect" type="ContactChooser" rowPerPage="20">
+            <htmlInstruction>&lt;TEXTFORMAT LEADING="2"&gt;&lt;P ALIGN="LEFT"&gt;&lt;FONT FACE="Arial,Verdana,Courier,Georgia" SIZE="14" COLOR="#0B333C" LETTERSPACING="0" KERNING="0"&gt;Select among your fellow students and the teachers of this course the ones you talk to the most about this course?&lt;/FONT&gt;&lt;/P&gt;&lt;/TEXTFORMAT&gt;&lt;TEXTFORMAT LEADING="2"&gt;&lt;P ALIGN="LEFT"&gt;&lt;FONT FACE="Arial,Verdana,Courier,Georgia" SIZE="14" COLOR="#0B333C" LETTERSPACING="0" KERNING="0"&gt;&lt;/FONT&gt;&lt;/P&gt;&lt;/TEXTFORMAT&gt;&lt;TEXTFORMAT LEADING="2"&gt;&lt;P ALIGN="LEFT"&gt;&lt;FONT FACE="Arial,Verdana,Courier,Georgia" SIZE="14" COLOR="#0B333C" LETTERSPACING="0" KERNING="0"&gt;(If you don&amp;apos;t talk to anyone, select none. Try to select some 5-10 names maximum)&lt;/FONT&gt;&lt;/P&gt;&lt;/TEXTFORMAT&gt;&lt;TEXTFORMAT LEADING="2"&gt;&lt;P ALIGN="LEFT"&gt;&lt;FONT FACE="Arial,Verdana,Courier,Georgia" SIZE="14" COLOR="#0B333C" LETTERSPACING="0" KERNING="0"&gt;&lt;/FONT&gt;&lt;/P&gt;&lt;/TEXTFORMAT&gt;&lt;TEXTFORMAT LEADING="2"&gt;&lt;P ALIGN="LEFT"&gt;&lt;FONT FACE="Arial,Verdana,Courier,Georgia" SIZE="14" COLOR="#FF0000" LETTERSPACING="0" KERNING="0"&gt;Instructions: select a name (or more using Ctrl &amp;amp; Shift) and move them to the right using the arrow button &amp;quot;&amp;gt;&amp;quot;. This way you can also move names back to the left.&lt;/FONT&gt;&lt;/P&gt;&lt;/TEXTFORMAT&gt;</htmlInstruction>
+            <attributes>
+              <attribute key="newContactDefaultType" value="user"/>
+              <attribute key="adgColumnSortFields" value="firstName=First Name=1=0=descend,lastName=Last Name=1=0=alternate"/>
+              <attribute key="showImage" value="1"/>
+              <attribute key="ccLevel" value="lastName=Last Name,firstName=First Name,organization=Organization"/>
+              <attribute key="allowUserCreatedNode" value="Y"/>
+            </attributes>
+            <longAttributes/>
+            <rowGroups>
+              <group name="TYPE_Student"/>
+              <group name="TYPE_Teacher"/>
+              <group name="ALL"/>
+            </rowGroups>
+            <respondentGroups>
+              <group name="TYPE_Student"/>
+              <group name="USER"/>
+            </respondentGroups>
+          </question>
+        </questions>
+      </page>
+      <page name="page: 20" label="page: 20">
+        <instruction>this is page 20</instruction>
+        <attributes/>
+        <questions>
+          <question shortName="rc" label="rc" type="RelationalChoice" rowPerPage="20">
+            <htmlInstruction>&lt;TEXTFORMAT LEADING="2"&gt;&lt;P ALIGN="LEFT"&gt;&lt;FONT FACE="Arial,Verdana,Courier,Georgia" SIZE="12" COLOR="#000000" LETTERSPACING="0" KERNING="0"&gt;who you know?&lt;/FONT&gt;&lt;/P&gt;&lt;/TEXTFORMAT&gt;</htmlInstruction>
+            <attributes>
+              <attribute key="showSelectAll" value="1"/>
+              <attribute key="allowUserCreatedNode" value="Y"/>
+              <attribute key="Option_ShowUserContactsOnly" value="1"/>
+              <attribute key="ccShortName" value="StudentSelect"/>
+            </attributes>
+            <longAttributes/>
+            <rowGroups>
+              <group name="TYPE_Student"/>
+            </rowGroups>
+            <respondentGroups>
+              <group name="TYPE_Student"/>
+              <group name="USER"/>
+            </respondentGroups>
+          </question>
+        </questions>
+      </page>
+      <page name="page: 21" label="page: 21">
+        <instruction>this is page 21</instruction>
+        <attributes/>
+        <questions>
+          <question shortName="People_Channels" label="People_Channels" type="RelationalChoiceMultiple" rowPerPage="20">
+            <htmlInstruction>&lt;TEXTFORMAT LEADING="2"&gt;&lt;P ALIGN="LEFT"&gt;&lt;FONT FACE="Arial,Verdana,Courier,Georgia" SIZE="14" COLOR="#0B333C" LETTERSPACING="0" KERNING="1"&gt;From the same list of people, please tell me the most preferred way you &lt;B&gt;&lt;I&gt;would use&lt;/I&gt;&lt;/B&gt; to communicate with each person about thi&lt;FONT KERNING="0"&gt;s course&lt;/FONT&gt;. &lt;/FONT&gt;&lt;/P&gt;&lt;/TEXTFORMAT&gt;&lt;TEXTFORMAT LEADING="2"&gt;&lt;P ALIGN="LEFT"&gt;&lt;FONT FACE="Arial,Verdana,Courier,Georgia" SIZE="14" COLOR="#0B333C" LETTERSPACING="0" KERNING="1"&gt;&lt;/FONT&gt;&lt;/P&gt;&lt;/TEXTFORMAT&gt;&lt;TEXTFORMAT LEADING="2"&gt;&lt;P ALIGN="LEFT"&gt;&lt;FONT FACE="Arial,Verdana,Courier,Georgia" SIZE="14" COLOR="#000000" LETTERSPACING="0" KERNING="1"&gt;&lt;I&gt;[please pick only one answer per person]&lt;/I&gt;&lt;/FONT&gt;&lt;/P&gt;&lt;/TEXTFORMAT&gt;</htmlInstruction>
+            <attributes>
+              <attribute key="ccShortName" value="StudentSelect"/>
+            </attributes>
+            <longAttributes/>
+            <fields>
+              <field name="F2F" label="Talk in person (face to face)"/>
+              <field name="Telephone" label="Via the telephone"/>
+              <field name="e-mail" label="Send an e-mail"/>
+              <field name="Website" label="Look on their personal website"/>
+              <field name="Weblog" label="Read on comment on their weblog"/>
+              <field name="Social_Network" label="Contact via a social network (e.g. Hyves)"/>
+              <field name="Chat" label="Talk via online Chat (Instant messaging)"/>
+              <field name="SMS" label="Send an SMS/text message"/>
+              <field name="Letter" label="Write a letter"/>
+              <field name="Twitter" label="Commucate via Twitter"/>
+              <field name="Other" label="Some other channel"/>
+            </fields>
+            <rowGroups>
+              <group name="TYPE_Student"/>
+              <group name="TYPE_Teacher"/>
+            </rowGroups>
+            <respondentGroups>
+              <group name="TYPE_Student"/>
+              <group name="USER"/>
+            </respondentGroups>
+          </question>
+        </questions>
+      </page>
+      <page name="page: 22" label="page: 22">
+        <instruction>this is page 22</instruction>
+        <attributes/>
+        <questions>
+          <question shortName="Student_Freq" label="Student_Freq" type="RelationalRating" rowPerPage="20">
+            <htmlInstruction>&lt;TEXTFORMAT LEADING="2"&gt;&lt;P ALIGN="LEFT"&gt;&lt;FONT FACE="Arial,Verdana,Courier,Georgia" SIZE="14" COLOR="#0B333C" LETTERSPACING="0" KERNING="1"&gt;From this list of s&lt;FONT KERNING="0"&gt;tudents/teachers&lt;/FONT&gt; you created, how often do you use them to get information?&lt;FONT SIZE="12"&gt;&lt;/FONT&gt;&lt;/FONT&gt;&lt;/P&gt;&lt;/TEXTFORMAT&gt;</htmlInstruction>
+            <attributes>
+              <attribute key="ccShortName" value="StudentSelect"/>
+            </attributes>
+            <longAttributes/>
+            <scales>
+              <scale name="Monthly _less" label="Monthly or less" value="1.0"/>
+              <scale name="Monthly" label="Monthly" value="2.0"/>
+              <scale name="Multiple_month" label="Multiple times per month" value="3.0"/>
+              <scale name="Weekly" label="Weekly" value="4.0"/>
+              <scale name="Multiple_week" label="Multiple times per week" value="5.0"/>
+              <scale name="Daily" label="Daily" value="6.0"/>
+              <scale name="Multiple_day" label="Multiple times per day" value="7.0"/>
+            </scales>
+            <rowGroups>
+              <group name="TYPE_Student"/>
+              <group name="TYPE_Teacher"/>
+            </rowGroups>
+            <respondentGroups>
+              <group name="TYPE_Student"/>
+              <group name="USER"/>
+            </respondentGroups>
+          </question>
+        </questions>
+      </page>
+      <page name="page: 23" label="page: 23">
+        <instruction>this is page 23</instruction>
+        <attributes/>
+        <questions>
+          <question shortName="rcon" label="rcon" type="RelationalContinuous" rowPerPage="20">
+            <htmlInstruction/>
+            <attributes>
+              <attribute key="recordDuration" value="1"/>
+              <attribute key="allowUserCreatedNode" value="Y"/>
+              <attribute key="Option_ShowUserContactsOnly" value="1"/>
+            </attributes>
+            <longAttributes/>
+            <rowGroups>
+              <group name="ALL"/>
+            </rowGroups>
+            <respondentGroups>
+              <group name="USER"/>
+            </respondentGroups>
+          </question>
+        </questions>
+      </page>
+      <page name="page: 24" label="page: 24">
+        <instruction>this is page 24</instruction>
+        <attributes/>
+        <questions>
+          <question shortName="MediaSelect" label="MediaSelect" type="ContactChooser" rowPerPage="20">
+            <htmlInstruction>&lt;TEXTFORMAT LEADING="2"&gt;&lt;P ALIGN="LEFT"&gt;&lt;FONT FACE="Arial,Verdana,Courier,Georgia" SIZE="14" COLOR="#0B333C" LETTERSPACING="0" KERNING="1"&gt;From this list of media sources, please tell me the most important ones you use&lt;B&gt;&lt;I&gt; &lt;/I&gt;&lt;/B&gt;&lt;FONT KERNING="0"&gt;the most to get &lt;/FONT&gt;information about the n&lt;FONT KERNING="0"&gt;ew media in general.&lt;/FONT&gt;&lt;/FONT&gt;&lt;/P&gt;&lt;/TEXTFORMAT&gt;&lt;TEXTFORMAT LEADING="2"&gt;&lt;P ALIGN="LEFT"&gt;&lt;FONT FACE="Arial,Verdana,Courier,Georgia" SIZE="14" COLOR="#0B333C" LETTERSPACING="0" KERNING="1"&gt;&lt;/FONT&gt;&lt;/P&gt;&lt;/TEXTFORMAT&gt;&lt;TEXTFORMAT LEADING="2"&gt;&lt;P ALIGN="LEFT"&gt;&lt;FONT FACE="Arial,Verdana,Courier,Georgia" SIZE="14" COLOR="#0B333C" LETTERSPACING="0" KERNING="1"&gt;(If you don&amp;apos;t &lt;FONT KERNING="0"&gt;use anyone&lt;/FONT&gt;, select none. Try to select some 5-10 names maximum&lt;FONT KERNING="0"&gt;)&lt;/FONT&gt;&lt;/FONT&gt;&lt;/P&gt;&lt;/TEXTFORMAT&gt;&lt;TEXTFORMAT LEADING="2"&gt;&lt;P ALIGN="LEFT"&gt;&lt;FONT FACE="Arial,Verdana,Courier,Georgia" SIZE="12" COLOR="#0B333C" LETTERSPACING="0" KERNING="0"&gt;&lt;/FONT&gt;&lt;/P&gt;&lt;/TEXTFORMAT&gt;&lt;TEXTFORMAT LEADING="2"&gt;&lt;P ALIGN="LEFT"&gt;&lt;FONT FACE="Arial,Verdana,Courier,Georgia" SIZE="14" COLOR="#FF0000" LETTERSPACING="0" KERNING="1"&gt;Instructions: select a name (or more using Ctrl &amp;amp; Shift) and move them to the right using the arrow button &amp;quot;&amp;gt;&amp;quot;. This way you can also move names back to the left.&lt;FONT COLOR="#0B333C"&gt;&lt;/FONT&gt;&lt;/FONT&gt;&lt;/P&gt;&lt;/TEXTFORMAT&gt;</htmlInstruction>
+            <attributes/>
+            <longAttributes/>
+            <rowGroups>
+              <group name="TYPE_Media"/>
+            </rowGroups>
+            <respondentGroups>
+              <group name="TYPE_Student"/>
+              <group name="USER"/>
+            </respondentGroups>
+          </question>
+        </questions>
+      </page>
+      <page name="page: 25" label="page: 25">
+        <instruction>this is page 25</instruction>
+        <attributes/>
+        <questions>
+          <question shortName="MediaFrequenc" label="MediaFrequency" type="RelationalRating" rowPerPage="20">
+            <htmlInstruction>&lt;TEXTFORMAT LEADING="2"&gt;&lt;P ALIGN="LEFT"&gt;&lt;FONT FACE="Arial,Verdana,Courier,Georgia" SIZE="14" COLOR="#0B333C" LETTERSPACING="0" KERNING="1"&gt;From this list of media sources you created, how often do you use them to get information?&lt;FONT SIZE="12"&gt;&lt;/FONT&gt;&lt;/FONT&gt;&lt;/P&gt;&lt;/TEXTFORMAT&gt;</htmlInstruction>
+            <attributes>
+              <attribute key="ccShortName" value="MediaSelect"/>
+            </attributes>
+            <longAttributes/>
+            <scales>
+              <scale name="Monthly_Less" label="Monthly or less" value="1.0"/>
+              <scale name="Monthly" label="Monthly" value="2.0"/>
+              <scale name="Multiple_month" label="Multiple times per month" value="3.0"/>
+              <scale name="Weekly" label="Weekly" value="4.0"/>
+              <scale name="Multiple_week" label="Multiple times per week" value="5.0"/>
+              <scale name="Daily" label="Daily" value="6.0"/>
+              <scale name="Multiple_day" label="Multiple times per day" value="7.0"/>
+            </scales>
+            <rowGroups>
+              <group name="TYPE_Media"/>
+            </rowGroups>
+            <respondentGroups>
+              <group name="TYPE_Student"/>
+              <group name="USER"/>
+            </respondentGroups>
+          </question>
+        </questions>
+      </page>
+      <page name="page: 26" label="page: 26">
+        <instruction>this is page 26</instruction>
+        <attributes/>
+        <questions>
+          <question shortName="Media_Channels" label="Media_Channels" type="RelationalChoiceMultiple" rowPerPage="20">
+            <htmlInstruction>&lt;TEXTFORMAT LEADING="2"&gt;&lt;P ALIGN="LEFT"&gt;&lt;FONT FACE="Arial,Verdana,Courier,Georgia" SIZE="14" COLOR="#0B333C" LETTERSPACING="0" KERNING="1"&gt;People can consume media in different ways. For example, someone might prefer reading the Chicago Tribune in print, but you might prefer reading the Chicago Tribune online. &lt;/FONT&gt;&lt;/P&gt;&lt;/TEXTFORMAT&gt;&lt;TEXTFORMAT LEADING="2"&gt;&lt;P ALIGN="LEFT"&gt;&lt;FONT FACE="Arial,Verdana,Courier,Georgia" SIZE="14" COLOR="#0B333C" LETTERSPACING="0" KERNING="1"&gt;&lt;/FONT&gt;&lt;/P&gt;&lt;/TEXTFORMAT&gt;&lt;TEXTFORMAT LEADING="2"&gt;&lt;P ALIGN="LEFT"&gt;&lt;FONT FACE="Arial,Verdana,Courier,Georgia" SIZE="14" COLOR="#0B333C" LETTERSPACING="0" KERNING="1"&gt;From this list, please tell me how you prefer to consume these media.&lt;/FONT&gt;&lt;/P&gt;&lt;/TEXTFORMAT&gt;&lt;TEXTFORMAT LEADING="2"&gt;&lt;P ALIGN="LEFT"&gt;&lt;FONT FACE="Arial,Verdana,Courier,Georgia" SIZE="14" COLOR="#000000" LETTERSPACING="0" KERNING="1"&gt;&lt;I&gt;[please pick only one answer per m&lt;/I&gt;&lt;FONT COLOR="#0B333C"&gt;&lt;I&gt;edium&lt;/I&gt;&lt;/FONT&gt;&lt;I&gt;]&lt;/I&gt;&lt;/FONT&gt;&lt;/P&gt;&lt;/TEXTFORMAT&gt;&lt;TEXTFORMAT LEADING="2"&gt;&lt;P ALIGN="LEFT"&gt;&lt;FONT FACE="Arial,Verdana,Courier,Georgia" SIZE="14" COLOR="#0B333C" LETTERSPACING="0" KERNING="1"&gt;&lt;/FONT&gt;&lt;/P&gt;&lt;/TEXTFORMAT&gt;&lt;TEXTFORMAT LEADING="2"&gt;&lt;P ALIGN="LEFT"&gt;&lt;FONT FACE="Arial,Verdana,Courier,Georgia" SIZE="14" COLOR="#0B333C" LETTERSPACING="0" KERNING="0"&gt;NB. Some of the media sources listed can be accessed only via one channel, however some others can be accessed via multiple ways.&lt;/FONT&gt;&lt;/P&gt;&lt;/TEXTFORMAT&gt;</htmlInstruction>
+            <attributes>
+              <attribute key="singleChoicePerLine" value="Y"/>
+              <attribute key="ccShortName" value="MediaSelect"/>
+            </attributes>
+            <longAttributes/>
+            <fields>
+              <field name="TV" label="TV"/>
+              <field name="Newspaper" label="Newspaper"/>
+              <field name="Magazine" label="Magazine"/>
+              <field name="Radio" label="Radio"/>
+              <field name="Website" label="Website"/>
+            </fields>
+            <rowGroups>
+              <group name="TYPE_Media"/>
+            </rowGroups>
+            <respondentGroups>
+              <group name="TYPE_Student"/>
+              <group name="USER"/>
+            </respondentGroups>
+          </question>
+        </questions>
+      </page>
+      <page name="page: 27" label="page: 27">
+        <instruction>this is page 27</instruction>
+        <attributes/>
+        <questions>
+          <question shortName="Thanks" label="Thanks" type="DisplayPage" rowPerPage="20">
+            <htmlInstruction>&lt;TEXTFORMAT LEADING="2"&gt;&lt;P ALIGN="LEFT"&gt;&lt;FONT FACE="Arial,Verdana,Courier,Georgia" SIZE="14" COLOR="#0B333C" LETTERSPACING="0" KERNING="0"&gt;You’ve completed the survey! Thanks for responding. Please post on Twitter your comments on the survey.&lt;FONT SIZE="12"&gt;&lt;/FONT&gt;&lt;/FONT&gt;&lt;/P&gt;&lt;/TEXTFORMAT&gt;</htmlInstruction>
+            <attributes/>
+            <longAttributes/>
+            <rowGroups>
+              <group name="ALL"/>
+            </rowGroups>
+            <respondentGroups>
+              <group name="TYPE_Student"/>
+            </respondentGroups>
+          </question>
+        </questions>
+      </page>
+      <page name="page: 28" label="page: 28">
+        <instruction>this is page 28</instruction>
+        <attributes/>
+        <questions>
+          <question shortName="mrr" label="mrr" type="RelationalRatingMultiple" rowPerPage="20">
+            <htmlInstruction/>
+            <attributes>
+              <attribute key="allowUserCreatedNode" value="Y"/>
+              <attribute key="Option_ShowUserContactsOnly" value="1"/>
+              <attribute key="ccShortName" value="StudentSelect"/>
+            </attributes>
+            <longAttributes/>
+            <fields>
+              <field name="f1" label="f1"/>
+              <field name="f2" label="f2"/>
+              <field name="f3" label="f3"/>
+            </fields>
+            <scales>
+              <scale name="s1" label="s1" value="1.0"/>
+              <scale name="s2" label="s2" value="2.0"/>
+              <scale name="s3" label="s3" value="3.0"/>
+            </scales>
+            <rowGroups>
+              <group name="ALL"/>
+            </rowGroups>
+            <respondentGroups>
+              <group name="USER"/>
+            </respondentGroups>
+          </question>
+        </questions>
+      </page>
+      <page name="page: 29" label="page: 29">
+        <instruction>this is page 29</instruction>
+        <attributes/>
+        <questions>
+          <question shortName="prc" label="prc" type="PerceivedRelationalChoice" rowPerPage="20">
+            <htmlInstruction/>
+            <attributes>
+              <attribute key="Option_ShowUserContactsOnly" value="1"/>
+            </attributes>
+            <longAttributes/>
+            <rowGroups>
+              <group name="ALL"/>
+            </rowGroups>
+            <respondentGroups>
+              <group name="USER"/>
+            </respondentGroups>
+          </question>
+        </questions>
+      </page>
+      <page name="page: 30" label="page: 30">
+        <instruction>this is page 30</instruction>
+        <attributes/>
+        <questions>
+          <question shortName="prr" label="prrrrrr" type="PerceivedRelationalRating" rowPerPage="10">
+            <htmlInstruction>&lt;p&gt; this is a test prr&lt;/p&gt;</htmlInstruction>
+            <attributes>
+              <attribute key="Option_ShowUserContactsOnly" value="1"/>
+            </attributes>
+            <longAttributes/>
+            <scales>
+              <scale name="s" label="s2" value="2.0"/>
+              <scale name="s1" label="s1" value="1.0"/>
+              <scale name="s3" label="s3" value="3.0"/>
+            </scales>
+            <rowGroups>
+              <group name="ALL"/>
+              <group name="USER"/>
+            </rowGroups>
+            <columnGroups>
+              <group name="TYPE_&quot;NodeType&quot;"/>
+              <group name="TYPE_Media"/>
+            </columnGroups>
+            <respondentGroups>
+              <group name="ALL"/>
+              <group name="USER"/>
+            </respondentGroups>
+          </question>
+        </questions>
+      </page>
+      <page name="page: 31" label="page: 31">
+        <instruction>this is page 31</instruction>
+        <attributes/>
+        <questions>
+          <question shortName="pc" label="pc" type="PerceivedChoice" rowPerPage="20">
+            <htmlInstruction/>
+            <attributes>
+              <attribute key="Option_ShowUserContactsOnly" value="1"/>
+            </attributes>
+            <longAttributes/>
+            <fields>
+              <field name="f1" label="f1"/>
+              <field name="f2" label="f2"/>
+              <field name="f3" label="f3"/>
+            </fields>
+            <rowGroups>
+              <group name="ALL"/>
+            </rowGroups>
+            <respondentGroups>
+              <group name="USER"/>
+            </respondentGroups>
+          </question>
+        </questions>
+      </page>
+      <page name="page: 32" label="page: 32">
+        <instruction>this is page 32</instruction>
+        <attributes/>
+        <questions>
+          <question shortName="pc2" label="pc2" type="PerceivedChoice" rowPerPage="20">
+            <htmlInstruction/>
+            <attributes>
+              <attribute key="singleChoicePerLine" value="Y"/>
+              <attribute key="Option_IsSingleChoice" value="0"/>
+              <attribute key="Option_ShowUserContactsOnly" value="1"/>
+            </attributes>
+            <longAttributes/>
+            <fields>
+              <field name="f2" label="f2"/>
+              <field name="f22" label="f22"/>
+              <field name="f222" label="f222"/>
+            </fields>
+            <rowGroups>
+              <group name="ALL"/>
+            </rowGroups>
+            <respondentGroups>
+              <group name="USER"/>
+            </respondentGroups>
+          </question>
+        </questions>
+      </page>
+      <page name="page: 33" label="page: 33">
+        <instruction>this is page 33</instruction>
+        <attributes/>
+        <questions>
+          <question shortName="pr" label="pr" type="PerceivedRating" rowPerPage="20">
+            <htmlInstruction/>
+            <attributes>
+              <attribute key="Option_ShowUserContactsOnly" value="1"/>
+            </attributes>
+            <longAttributes/>
+            <fields>
+              <field name="f1" label="f1"/>
+              <field name="f2" label="f2"/>
+              <field name="f3" label="f3"/>
+            </fields>
+            <scales>
+              <scale name="s1" label="s1" value="1.0"/>
+              <scale name="s2" label="s2" value="2.0"/>
+              <scale name="s3" label="s3" value="3.0"/>
+            </scales>
+            <rowGroups>
+              <group name="ALL"/>
+            </rowGroups>
+            <respondentGroups>
+              <group name="USER"/>
+            </respondentGroups>
+          </question>
+        </questions>
+      </page>
+    </pages>
+  </survey>
+  <groups>
+    <group name="ALL" private="0"/>
+    <group name="USER" private="0"/>
+    <group name="TYPE_&quot;NodeType&quot;" private="0"/>
+    <group name="DEPT_&quot;Department&quot;" private="0"/>
+    <group name="ORG_&quot;Organization&quot;" private="0"/>
+    <group name="UNIT_&quot;Unit&quot;" private="0"/>
+    <group name="TYPE_&quot;user&quot;" private="0"/>
+    <group name="TYPE_&quot;Media&quot;" private="0"/>
+    <group name="TYPE_&quot;Student&quot;" private="0"/>
+    <group name="TYPE_&quot;Teacher&quot;" private="0"/>
+    <group name="TYPE_Media" private="0"/>
+    <group name="TYPE_Student" private="0"/>
+    <group name="TYPE_Teacher" private="0"/>
+    <group name="UG_Test_StudentSelect" private="1"/>
+    <group name="UG_Test_MediaSelect" private="1"/>
+    <group name="UG_Jan Peter Balkenende_StudentSelect" private="1"/>
+    <group name="UG_Jan Peter Balkenende_MediaSelect" private="1"/>
+    <group name="TYPE_tag" private="0"/>
+    <group name="UG_admin_StudentSelect" private="1"/>
+    <group name="UG_admin_MediaSelect" private="1"/>
+  </groups>
+</ciknow>

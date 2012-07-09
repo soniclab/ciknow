@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="ciknow.domain.Edge" table="edges">
+        <id name="id" type="java.lang.Long">
+            <column name="edge_id" />
+            <generator class="native"/>
+        </id>
+        <version name="version" type="java.lang.Long">
+            <column name="version" not-null="true"/>
+        </version>
+        <many-to-one name="creator" class="ciknow.domain.Node" lazy="proxy">
+            <column name="creator_id"/>
+        </many-to-one>
+        <many-to-one name="toNode" class="ciknow.domain.Node" lazy="proxy">
+            <column name="to_node_id" not-null="true"/>
+        </many-to-one>
+        <many-to-one name="fromNode" class="ciknow.domain.Node" lazy="proxy">
+            <column name="from_node_id" not-null="true"/>
+        </many-to-one>
+        <property name="type" type="string" index="IDX_EDGE_TYPE">
+            <column name="type" not-null="true"/>
+        </property>
+        <property name="weight" type="double">
+            <column name="weight" not-null="true"/>
+        </property>
+        <property name="directed" type="boolean">
+            <column name="directed" not-null="true"/>
+        </property>
+
+        <map name="attributes" table="edge_attributes" fetch="subselect" lazy="true">
+            <key column="edge_id"/>
+            <map-key type="string" column="attr_key"/>
+            <element type="string" column="attr_value" not-null="true"/>
+        </map>
+        <map name="longAttributes" table="edge_long_attributes" fetch="subselect" lazy="true">
+            <key column="edge_id"/>
+            <map-key type="string" column="attr_key"/>
+            <element type="text" column="attr_value" not-null="true"/>
+        </map> 
+    </class>
+</hibernate-mapping>

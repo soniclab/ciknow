@@ -1,0 +1,24 @@
+
+<zk>
+    <caption id="caption" label="Add Page"/>
+    <grid vflex="1" width="300px">
+        <columns>
+            <column width="80px"/>
+            <column width="100%"/>
+        </columns>
+        <rows vflex="1">
+            <row>
+                Name
+                <textbox id="nameBox" constraint="no empty" maxlength="80" width="98%"/>
+            </row>		
+            <row>
+                Label
+                <textbox id="labelBox" constraint="no empty" maxlength="255" width="98%"/>
+            </row>			
+        </rows>
+    </grid>  
+    <toolbar>
+        <toolbarbutton id="createBtn" label="Create"/>
+        <toolbarbutton id="cancelBtn" label="Cancel"/>
+    </toolbar>	
+</zk>

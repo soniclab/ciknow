@@ -1,0 +1,101 @@
+	body{
+	    padding: 0 0;
+	    overflow:hidden;
+	}
+	
+	.surveyOverviewWindow{
+	    width: 800px;
+	    height: 550px;            
+	}
+	        
+	.addQuestionWindow{
+	    width: 500px;
+	    height: 470px;            
+	} 
+	
+	.questionSettingsWindow{
+	    width: 800px;
+	    height: 550px;
+	} 
+	
+	
+	.topbar button {
+	    background: none;
+	    border: none;
+	    font-size: 15px;
+	    font-weight: bold;
+	    color: #5D5E6B;
+	    cursor: pointer;
+	    height: 24px;
+	}
+	
+	.topbar button.active {
+	    background-color: #5D5E6B;
+	    color: white;
+	}
+	
+	.topright button {
+	    color: black;
+	    font-size: 12px;
+	    font-weight: normal;
+	}
+	
+	
+	.project-bar button {
+		background:none;
+		border: none;
+	    border-right: 1px solid white;
+	    font-size: 12px;
+	    font-weight: bold;
+	    color: white;
+	    cursor: pointer;
+	    height: 24px;
+	}
+	
+	  
+	.project-bar button.impersonate {
+		background: #095399 !important;
+	  	border-right: none;
+	  	height: 24px;
+	}
+	
+	.z-combobox {
+		background: #095399;
+	}
+	  
+	.z-combobox-inp {
+	  	border: none;
+	  	font-weight: bold;
+	  	background: transparent;
+	  	color: white;
+	}
+	  
+	.z-combobox-btn {
+	  	background: url('images/downarrow.png') !important;
+	  	background-repeat: no-repeat !important;
+	  	background-position: 0px 1px !important;
+	  	border: none !important;
+	}
+	  
+	.z-combobox-btn-over {
+	  	border: none !important;
+	}
+	  
+	
+	.bottombtn {
+	  	font-size: 16px; 
+	}
+
+	.questionnumber {
+		font-weight: bold;
+		background: none;
+		border: 2px solid black;
+		margin-left: -30px;
+	}
+	
+	.questionlabel {
+	  	font-weight: bold;
+	}
+	
+	
+	

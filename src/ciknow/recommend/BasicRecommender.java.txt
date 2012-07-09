@@ -1,0 +1,195 @@
+package ciknow.recommend;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Collections;
+import ciknow.UnsupportedOperationException;
+import ciknow.domain.Node;
+import ciknow.domain.Recommendation;
+import ciknow.dao.NodeDao;
+import ciknow.util.Beans;
+import ciknow.util.Constants;
+import ciknow.util.PropsUtil;
+import ciknow.util.StringUtil;
+import org.apache.log4j.Logger;
+
+public class BasicRecommender extends AbstractRecommender implements Recommender {
+	private static Logger logger = Logger.getLogger("ncsa.sonic.ciknow.recommend.BasicRecommender");
+	private String metricType;
+	private String source;
+
+	public static void main(String[] args) {
+		NodeDao nodeDao = (NodeDao) Beans.getBean("nodeHibernateDao");
+		Recommender r = new BasicRecommender();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		String line;
+		List<String> nodeList;
+		List<Node> nodes;
+		while (true){
+			try {
+				Node user;
+				while(true) {
+					logger.info("please enter user:");
+					line = reader.readLine();
+					logger.info("user: " + line);
+					if (line.trim().equalsIgnoreCase("exit")) return;
+					
+					String userLabel = line.trim();
+					nodes = nodeDao.findByLabel(userLabel);
+					if (nodes == null || nodes.size() == 0){
+						logger.info("unable to identify this user!");
+					} else {
+						user = nodes.get(0);
+						break;
+					}
+				}
+				
+				boolean completeAll;
+				List<Node> targets = new ArrayList<Node>();
+				do{
+					completeAll = true;
+					logger.info("please enter targets (comma seperated):");
+					line = reader.readLine();
+					logger.info("targets: " + line);
+					if (line.trim().equalsIgnoreCase("exit")) return;
+					
+					nodeList = StringUtil.splitAsList(line, ",");
+					for (String targetLabel : nodeList){
+						nodes = nodeDao.findByLabel(targetLabel);
+						if (nodes == null || nodes.size() == 0){
+							logger.info("unable to identify this target: " + targetLabel);
+							completeAll = false;
+							break;
+						} else{
+							Node target = nodes.get(0);
+							targets.add(target);
+						}
+					}	
+				} while(!completeAll);
+				
+				// how many?
+				logger.info("how many recommendations? ");
+				line = reader.readLine().trim();
+				logger.info("Float of rec: " + line);
+				if (line.equalsIgnoreCase("exit")) return;
+				int howMany = Integer.parseInt(line);
+				
+				// operator (default to AND)
+				logger.info("how to combine recommendations? (default as AND) ");
+				line = reader.readLine().trim();
+				logger.info("operator: " + line);
+				int operator;
+				if (line.equalsIgnoreCase("or")) operator = Constants.OR;
+				else operator = Constants.AND;
+				
+				r.getRecommendations(user, targets, howMany, operator);
+			} catch (UnsupportedOperationException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public BasicRecommender() {
+		super("basic");
+		this.metricType = Constants.ALG_EUCLIDEAN;
+		PropsUtil prop = PropsUtil.getInstance("ciknow");
+		this.source = prop.get("recommender.datasource");
+	}
+
+    public List<Recommendation> getRecommendations(Node node, Collection<Node> targets, int numRecs, int operator) throws UnsupportedOperationException{
+        double[] args = {};  // default parameters
+        return getRecommendations(node, targets, numRecs, operator, args);
+    }
+
+    public List<Recommendation> getRecommendations(
+			Node node, Collection<Node> targets, int numRecs, int operator, double... args){
+		
+		List<Recommendation> recs = new LinkedList<Recommendation>();
+		if (node == null || targets == null || targets.size() == 0) return recs;
+
+		// get similar items to search term/targets
+		Map<Long, Float> identificationMap = getSimilarityScoreMap(targets, metricType, source, operator);
+
+		// get euclidean distance from user to items
+		Map<Long, Float> selectionMap = getMetricsByNodeAndType(node, metricType, source);
+
+		// remove direct neighbors
+		/*
+		List<Node> neighbors = nodeDao.findConnected(node);
+		neighbors.addAll(nodeDao.findConnecting(node));
+		remove(identificationMap, neighbors);
+		logger.info("removed " + neighbors.size() + " neighbors.");
+		*/
+		
+		// similarity/distance --> recommendation
+		recs = formulate(node, identificationMap, selectionMap);
+		logger.info("there are " + recs.size() + " raw recommendations.");
+
+		logger.info("rescoring/filtering...");
+//		addRescorer(new NodeTypeRescorer());
+//		rescore(recs);
+		compact(recs, 0.0000000001f);
+
+		logger.info("sort, truncate, normalize...");
+		Collections.sort(recs, new RecommendationComparator());
+		if (recs.size() > numRecs) {
+			recs = recs.subList(0, numRecs);
+		}
+
+		return recs;
+	}
+	
+	private List<Recommendation> formulate(
+			Node node, Map<Long, Float> identificationMap, Map<Long, Float> selectionMap) {
+		
+		float max_identification_distance = getMax(identificationMap);
+		float max_selection_distance = getMax(selectionMap);
+		logger.info("maximum distance from recommended items to search term: " + max_identification_distance);
+		logger.info("maximum distance from recommended items to user: " + max_selection_distance);
+
+		Beans.init();
+		NodeDao nodeDao = (NodeDao)Beans.getBean("nodeHibernateDao");
+		List<Recommendation> recs = new ArrayList<Recommendation>();
+		for (Long recommended : identificationMap.keySet()) {
+			Float identification_distance = identificationMap.get(recommended);
+			Float selection_distance = selectionMap.get(recommended);
+			
+			if (selection_distance != null) {
+				double identification_similarity = (max_identification_distance - identification_distance)/max_identification_distance;
+				double selection_similarity = (max_selection_distance - selection_distance)/max_selection_distance;
+				double score = identification_similarity * selection_similarity;
+				
+				Recommendation rec = new Recommendation();
+				rec.setUser(node);
+				rec.setTarget(nodeDao.findById(recommended));
+				rec.setIdentifyScore(identification_similarity);
+				rec.setSelectScore(selection_similarity);
+				rec.setFinalScore(score);
+				recs.add(rec);
+				logger.debug("created " + rec);
+			}
+		}
+		return recs;
+	}
+
+
+	/////////////////////// INTENTIONALLY UNSUPPORTED ////////////////////////
+	public List<Recommendation> getRecommendations(Node node)
+			throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+
+	public List<Recommendation> getRecommendations(Node node, int numRecs)
+			throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+
+}

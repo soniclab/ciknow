@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="ciknow.domain.Metric" table="metrics">
+
+
+        <id name="id" type="java.lang.Long">
+            <column name="metric_id" />
+            <generator class="native"></generator>
+        </id>
+        
+        <many-to-one name="fromNode" class="ciknow.domain.Node" fetch="select">
+            <column name="from_node_id" not-null="true"/>
+        </many-to-one>
+                
+        <many-to-one name="toNode" class="ciknow.domain.Node" fetch="select">
+            <column name="to_node_id" not-null="true"/>
+        </many-to-one>       
+        
+        <property name="type" type="string"/>
+        <property name="source" type="string"/>
+        <property name="symmetric" type="java.lang.Boolean"/>
+        <property name="value" type="java.lang.Float"/>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="ciknow.domain.Role" table="roles">
+        <id name="id" type="java.lang.Long">
+            <column name="role_id" />
+            <generator class="native"></generator>
+        </id>
+        <version name="version" type="java.lang.Long">
+            <column name="version" not-null="true"/>
+        </version>
+        <property name="name" type="string">
+            <column name="name" not-null="true"/>
+        </property>
+        <set name="nodes" inverse="true" table="node_role" lazy="true" order-by="node_id">
+            <key>
+                <column name="role_id" not-null="true"/>
+            </key>
+            <many-to-many entity-name="ciknow.domain.Node">
+                <column name="node_id" not-null="true"/>
+            </many-to-many>
+        </set>
+    </class>
+</hibernate-mapping>

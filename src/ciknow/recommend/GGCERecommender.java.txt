@@ -1,0 +1,308 @@
+package ciknow.recommend;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Collections;
+import org.apache.log4j.Logger;
+import ciknow.domain.Recommendation;
+import ciknow.UnsupportedOperationException;
+import ciknow.domain.Node;
+import ciknow.recommend.AbstractRecommender;
+import ciknow.dao.NodeDao;
+import ciknow.util.Beans;
+import ciknow.util.Constants;
+import ciknow.util.PropsUtil;
+import ciknow.util.StringUtil;
+
+public class GGCERecommender extends AbstractRecommender implements Recommender {
+	private static Logger logger = Logger.getLogger("ncsa.sonic.ciknow.recommend.GGCERecommender");
+	private String source;
+
+	private final float geodesic_max = PropsUtil.getInstance("ciknow").getFloat("geodesic.max");
+	private final float seuclidean_max = PropsUtil.getInstance("ciknow").getFloat("seuclidean.max");
+	private final float spmatch_max = PropsUtil.getInstance("ciknow").getFloat("spmatch.max");
+	
+	public static void main(String[] args) {
+		NodeDao nodeDao = (NodeDao) Beans.getBean("nodeHibernateDao");
+		Recommender r = new GGCERecommender();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		String line;
+		List<String> nodeList;
+		List<Node> nodes;
+		while (true){
+			try {
+				Node user = null;
+				while(true) {
+					logger.info("please enter user:");
+					line = reader.readLine();
+					logger.info("user: " + line);
+					if (line.trim().equalsIgnoreCase("exit")) return;
+					
+					String userLabel = line.trim();
+					nodes = nodeDao.findByLabel(userLabel);
+					if (nodes == null || nodes.size() == 0){
+						logger.info("unable to identify this user!");
+					} else {
+						user = nodes.get(0);
+						break;
+					}
+				}
+				
+				boolean completeAll;
+				List<Node> targets = new ArrayList<Node>();
+				do{
+					completeAll = true;
+					logger.info("please enter targets (comma seperated):");
+					line = reader.readLine();
+					logger.info("targets: " + line);
+					if (line.trim().equalsIgnoreCase("exit")) return;
+					
+					nodeList = StringUtil.splitAsList(line, ",");
+					for (String targetLabel : nodeList){
+						nodes = nodeDao.findByLabel(targetLabel);
+						if (nodes == null || nodes.size() == 0){
+							logger.info("unable to identify this target: " + targetLabel);
+							completeAll = false;
+							break;
+						} else{
+							Node target = nodes.get(0);
+							targets.add(target);
+						}
+					}	
+				} while(!completeAll);
+				
+				// how many?
+				logger.info("how many recommendations? ");
+				line = reader.readLine().trim();
+				logger.info("Float of rec: " + line);
+				if (line.equalsIgnoreCase("exit")) return;
+				int howMany = Integer.parseInt(line);
+				
+				// operator (default to AND)
+				logger.info("how to combine recommendations? (default as AND) ");
+				line = reader.readLine().trim();
+				logger.info("operator: " + line);
+				int operator;
+				if (line.equalsIgnoreCase("or")) operator = Recommender.OR;
+				else operator = Recommender.AND;
+				
+				r.getRecommendations(user, targets, howMany, operator);
+			} catch (UnsupportedOperationException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public GGCERecommender() {
+		this("ggce", Constants.SOURCE_GRAND);
+	}
+
+	public GGCERecommender(String name, String source) {
+		super(name);
+		this.source = source;
+	}
+
+    public List<Recommendation> getRecommendations(Node node, Collection<Node> targets, int numRecs, int operator) throws UnsupportedOperationException{
+        double[] args = {};  // default parameters
+        return getRecommendations(node, targets, numRecs, operator, args);
+    }
+
+    public List<Recommendation> getRecommendations(
+			Node user, Collection<Node> targets, int numRecs, int operator, double... args){
+		
+		List<Recommendation> recs = new LinkedList<Recommendation>();
+		
+		// 1. check input
+		//if (node == null)return null;
+		if (targets == null || targets.size() == 0) return recs;
+
+		// 2. remove direct neighbors
+		/*
+		List<Node> neighbors = nodeDao.findConnected(node);
+		neighbors.addAll(nodeDao.findConnecting(node));
+		remove(identificationMap, neighbors);
+		logger.info("removed " + neighbors.size() + " neighbors.");
+		*/
+
+		// 3. prepare data
+		Map<String, Map<Node, Float>> dataMap = prepareData(user, targets, operator);
+		
+		// 4. calculate recommendations
+		recs = formulate(user, targets, dataMap);
+		logger.info("there are " + recs.size() + " raw recommendations.");
+
+		// 5. resocore/filtering
+		/*
+		logger.info("rescoring/filtering...");
+		addRescorer(new NodeTypeRescorer());
+		rescore(recs);
+		compact(recs, 0.0000000001f);
+		*/
+		
+		// 6. sort, truncate, normalize
+		logger.info("sort, truncate, normalize...");
+		Collections.sort(recs, new RecommendationComparator());
+		if (recs.size() > numRecs) {
+			recs = recs.subList(0, numRecs);
+		}
+		//normalizeScores(recs);
+		
+		// optional: debuging
+		printRecs(user, recs, dataMap);
+		
+		return recs;
+	}
+	
+	protected Map<String, Map<Node, Float>> prepareData(Node user, Collection<Node> targets, int operator){
+		Map<String, Map<Node, Float>> map = new HashMap<String, Map<Node, Float>>();
+		
+		Map<Node, Map<Node, Float>> nodeMap;
+		Map<Node, Float> geodesicMap_user = new HashMap<Node, Float>();
+		Map<Node, Float> geodesicMap_target = new HashMap<Node, Float>();
+		Map<Node, Float> spmatchMap_target = new HashMap<Node, Float>();
+		Map<Node, Float> seuclideanMap_target = new HashMap<Node, Float>();
+		
+		// geodesic
+		if (user != null) geodesicMap_user = getGeodesic(user);
+		nodeMap = getGeodesic(targets);
+		geodesicMap_target = operator==OR?getScoreMapByOr(nodeMap):getScoreMapByAnd(nodeMap);
+		
+		// metrics
+		String[] metricTypes = new String[]{Constants.ALG_EUCLIDEAN, Constants.ALG_SPMATCH};
+		Map<String, Map<Node, Map<Node, Float>>> typedNodeMap = 
+			getMetricsByTypesAndNodes(metricTypes, targets, source);
+		
+		nodeMap = typedNodeMap.get(Constants.ALG_SEUCLIDEAN);
+		seuclideanMap_target = operator==OR?getScoreMapByOr(nodeMap):getScoreMapByAnd(nodeMap);
+		nodeMap = typedNodeMap.get(Constants.ALG_SPMATCH);		
+		spmatchMap_target = operator==OR?getScoreMapByOr(nodeMap):getScoreMapByAnd(nodeMap);
+		
+		
+		map.put("geodesicMap_user", geodesicMap_user);
+		map.put("geodesicMap_target", geodesicMap_target);
+		map.put("spmatchMap_target", spmatchMap_target);
+		map.put("seuclideanMap_target", seuclideanMap_target);
+		
+		return map;
+	}
+
+	protected List<Recommendation> formulate(Node node, Collection<Node> targets, 
+											Map<String, Map<Node, Float>> map) {
+		
+		Map<Node, Float> geodesicMap_user = map.get("geodesicMap_user");
+		Map<Node, Float> geodesicMap_target = map.get("geodesicMap_target");  
+		Map<Node, Float> spmatchMap_target = map.get("spmatchMap_target");
+		Map<Node, Float> seuclideanMap_target  = map.get("seuclideanMap_target");
+		List<Recommendation> recs = new ArrayList<Recommendation>();
+		
+		logger.info("maximum observed standardized euclidean distance (global): " + seuclidean_max);
+		logger.info("maximum observed geodesic distance (global): " + geodesic_max);
+		logger.info("maximum observed pmatch distance (global): " + spmatch_max);
+		
+		logger.info("maximum observed geodesic distance from recommended items to target: " 
+				+ getMax(geodesicMap_target));
+		logger.info("maximum observed geodesic distance from recommended items to user: " 
+				+ (geodesicMap_user.isEmpty()?"null":getMax(geodesicMap_user)));
+		logger.info("maximum observed spmatch distance from recommended items to target: " 
+				+ getMax(spmatchMap_target));
+		logger.info("maximum observed seuclidean distance from recommended items to target: " 
+				+ getMax(seuclideanMap_target));
+
+		for (Node recommended : geodesicMap_target.keySet()) {
+			Float geodesic_item_target = geodesicMap_target.get(recommended);
+			Float geodesic_item_user;
+			if (node == null) geodesic_item_user = geodesic_max;
+			else geodesic_item_user = geodesicMap_user.get(recommended);
+			Float seuclidean_item_target = seuclideanMap_target.get(recommended);
+			Float pmatch_item_target = spmatchMap_target.get(recommended);
+			
+			if (geodesic_item_user == null) continue;
+			else {
+				float gterm1 = geodesic_max - geodesic_item_target;
+				float gterm2 = 1/geodesic_item_user;
+				float pterm = pmatch_item_target/spmatch_max;
+				float sterm = (seuclidean_max - seuclidean_item_target)/seuclidean_max/100;
+				float score = (gterm1 + gterm2 + pterm + sterm)/(geodesic_max + 2.01f);
+				
+				Recommendation rec = createRecommendation(node, recommended, score);
+				recs.add(rec);
+				logger.debug("created " + rec);
+			}
+		}
+		return recs;
+	}
+	
+	protected void printRecs(Node node, List<Recommendation> recs, Map<String, Map<Node, Float>> map) {
+		Map<Node, Float> geodesicMap_user = new HashMap<Node, Float>();
+		Map<Node, Float> geodesicMap_target = new HashMap<Node, Float>(); 
+		Map<Node, Float> spmatchMap_target = new HashMap<Node, Float>();
+		Map<Node, Float> seuclideanMap_target  = new HashMap<Node, Float>();
+		Map<Node, Float> seuclideanMap_user = new HashMap<Node, Float>();
+		Map<Node, Float> spmatchMap_user = new HashMap<Node, Float>();
+		
+		geodesicMap_user = map.get("geodesicMap_user");
+		geodesicMap_target = map.get("geodesicMap_target");  
+		spmatchMap_target = map.get("spmatchMap_target");
+		seuclideanMap_target  = map.get("seuclideanMap_target");
+		if (node!=null){
+			Map<String, Map<Node, Float>> typedMetricMap;
+			String[] metricTypes = new String[]{Constants.ALG_EUCLIDEAN, Constants.ALG_SPMATCH};
+			typedMetricMap = getMetricsByNodeAndTypes(node, metricTypes, source);
+			spmatchMap_user = typedMetricMap.get(Constants.ALG_SPMATCH);
+			seuclideanMap_user = typedMetricMap.get(Constants.ALG_SEUCLIDEAN);
+		}
+		
+		logger.info(String.format("%s \t%s \t%s \t%s \t%s \t%s \t%s \t%s", "[recommended item]", 
+				"[seuclidean_user2rec]", "[geodesic_user2rec]", 
+				"[seuclidean_target2rec]", "[geodesic_target2rec]", 
+				"[pmatch_user2rec]", "[pmatch_target2rec]", 
+				"[confidence score]"));
+		Node recommended = null;
+		for (Recommendation rec : recs) {
+			recommended = rec.getTarget();
+			Float seuclidean_user2rec = seuclideanMap_user.get(recommended);
+			Float seuclidean_target2rec = seuclideanMap_target.get(recommended);
+			Float geodesic_user2rec = geodesicMap_user.get(recommended);
+			Float geodesic_target2rec = geodesicMap_target.get(recommended);
+			Float spmatch_user2rec = spmatchMap_user.get(recommended);
+			Float spmatch_target2rec = spmatchMap_target.get(recommended);
+			Float score = rec.getScore();
+			// toy network
+			//logger.info(String.format("%-10s %-30s %.4f \t%.4f \t%.4f", node.getId(), target.getId(), s, d, score));
+			// tobig demo net
+			String label = recommended.getLabel();
+			if (label != null && label.length() > 70) label = label.substring(0, 70) + " ...";
+			logger.info(String.format(
+					"%-75s %10.4f %10.4f %10.4f %10.4f %10.4f %10.4f %.4f", 
+					label, 
+					seuclidean_user2rec==null?0:seuclidean_user2rec, 
+					geodesic_user2rec==null?0:geodesic_user2rec, 
+					seuclidean_target2rec==null?0:seuclidean_target2rec, 
+					geodesic_target2rec==null?0:geodesic_target2rec, 
+					spmatch_user2rec==null?0:spmatch_user2rec, 
+					spmatch_target2rec==null?0:spmatch_target2rec, 
+					score));
+		}
+	}
+
+	/////////////////////// INTENTIONALLY UNSUPPORTED ////////////////////////
+	public List<Recommendation> getRecommendations(Node node)
+			throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+
+	public List<Recommendation> getRecommendations(Node node, int numRecs)
+			throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+
+}

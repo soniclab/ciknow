@@ -1,0 +1,16 @@
+
+<zk>
+    <caption id="caption" label="Define Other"/>
+    <grid>
+        <rows>
+            <row>
+                Other:
+                <textbox id="otherBox"/>
+            </row>
+        </rows>
+    </grid>
+    <toolbar>
+        <toolbarbutton id="saveBtn" label="Save"/>
+        <toolbarbutton id="cancelBtn" label="Cancel"/>
+    </toolbar>
+</zk>

@@ -1,0 +1,32 @@
+		
+<zk>
+    <caption id="caption" label="Add Question"/>
+    <grid vflex="1" width="100%">
+        <columns>
+            <column width="80px"/>
+            <column width="100%"/>
+        </columns>
+        <rows>
+            <row>
+                Name
+                <textbox id="nameBox" constraint="no empty" maxlength="80" width="98%"/>
+            </row>		
+            <row>
+                Label
+                <textbox id="labelBox" constraint="no empty" maxlength="255" width="98%"/>
+            </row>
+            <row>
+                Type
+                <listbox id="typesBox" mold="select" rows="1"/>	
+            </row>	
+            <row valign="top">
+                Respondent
+                <listbox id="groupsBox" checkmark="true" rows="10"/>
+            </row>		
+        </rows>
+    </grid>
+    <toolbar>
+        <toolbarbutton id="createBtn" label="Create"/>
+        <toolbarbutton id="cancelBtn" label="Cancel"/>
+    </toolbar>	
+</zk>

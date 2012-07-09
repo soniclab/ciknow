@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+<beans xmlns="http://www.springframework.org/schema/beans"      
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd"
+       >
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+						http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+						http://www.springframework.org/schema/context
+						http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+							
+    <!---															-->
+	<!--- 					SCHEDULED JOBS     						-->
+	<!---                                                           -->	
+	<bean id="cron" class="ciknow.jobs.Cron">
+		<property name="jobDao" ref="jobDao"/>
+		<property name="mailer" ref="mailService"/>
+	</bean>
+
+
+	<bean id="minutelyJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="cron" />
+		<property name="targetMethod" value="doMinutely" />
+		<property name="concurrent" value="true" />
+	</bean>
+	
+	<bean id="hourlyJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="cron" />
+		<property name="targetMethod" value="doHourly" />
+		<property name="concurrent" value="true" />
+	</bean>
+		
+	<bean id="dailyJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="cron" />
+		<property name="targetMethod" value="doDaily" />
+		<property name="concurrent" value="true" />
+	</bean>
+	
+	<bean id="weeklyJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="cron" />
+		<property name="targetMethod" value="doWeekly" />
+		<property name="concurrent" value="true" />
+	</bean>
+
+	<bean id="monthlyJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="cron" />
+		<property name="targetMethod" value="doMonthly" />
+		<property name="concurrent" value="true" />
+	</bean>
+	
+	<bean id="yearlyJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="cron" />
+		<property name="targetMethod" value="doYearly" />
+		<property name="concurrent" value="true" />
+	</bean>
+	
+	
+	<bean id="cronMinutelyTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="minutelyJob" />
+		<property name="cronExpression" value="0 * * * * ?" />	
+	</bean>	
+
+	<bean id="cronHourlyTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="hourlyJob" />
+		<property name="cronExpression" value="0 0 * * * ?" />	
+	</bean>	
+	
+	<bean id="cronDailyTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="dailyJob" />
+		<property name="cronExpression" value="0 0 0 * * ?" />	
+	</bean>	
+				
+	<bean id="cronWeeklyTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="weeklyJob" />
+		<property name="cronExpression" value="0 0 0 ? * SUN" />	
+	</bean>	
+	
+	<bean id="cronMonthlyTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="monthlyJob" />
+		<property name="cronExpression" value="0 0 0 1 * ?" />	
+	</bean>		
+
+	<bean id="cronYearlyTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="yearlyJob" />
+		<property name="cronExpression" value="0 0 0 1 JAN ? *" />	
+	</bean>	
+		
+		
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean" destroy-method="destroy">
+		<property name="triggers">
+			<list>
+				<ref bean="cronMinutelyTrigger" />
+				<ref bean="cronHourlyTrigger" />
+				<ref bean="cronDailyTrigger" />
+				<ref bean="cronWeeklyTrigger" />
+				<ref bean="cronMonthlyTrigger" />
+				<ref bean="cronYearlyTrigger" />
+			</list>
+		</property>
+	</bean>
+	
+</beans>

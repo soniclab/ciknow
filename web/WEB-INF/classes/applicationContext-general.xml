@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+<beans xmlns="http://www.springframework.org/schema/beans"      
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-2.0.xsd"
+       >
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+						http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+						http://www.springframework.org/schema/context
+						http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+					
+    <bean id="activityService" class="ciknow.service.ActivityService">
+    	<property name="activityDao" ref="activityDao"/>
+    </bean>
+    						
+    <!---															-->
+	<!--- 					GENERAL OBJECTS    						-->
+	<!---                                                           -->
+	<bean id="networkExtractor" class="ciknow.vis.NetworkExtractor">
+		<property name="nodeDao" ref="nodeDao"/>
+		<property name="edgeDao" ref="edgeDao"/>
+		<property name="roleDao" ref="roleDao"/>
+		<property name="questionDao" ref="questionDao"/>
+	</bean>
+	
+	<bean id="analyticsWriter" class="ciknow.io.AnalyticsWriter">
+		<property name="nodeDao" ref="nodeDao"/>
+	</bean>
+		
+	<bean id="questionWriter" class="ciknow.io.QuestionWriter">
+		<property name="nodeDao" ref="nodeDao"/>
+		<property name="edgeDao" ref="edgeDao"/>
+		<property name="groupDao" ref="groupDao"/>
+		<property name="questionDao" ref="questionDao"/>
+		<property name="activityDao" ref="activityDao"/>
+		<property name="activityService" ref="activityService"/>
+	</bean>      
+	
+	<bean id="questionReader" class="ciknow.io.QuestionReader">
+		<property name="nodeDao" ref="nodeDao"/>
+		<property name="edgeDao" ref="edgeDao"/>
+		<property name="groupDao" ref="groupDao"/>
+	</bean>  
+	
+	<bean id="dlQuestionReader" class="ciknow.io.DLQuestionReader">
+		<property name="nodeDao" ref="nodeDao"/>
+		<property name="edgeDao" ref="edgeDao"/>
+	</bean>  	
+		
+	<bean id="contactWriter" class="ciknow.io.ContactWriter">
+		<property name="nodeDao" ref="nodeDao"/>
+	</bean> 
+		
+	<bean id="contactReader" class="ciknow.io.ContactReader">
+		<property name="nodeDao" ref="nodeDao"/>
+		<property name="surveyDao" ref="surveyDao"/>
+		<property name="groupDao" ref="groupDao"/>
+		<property name="roleDao" ref="roleDao"/>
+	</bean>
+
+	<bean id="nodeAttributeReader" class="ciknow.io.NodeAttributeReader">
+		<property name="nodeDao" ref="nodeDao"/>
+	</bean>
+
+	<bean id="nodeDataWriter" class="ciknow.io.NodeDataWriter">
+		<property name="nodeDao" ref="nodeDao"/>
+		<property name="questionDao" ref="questionDao"/>	
+		<property name="groupDao" ref="groupDao"/>
+	</bean>
+	
+	<bean id="edgeDataWriter" class="ciknow.io.EdgeDataWriter">
+		<property name="nodeDao" ref="nodeDao"/>
+		<property name="questionDao" ref="questionDao"/>	
+		<property name="edgeDao" ref="edgeDao"/>
+	</bean>
+		
+	<bean id="nodeDataReader" class="ciknow.io.NodeDataReader">
+		<property name="nodeDao" ref="nodeDao"/>
+		<property name="questionDao" ref="questionDao"/>
+	</bean>
+	
+	<bean id="reportWriter" class="ciknow.io.ReportWriter">
+		<property name="nodeDao" ref="nodeDao"/>
+		<property name="groupDao" ref="groupDao"/>
+		<property name="activityDao" ref="activityDao"/>
+		<property name="pageDao" ref="pageDao"/>
+		<property name="activityService" ref="activityService"/>
+	</bean> 
+		
+	<bean id="graphmlWriter" class="ciknow.io.GraphmlWriter">
+		<property name="nodeDao" ref="nodeDao"/>
+		<property name="edgeDao" ref="edgeDao"/>
+		<property name="groupDao" ref="groupDao"/>
+		<property name="roleDao" ref="roleDao"/>		
+	</bean> 
+	
+	<bean id="graphmlReader" class="ciknow.io.GraphmlReader">
+		<property name="nodeDao" ref="nodeDao"/>
+		<property name="edgeDao" ref="edgeDao"/>
+		<property name="groupDao" ref="groupDao"/>
+		<property name="roleDao" ref="roleDao"/>
+	</bean>
+	
+	<bean id="dlWriter" class="ciknow.io.DLWriter">
+		<property name="nodeDao" ref="nodeDao"/>
+		<property name="edgeDao" ref="edgeDao"/>
+		<property name="groupDao" ref="groupDao"/>
+		<property name="roleDao" ref="roleDao"/>		
+	</bean> 
+	
+	<bean id="dlReader" class="ciknow.io.DLReader">
+		<property name="nodeDao" ref="nodeDao"/>
+		<property name="edgeDao" ref="edgeDao"/>
+		<property name="groupDao" ref="groupDao"/>
+		<property name="roleDao" ref="roleDao"/>
+	</bean>	
+			
+	<bean id="nodeGroupWriter" class="ciknow.io.NodeGroupWriter">
+		<property name="nodeDao" ref="nodeDao"/>
+		<property name="groupDao" ref="groupDao"/>
+	</bean> 
+		
+	<bean id="nodeGroupReader" class="ciknow.io.NodeGroupReader">
+		<property name="nodeDao" ref="nodeDao"/>
+		<property name="groupDao" ref="groupDao"/>
+	</bean>
+	
+	<bean id="nodeRoleWriter" class="ciknow.io.NodeRoleWriter">
+		<property name="nodeDao" ref="nodeDao"/>
+		<property name="roleDao" ref="roleDao"/>
+	</bean> 
+		
+	<bean id="nodeRoleReader" class="ciknow.io.NodeRoleReader">
+		<property name="nodeDao" ref="nodeDao"/>
+		<property name="roleDao" ref="roleDao"/>
+	</bean>					
+	
+	<bean id="codeBookWriter" class="ciknow.io.CodeBookWriter">
+		<property name="surveyDao" ref="surveyDao"/>
+		<property name="groupDao" ref="groupDao"/>
+		<property name="genericRO" ref="genericRO"/>
+	</bean>      
+	
+	<bean id="codeBookReader" class="ciknow.io.CodeBookReader">
+		<property name="surveyDao" ref="surveyDao"/>
+		<property name="groupDao" ref="groupDao"/>
+	</bean>   
+		
+</beans>

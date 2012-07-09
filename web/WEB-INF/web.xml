@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
+<web-app>
+
+	<display-name>CIKNOW</display-name>
+	<description>Cyber-infrastructure for Inquery Knowledge On the Web</description>
+
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+			/WEB-INF/classes/applicationContext-datasource.xml
+			/WEB-INF/classes/applicationContext-dao.xml
+			/WEB-INF/classes/applicationContext-mail.xml
+			/WEB-INF/classes/applicationContext-ws.xml
+			/WEB-INF/classes/applicationContext-job.xml
+			/WEB-INF/classes/applicationContext-general.xml
+			/WEB-INF/classes/applicationContext-ro.xml
+			/WEB-INF/classes/applicationContext-security.xml
+		</param-value>
+	</context-param>
+
+    <context-param>
+        <param-name>webAppRootKey</param-name>
+        <param-value>cas.root</param-value>
+    </context-param>
+    
+    
+	<filter>
+		<filter-name>dummyFilter</filter-name>
+		<filter-class>ciknow.web.DummyFilter</filter-class>
+	</filter>
+
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+
+    <filter>
+       <filter-name>CAS Single Sign Out Filter</filter-name>
+       <filter-class>org.jasig.cas.client.session.SingleSignOutFilter</filter-class>
+    </filter>
+    
+    
+	<filter-mapping>
+		<filter-name>dummyFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+    <filter-mapping>
+       <filter-name>CAS Single Sign Out Filter</filter-name>
+       <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    
+    
+	<listener>
+		<listener-class>
+			org.springframework.web.context.ContextLoaderListener
+		</listener-class>
+	</listener>
+
+	<!--
+		  - Publishes events for session creation and destruction through the application
+		  - context. Optional unless concurrent session control is being used.
+		  -->
+	<listener>
+		<listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
+	</listener>
+
+    <listener>
+        <listener-class>org.jasig.cas.client.session.SingleSignOutHttpSessionListener</listener-class>
+    </listener>
+    
+	<!-- Http Flex Session attribute and binding listener support -->
+	<listener>
+		<listener-class>flex.messaging.HttpFlexSession</listener-class>
+	</listener>
+
+	<listener>
+		<listener-class>
+      		org.apache.commons.fileupload.servlet.FileCleanerCleanup
+		</listener-class>
+	</listener>
+
+	<listener>
+	  <listener-class>ciknow.web.ShutDownHook</listener-class>
+	</listener>
+  
+	<listener>
+		<listener-class>org.zkoss.zk.ui.http.HttpSessionListener</listener-class>
+	</listener>
+
+
+	<!-- MessageBroker Servlet -->
+	<servlet>
+		<servlet-name>MessageBrokerServlet</servlet-name>
+		<display-name>MessageBrokerServlet</display-name>
+		<servlet-class>flex.messaging.MessageBrokerServlet</servlet-class>
+		<init-param>
+			<param-name>services.configuration.file</param-name>
+			<param-value>/WEB-INF/flex/services-config.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet>
+		<servlet-name>dummy</servlet-name>
+		<servlet-class>ciknow.web.DummyServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet>
+		<servlet-name>surveyUpload</servlet-name>
+		<servlet-class>ciknow.web.UploadServlet</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+
+	<servlet>
+		<servlet-name>surveyDownload</servlet-name>
+		<servlet-class>ciknow.web.DownloadServlet</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+
+	<servlet>
+		<servlet-name>visualizer</servlet-name>
+		<servlet-class>ciknow.web.VisualizerServlet</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+
+	<servlet>
+		<servlet-name>surveyRegistrationServlet</servlet-name>
+		<servlet-class>ciknow.web.SurveyRegistrationServlet</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>surveyLoginServlet</servlet-name>
+		<servlet-class>ciknow.web.SurveyLoginServlet</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+		
+	<servlet>
+		<servlet-name>surveyPasswordServlet</servlet-name>
+		<servlet-class>ciknow.web.SurveyPasswordServlet</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+		
+	<servlet>
+		<servlet-name>CXFServlet</servlet-name>
+		<servlet-class>
+			org.apache.cxf.transport.servlet.CXFServlet
+		</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>appletConnection</servlet-name>
+		<servlet-class>ciknow.web.AppletConnectionServlet</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+	<servlet>
+		<servlet-name>zkLoader</servlet-name>
+		<description>The ZK loader for ZUML pages</description>
+		<servlet-class>org.zkoss.zk.ui.http.DHtmlLayoutServlet</servlet-class>
+		<init-param>
+  			<param-name>update-uri</param-name>
+  			<param-value>/zkau</param-value>
+  		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet>
+		<servlet-name>auEngine</servlet-name>
+		<description>The asynchronous update engine for ZK</description>
+		<servlet-class>org.zkoss.zk.au.http.DHtmlUpdateServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>SServlet</servlet-name>
+		<servlet-class>ciknow.web.SServlet</servlet-class>
+	</servlet>
+
+  	
+	<servlet-mapping>
+		<servlet-name>MessageBrokerServlet</servlet-name>
+		<url-pattern>/messagebroker/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>dummy</servlet-name>
+		<url-pattern>/dummy</url-pattern>
+	</servlet-mapping>
+    
+	<servlet-mapping>
+		<servlet-name>surveyUpload</servlet-name>
+		<url-pattern>/su/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>surveyDownload</servlet-name>
+		<url-pattern>/sd/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>visualizer</servlet-name>
+		<url-pattern>/vis</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>surveyRegistrationServlet</servlet-name>
+		<url-pattern>/surveyRegistration</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>surveyLoginServlet</servlet-name>
+		<url-pattern>/surveyLogin</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>surveyPasswordServlet</servlet-name>
+		<url-pattern>/surveyPassword</url-pattern>
+	</servlet-mapping>
+			
+	<servlet-mapping>
+		<servlet-name>CXFServlet</servlet-name>
+		<url-pattern>/services/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>appletConnection</servlet-name>
+		<url-pattern>/ac</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>zkLoader</servlet-name>
+		<url-pattern>*.zul</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>zkLoader</servlet-name>
+		<url-pattern>*.zhtml</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>auEngine</servlet-name>
+		<url-pattern>/zkau/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>SServlet</servlet-name>
+		<url-pattern>/s</url-pattern>
+	</servlet-mapping>
+	
+	<session-config>
+		<session-timeout>60</session-timeout>
+	</session-config>
+
+	<!--mime-mapping>
+		<extension>ico</extension>
+		<mime-type>image/x-icon</mime-type>
+	</mime-mapping-->
+    
+    
+	<welcome-file-list>
+		<welcome-file>survey.zul</welcome-file>
+		<welcome-file>index.zul</welcome-file>
+		<welcome-file>admin.html</welcome-file>
+	</welcome-file-list>
+	
+    <error-page>
+        <error-code>403</error-code>
+        <location>/casfailed.jsp</location>
+    </error-page>	
+</web-app>

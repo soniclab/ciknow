@@ -1,0 +1,467 @@
+<project name="CIKNOW" basedir="." default="deploy-ciknow-assembler">
+	<property file="build.properties"/>
+    <property environment="env"/>
+	
+	
+	<property name="app.name"      value="${context}"/>
+	<property name="app.path"      value="/${app.name}"/>
+	<property name="app.version"   value="1.0"/>
+	<property name="build"    value="${basedir}/build"/>
+	<property name="dist"     value="${basedir}/dist"/>
+	<property name="docs"     value="${basedir}/docs"/>
+	<property name="src"      value="${basedir}/src"/>
+	<property name="test"      value="${basedir}/test"/>
+	<property name="web"      value="${basedir}/web"/>
+	<property name="manager.url"   value="http://127.0.0.1:8080/manager"/>
+	
+	<tstamp>
+		<format property="start.timestamp" pattern="MM/dd/yyyy HH:mm:ss" />
+	</tstamp>
+		
+	<path id="compile.classpath">
+		<fileset dir="${env.CATALINA_HOME}/bin">
+			<include name="*.jar"/>
+		</fileset>
+		<pathelement location="${env.CATALINA_HOME}/lib"/>
+		<fileset dir="${env.CATALINA_HOME}/lib">
+			<include name="**/*.jar"/>
+		</fileset>
+
+		<fileset dir="${web}/WEB-INF/lib">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+	
+	<path id="classpath">
+		<path refid="compile.classpath"/>
+		<pathelement location="${build}/WEB-INF/classes"/>
+	</path>
+	
+	<taskdef resource="org/apache/catalina/ant/catalina.tasks"
+		classpathref="compile.classpath"/>
+
+	<property name="compile.debug"       value="true"/>
+	<property name="compile.deprecation" value="false"/>
+	<property name="compile.optimize"    value="true"/>
+	
+	<target name="clean" description="Delete old build and dist directories">
+		<delete dir="${build}"/>
+		<delete dir="${dist}"/>
+	</target>
+
+	<target name="prepare">
+		<echo>${start.timestamp}</echo>
+		
+		<mkdir  dir="${build}"/>
+		
+		<copy todir="${build}">
+			<fileset dir="${web}"/>
+		</copy>		
+	</target>
+		
+	<target name="compile" depends="prepare" 
+		description="Compile Java sources and make web application">
+		<javac srcdir="${src}"
+			destdir="${build}/WEB-INF/classes"
+            debug="${compile.debug}"
+      		deprecation="${compile.deprecation}"
+         	optimize="${compile.optimize}"
+			classpathref="compile.classpath">
+		</javac>
+		
+		<javac srcdir="${test}"
+			destdir="${build}/WEB-INF/classes"
+            debug="${compile.debug}"
+      		deprecation="${compile.deprecation}"
+         	optimize="${compile.optimize}"
+			classpathref="compile.classpath">
+		</javac>
+
+		<copy  todir="${build}/WEB-INF/classes">
+			<fileset dir="${src}" excludes="**/*.java"/>
+		</copy>
+    </target>
+
+	<target name="deploy-ciknow-assembler" depends="clean, compile" 
+		description="Copy ciknow server components to ciknow-assembler">
+        		
+		<copy toDir="${ciknow.assembler.dir}/build">
+			<fileset dir="${build}" excludes="**/*Test.class"/>
+		</copy>				
+	</target> 
+	
+	<target name="deploy-ciknowmgr-assembler" depends="clean, compile" 
+		description="Copy ciknow server components to ciknow-assembler">
+        
+		<!-- For publishing _ciknow.war -->
+		<copy toDir="${ciknowmgr.assembler.dir}/build/WEB-INF/template/temp" overwrite="true">
+			<fileset dir="${build}" excludes="**/*Test.class"/>
+		</copy>
+			
+		<copy toDir="${ciknowmgr.assembler.dir}/build/WEB-INF/template/server">
+			<fileset dir="${build}" excludes="**/*Test.class"/>
+		</copy>		
+	</target> 
+		
+	
+	
+    <target name="dev_restart" description="--> restart project">
+		<reload url="${manager.url}"
+	       username="${manager.username}"
+	       password="${manager.password}"
+	           path="/${context}"/>
+    </target>
+	
+	<target name="dev-list"
+	   description="List installed applications on servlet container">
+
+		<list    url="${manager.url}"
+	        username="${manager.username}"
+	        password="${manager.password}"/>
+
+	</target>
+	
+
+	
+	<!-- testing -->
+    <target name="testEdgeDao" depends="compile">
+            <java classname="ciknow.dao.hibernate.EdgeHibernateDao"
+			    	fork="true"
+			    	maxmemory="1000m"
+			    	failonerror="true">
+            	<classpath refid="classpath"/>
+            </java>
+    </target>
+	
+    <target name="testNodeDao" depends="compile">
+            <java classname="ciknow.dao.hibernate.NodeHibernateDao"
+			    	fork="true"
+			    	maxmemory="1000m"
+			    	failonerror="true">
+            	<classpath refid="classpath"/>
+            </java>
+    </target>	
+            	
+            	
+	<!-- - - - - - - - - - - - - - - - - - 
+          target: runNetworkAnalytics                      
+         - - - - - - - - - - - - - - - - - -->
+    <target name="runNetworkAnalytics">
+            <java classname="ciknow.graph.metrics.NetworkAnalytics">
+            	<classpath refid="classpath"/>
+            </java>
+    </target>
+
+	<!-- - - - - - - - - - - - - - - - - - 
+          target: runNetworkAnalyticsRO                      
+         - - - - - - - - - - - - - - - - - -->
+    <target name="runNetworkAnalyticsRO">
+            <java classname="ciknow.ro.NetworkAnalyticsRO">
+            	<classpath refid="classpath"/>
+            </java>
+    </target>
+	
+	<!-- - - - - - - - - - - - - - - - - - 
+          target: runEdgeRO                      
+         - - - - - - - - - - - - - - - - - -->
+
+    <target name="runSLReader">
+            <java classname="ciknow.io.secondlife.SecondLifeReaderUtil"
+            	fork="true"
+            	jvm="/opt/jdk1.6.0_03/bin/java"
+            	failonerror="true"
+    			maxmemory="6000m">
+            	<classpath refid="classpath"/>
+            </java>
+    </target>
+	
+    <target name="runSLConverter">
+            <java classname="ciknow.io.secondlife.Converter"
+            	fork="true"
+            	jvm="/opt/jdk1.6.0_03/bin/java"
+            	failonerror="true"
+    			maxmemory="4096m">
+            	<classpath refid="classpath"/>
+            </java>
+    </target>
+	
+    <target name="runSLComponentFinder2">
+            <java classname="ciknow.io.secondlife.ComponentFinder2"
+            	fork="true"
+            	jvm="/opt/jdk1.6.0_03/bin/java"
+            	failonerror="true"
+    			maxmemory="6000m">
+            	<classpath refid="classpath"/>
+            </java>
+    </target>
+	
+    <target name="runSLReverter">
+            <java classname="ciknow.io.secondlife.Reverter"
+            	fork="true"
+            	jvm="/opt/jdk1.6.0_03/bin/java"
+            	failonerror="true"
+    			maxmemory="4096m">
+            	<classpath refid="classpath"/>
+            </java>
+    </target>
+	
+	<!-- - - - - - - - - - - - - - - - - - 
+          target: runNodeTaggingHibernateDao                      
+         - - - - - - - - - - - - - - - - - -->
+    <target name="runNodeTaggingHibernateDao">
+            <java classname="ciknow.dao.hibernate.NodeTaggingHibernateDao">
+            	<classpath refid="classpath"/>
+            </java>
+    </target>	
+	
+    <target name="runContactWriter">
+            <java classname="ciknow.survey.io.ContactWriter"
+            	fork="true"
+            	jvm="/opt/jdk1.6.0_03/bin/java"
+            	failonerror="true"
+    			maxmemory="6000m">
+            	<classpath refid="classpath"/>
+            	<arg line="/home/ciknow/data/users.txt"/>
+            </java>
+    </target>
+	
+    <target name="runContactReader">
+            <java classname="ciknow.survey.io.ContactReader"
+            	fork="true"
+            	jvm="/opt/jdk1.6.0_03/bin/java"
+            	failonerror="true"
+    			maxmemory="6000m">
+            	<classpath refid="classpath"/>
+            	<arg line="/home/ciknow/data/users.txt"/>
+            </java>
+    </target>
+	
+    <target name="runQuestionWriter">
+            <java classname="ciknow.survey.io.QuestionWriter"
+            	fork="true"
+            	jvm="/opt/jdk1.6.0_03/bin/java"
+            	failonerror="true"
+    			maxmemory="6000m">
+            	<classpath refid="classpath"/>
+            	<arg line="/home/ciknow/data/question.txt 2"/>
+            </java>
+    </target>
+	
+    <target name="runQuestionReader">
+            <java classname="ciknow.survey.io.QuestionReader"
+            	fork="true"
+            	jvm="/opt/jdk1.6.0_03/bin/java"
+            	failonerror="true"
+    			maxmemory="6000m">
+            	<classpath refid="classpath"/>
+            	<arg line="/home/ciknow/data/question.txt"/>
+            </java>
+    </target>	
+    	
+    <target name="runNodeDataWriter" depends="compile">
+            <java classname="ciknow.io.NodeDataWriter"
+            	fork="false"
+            	failonerror="true"
+    			maxmemory="1024m">
+            	<classpath refid="classpath"/>
+            	<arg line=""/>
+            </java>
+    </target>
+	
+    <target name="runNodeDataReader">
+            <java classname="ciknow.io.NodeDataReader"
+            	fork="false"
+            	failonerror="true"
+    			maxmemory="1024m">
+            	<classpath refid="classpath"/>
+            </java>
+    </target>
+    	
+    <target name="runEdgeDataWriter" depends="compile">
+            <java classname="ciknow.io.EdgeDataWriter"
+            	fork="true"
+            	failonerror="true"
+    			maxmemory="1024m">
+            	<classpath refid="classpath"/>
+            	<arg line=""/>
+            </java>
+    </target>
+
+    <target name="runDLQuestionReader">
+            <java classname="ciknow.survey.io.DLQuestionReader"
+            	fork="true"
+            	jvm="/opt/jdk1.6.0_03/bin/java"
+            	failonerror="true"
+    			maxmemory="6000m">
+            	<classpath refid="classpath"/>
+            	<arg line="/home/ciknow/data/Un.txt"/>
+            </java>
+    </target>	
+	
+    <target name="runLocalNetwork">
+            <java classname="ciknow.vis.LocalNetwork"
+            	fork="true"
+            	jvm="/opt/jdk1.6.0_03/bin/java"
+            	failonerror="true"
+    			maxmemory="6000m">
+            	<classpath refid="classpath"/>
+            </java>
+    </target>
+	
+    <target name="runEdgeRO">
+            <java classname="ciknow.ro.EdgeRO"
+            	fork="true"
+            	jvm="/opt/jdk1.6.0_03/bin/java"
+            	failonerror="true"
+    			maxmemory="6000m">
+            	<classpath refid="classpath"/>
+            	<arg line="d.PAuthorship.PCitation 1 Authorship -1 1"/>
+            </java>
+    </target>	
+	
+	
+	<!-- ############################### RECOMMENDER ############################### -->
+    <target name="runEdgeWeightUpdator" depends="compile">
+            <java classname="ciknow.util.GeneralUtil"
+            	fork="true"
+            	maxmemory="1000m"
+            	failonerror="true">
+            	<classpath refid="classpath"/>
+            </java>
+    </target>
+    	
+    <target name="runDistanceCalculator" depends="compile">
+            <java classname="ciknow.recommend.calculate.DistanceCalculator"
+            	fork="true"
+            	maxmemory="1000m"
+            	failonerror="true">
+            	<classpath refid="classpath"/>
+            </java>
+    </target>
+
+    <target name="runMetricCalculator" depends="compile">
+            <java classname="ciknow.recommend.calculate.MetricCalculator"
+            	fork="true"
+            	maxmemory="1000m"
+            	failonerror="true">
+            	<classpath refid="classpath"/>
+            </java>
+    </target>
+    	
+    <target name="runGeodesicCalculator" depends="compile">
+            <java classname="ciknow.recommend.calculate.GeodesicCalculator"
+            	fork="true"
+            	maxmemory="1000m"
+            	failonerror="true">
+            	<classpath refid="classpath"/>
+            </java>
+    </target>
+	
+    <target name="runRecommender" depends="compile">
+            <java classname="ciknow.recommend.service.RecommenderServiceImpl"
+            	fork="true"
+            	maxmemory="1000m"
+            	failonerror="true">
+            	<classpath refid="classpath"/>
+            </java>
+    </target>
+    
+	
+	<!-- ######################### data import/export ####################### -->	
+	
+    <target name="graphmlReader" depends="compile">
+        <replace file="${build}/WEB-INF/classes/applicationContext-datasource.xml"
+                 token="_ciknow" value="${context}"/>  
+    	
+        <java classname="ciknow.io.GraphmlReader"
+        	fork="true"
+        	maxmemory="1500m"
+        	failonerror="true">
+        	<classpath refid="classpath"/>
+        	<arg line="${export.dir} ${context}"/>
+        </java> 
+    	
+        <replace file="${build}/WEB-INF/classes/applicationContext-datasource.xml"
+                 token="${context}" value="_ciknow"/>      	
+    </target>
+    	
+    <target name="graphmlWriter" depends="compile">
+        <replace file="${build}/WEB-INF/classes/applicationContext-datasource.xml"
+                 token="_ciknow" value="${context}"/>  
+    	
+        <java classname="ciknow.io.GraphmlWriter"
+        	fork="true"
+        	maxmemory="1532m"
+        	failonerror="true">
+        	<classpath refid="classpath"/>
+        	<arg line="${export.dir} ${context}"/>
+        </java>  
+    	
+        <replace file="${build}/WEB-INF/classes/applicationContext-datasource.xml"
+                 token="${context}" value="_ciknow"/>     	
+    </target>
+	
+    <target name="runPerceivedChoice2MultipleRelationalChoice" depends="compile">
+        <replace file="${build}/WEB-INF/classes/applicationContext-datasource.xml"
+                 token="_ciknow" value="${context}"/>  
+    	
+        <java classname="ciknow.io.temp.PerceivedChoice2MultipleRelationalChoice"
+        	fork="true"
+        	maxmemory="1500m"
+        	failonerror="true">
+        	<classpath refid="classpath"/>
+        	<!--arg line="${export.dir}/filename.txt shortName"/-->
+        	<arg line="${export.dir}/futurecol.txt futurecol_derived"/>
+        </java>  
+    	
+        <replace file="${build}/WEB-INF/classes/applicationContext-datasource.xml"
+                 token="${context}" value="_ciknow"/>     	
+    </target>
+	
+    <target name="tunning_recommender" depends="compile">
+        <java classname="ciknow.tunning.RecommenderServiceTest"
+        	fork="true"
+        	maxmemory="2560m"
+        	failonerror="true">
+        	<classpath refid="classpath"/>
+        </java>   	
+    </target>
+	
+
+
+	<!-- ############################### JAR ############################### -->
+	<path id="weblib.classpath">
+		<fileset dir="${build}/WEB-INF/lib">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+	
+	<!-- 
+	Create jar file to run in command line
+	This is a request from Koehly, Laura (NIH/NHGRI) [E] koehlyl@mail.nih.gov
+	Note: 
+	1, The applicationContext-security.xml should be commented out in Beans.init() before jaring
+	2, The created ciknow.jar should be place in the same directory as WEB-INF
+	3, To run: java -jar ciknow.jar questionId1 questionId2 ...
+	4, Exported data file is edgeData.txt in the current directory (where you run the program)
+	
+	!!!!! this approach was dropped. the code left here is just to document the knowledge learned in the process !!!!
+	 -->
+    <target name="jar_ciknow" depends="compile">   
+    	<manifestclasspath property="jar.classpath"
+    	                   jarfile="${build}/ciknow.jar">
+    	      <classpath refid="weblib.classpath" />
+    	</manifestclasspath>
+    	
+    	<jar destfile="${build}/ciknow.jar">
+    		<fileset dir="${build}/WEB-INF/classes">
+    			<exclude name="**/*Test.class"/>
+    		</fileset>
+    			
+    	    <manifest>
+    	      	<attribute name="Main-Class" value="ciknow.io.EdgeDataWriter"/>	    
+    	    	<attribute name="Class-Path" value="${jar.classpath}" />      	    	
+    	    </manifest>
+    	</jar>
+    </target>
+</project>

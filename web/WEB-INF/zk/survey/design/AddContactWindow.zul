@@ -1,0 +1,33 @@
+
+<zk>
+    <caption id="caption" label="Add Contact"/>
+    <grid id="form">
+        <rows>
+            <row>
+                <label id="typeLabel" value="Type"/>
+                <combobox id="typeBox" readonly="true"/>
+            </row>
+            <row id="firstNameRow">
+                <label id="firstNameLabel" value="First Name"/>
+                <textbox id="firstNameBox" constraint="no empty" maxlength="80"/>
+            </row>
+            <row id="lastNameRow">
+                <label id="lastNameLabel" value="Last Name"/>
+                <textbox id="lastNameBox" constraint="no empty" maxlength="80"/>
+            </row>
+            <row id="midNameRow">
+                <label id="midNameLabel" value="Mid Name" maxlength="80"/>
+                <textbox id="midNameBox"/>
+            </row>
+            <row>
+                <label id="labelLabel" value="Label"/>
+                <textbox id="labelBox" constraint="no empty" maxlength="255"/>
+            </row>
+        </rows>
+    </grid>
+    <toolbar>
+        <toolbarbutton id="createBtn" label="Create"/>
+        <toolbarbutton id="createAndAddBtn" label="Create and Add"/>
+        <toolbarbutton id="cancelBtn" label="Cancel"/>
+    </toolbar>
+</zk>

@@ -1,0 +1,24 @@
+
+<zk>
+    <caption id="caption" label="Add Text Field"/>
+    <grid vflex="min" width="300px">
+        <columns>
+            <column width="50px"/>
+            <column width="250px"/>
+        </columns>
+        <rows>
+            <row>
+                Name
+                <textbox id="nameBox" constraint="no empty" maxlength="80" width="100%"/>
+            </row>		
+            <row>
+                Label
+                <textbox id="labelBox" constraint="no empty" maxlength="255" width="100%"/>
+            </row>
+        </rows>
+    </grid>
+    <toolbar>
+        <toolbarbutton id="createBtn" label="Create"/>
+        <toolbarbutton id="cancelBtn" label="Cancel"/>
+    </toolbar>
+</zk>

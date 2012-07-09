@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="ciknow.domain.Question" table="questions">
+        <id name="id" type="java.lang.Long">
+            <column name="question_id" />
+            <generator class="native"/>
+        </id>
+        <version name="version" type="java.lang.Long">
+            <column name="version" not-null="true"/>
+        </version>
+        
+        <many-to-one name="page"
+                     class="ciknow.domain.Page" 
+                     column="page_id"
+                     not-null="true"
+                     insert="false" 
+                     update="false"
+                     lazy="false">
+        </many-to-one>
+        
+        <property name="label" type="string">
+            <column name="label" not-null="true"/>
+        </property>
+        <property name="shortName" type="string">
+            <column name="shortName" not-null="true"/>
+        </property>
+        <property name="type" type="string">
+            <column name="type" not-null="true"/>
+        </property>
+        <property name="instruction" type="text">
+            <column name="instruction"/>
+        </property>
+        <property name="htmlInstruction" type="text">
+            <column name="htmlInstruction"/>
+        </property>        
+        <property name="rowPerPage" type="java.lang.Integer">
+            <column name="row_per_page">
+                <comment></comment>
+            </column>
+        </property>
+
+        <map name="attributes" table="question_attributes" lazy="false">
+            <key column="question_id"/>
+            <map-key type="string" column="attr_key"/>
+            <element type="string" column="attr_value" not-null="true"/>
+        </map>
+        <map name="longAttributes" table="question_long_attributes" lazy="false">
+            <key column="question_id"/>
+            <map-key type="string" column="attr_key"/>
+            <element type="text" column="attr_value" not-null="true"/>
+        </map> 
+        
+        <list name="fields" lazy="false" cascade="all-delete-orphan">
+            <key column="question_id" not-null="true"/>
+            <list-index column="sequence_number"/>
+            <one-to-many class="ciknow.domain.Field"/>
+        </list> 
+              
+        <list name="scales" lazy="false" cascade="all-delete-orphan">
+            <key column="question_id" not-null="true"/>
+            <list-index column="sequence_number"/>
+            <one-to-many class="ciknow.domain.Scale"/>
+        </list>         
+        
+        <list name="textFields" lazy="false" cascade="all-delete-orphan">
+            <key column="question_id" not-null="true"/>
+            <list-index column="sequence_number"/>
+            <one-to-many class="ciknow.domain.TextField"/>
+        </list>        
+        
+        <list name="contactFields" lazy="false" cascade="all-delete-orphan">
+            <key column="question_id" not-null="true"/>
+            <list-index column="sequence_number"/>
+            <one-to-many class="ciknow.domain.ContactField"/>
+        </list>        
+        
+        
+        <set name="visibleGroups" table="question_visible_group" lazy="false">
+            <key>
+                <column name="question_id" not-null="true"/>
+            </key>
+            <many-to-many entity-name="ciknow.domain.Group">
+                <column name="group_id" not-null="true"/>
+            </many-to-many>
+        </set>
+        
+        <set name="availableGroups" table="question_available_group" lazy="false">
+            <key>
+                <column name="question_id" not-null="true"/>
+            </key>
+            <many-to-many entity-name="ciknow.domain.Group">
+                <column name="group_id" not-null="true"/>
+            </many-to-many>
+        </set>
+        
+        <set name="availableGroups2" table="question_available_group2" lazy="false">
+            <key>
+                <column name="question_id" not-null="true"/>
+            </key>
+            <many-to-many entity-name="ciknow.domain.Group">
+                <column name="group_id" not-null="true"/>
+            </many-to-many>
+        </set>                           
+    </class>
+</hibernate-mapping>

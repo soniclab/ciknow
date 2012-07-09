@@ -1,0 +1,44 @@
+<html>
+<head>
+<title>GraphApplet Test</title>
+</head>
+
+<body>
+
+<applet archive="graphApplet.jar, images.jar" code="GraphApplet.class"
+width=2 height=2>
+
+# List of Nodes
+
+<param name=nodes  value="UName1||UName2||UName3||">
+<param name=login  value="ULogn1||ULogn2||ULogn3||">
+<param name=colors value="ffffff||00ffff||ff00ff||">
+<param name=bold   value="0||1||0||">
+<param name=italic value="0||0||1||">
+<param name=underline value="1||0||0||">
+<param name=hiddenNodes value="0||0||0||">
+
+# List of Edges
+<param name=edges value="1-2||3-2||1-3||">
+<param name=strengths value="1||2||3||">
+<param name=hiddenEdges value="0||0||0||">
+
+# Legend
+<param name=thelegend value="">
+<param name=title value="Test Graph">
+
+# Others
+<param name=node_prefix value="">
+<param name=link_prefix value="">
+<param name=cgi_url value="">
+<param name=directional value=true>
+<param name=legend value="">
+<param name=default_width value=800>
+<param name=default_height value=600>
+</applet>
+
+</body>
+
+</html>
+
+

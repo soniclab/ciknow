@@ -1,0 +1,53 @@
+<zk>
+	<listbox id="listBox" vflex="1">
+		<listhead>
+			<listheader label="Name" width="200px" />
+			<listheader label="Label" width="100%" />
+		</listhead>
+	</listbox>
+	<toolbar>
+		<toolbarbutton id="newBtn" label="New" />
+		<toolbarbutton id="editBtn" label="Edit" />
+		<toolbarbutton id="deleteBtn" label="Delete" />
+	</toolbar>
+
+	<!-- popups -->
+	<window id="win" closable="true" mode="modal">
+		<caption id="caption" label="Add Contact Field" />
+		<grid vflex="min" width="300px">
+			<columns>
+				<column width="50px" />
+				<column width="99%" />
+			</columns>
+			<rows>
+				<row>
+					Name
+					<combobox id="nameBox" constraint="no empty" maxlength="80" width="100%">
+						<comboitem label="AddressLine1" value="AddressLine1" />
+						<comboitem label="AddressLine2" value="AddressLine2" />
+						<comboitem label="City" value="City" />
+						<comboitem label="State" value="State" />
+						<comboitem label="Country" value="Country" />
+						<comboitem label="Zip" value="Zip" />
+						<comboitem label="Phone" value="Phone" />
+						<comboitem label="Cell" value="Cell" />
+						<comboitem label="Fax" value="Fax" />
+						<comboitem label="Email" value="Email" />
+						<comboitem label="URL" value="URL" />
+						<comboitem label="Department" value="Department" />
+						<comboitem label="Organization" value="Organization" />
+						<comboitem label="Unit" value="Unit" />
+					</combobox>
+				</row>
+				<row>
+					Label
+					<textbox id="labelBox" constraint="no empty" maxlength="255" width="100%" />
+				</row>
+			</rows>
+		</grid>
+		<toolbar>
+			<toolbarbutton id="saveBtn" label="Save" />
+			<toolbarbutton id="cancelBtn" label="Cancel" />
+		</toolbar>
+	</window>
+</zk>

@@ -1,0 +1,16 @@
+<Context>
+	<!--
+	<Resource name="jms/_ciknow/TopicConnectionFactory"
+		type="org.apache.activemq.ActiveMQConnectionFactory"
+		description="_ciknow JMS Connection Factory"
+		factory="org.apache.activemq.jndi.JNDIReferenceFactory"
+		brokerURL="tcp://localhost:61616"		
+		brokerName="_ciknowBroker"/>
+		
+	<Resource name="jms/_ciknow/topic"
+		type="org.apache.activemq.command.ActiveMQTopic"
+		description="_ciknow Topic"		
+		factory="org.apache.activemq.jndi.JNDIReferenceFactory"
+		physicalName="_ciknowTopic"/> 
+		-->             
+</Context>

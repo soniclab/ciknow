@@ -1,0 +1,102 @@
+package ciknow.recommend.calculate;
+
+import java.util.ArrayList;
+import java.util.List;
+import ciknow.dao.EdgeDao;
+import ciknow.domain.Edge;
+import ciknow.domain.Node;
+import ciknow.util.Beans;
+import org.apache.log4j.Logger;
+import cern.colt.matrix.DoubleMatrix2D;
+import cern.colt.matrix.impl.DenseDoubleMatrix2D;
+
+/**
+ * 
+ * @author gyao
+ *
+ */
+public class DeriveMatrix {
+	private static Logger logger = Logger.getLogger("ncsa.sonic.ciknow.metrics.similarity.DeriveMatrix");
+	private MatrixMap mm;
+	
+	public static void main(String[] args){
+		MatrixMap mm = new MatrixMap();
+		logger.info(mm.getMatrix());
+		logger.info(mm.getSubMatrix("Project", "Person"));
+		logger.info(mm.getSubMatrix("Person", "Project"));
+		DeriveMatrix dm = new DeriveMatrix(mm);
+		DoubleMatrix2D m = dm.deriveAndSaveEdges("Person", "Project", "Person");
+		logger.info(m);
+	}
+	
+	public DeriveMatrix(){
+		mm = new MatrixMap();
+	}
+	
+	public DeriveMatrix(MatrixMap m){
+		mm = m;
+	}
+	
+	public DoubleMatrix2D deriveAndSaveEdges(String source, String link, String target){
+		DoubleMatrix2D m = deriveEdges(source, link, target);
+		saveEdges(source, link, target, m);
+		return m;
+	}
+	
+	public DoubleMatrix2D deriveEdges(String source, String link, String target){
+		int sourceSize = mm.getNodesSizeMap().get(source);
+		int targetSize = mm.getNodesSizeMap().get(target);		
+		DoubleMatrix2D derived = new DenseDoubleMatrix2D(sourceSize, targetSize);
+		
+		DoubleMatrix2D A = mm.getSubMatrix(source, link);
+		DoubleMatrix2D B = mm.getSubMatrix(link, target);
+		A.zMult(B, derived);
+		
+		return derived;
+	}
+	
+	public void saveEdges(String source, String link, String target, DoubleMatrix2D matrix){
+		EdgeDao edgeDao = (EdgeDao) Beans.getBean("edgeDao");
+		int rowSize = mm.getNodesSizeMap().get(source);
+		List<Node> rowNodes = mm.getNodesMap().get(source);
+		int colSize = mm.getNodesSizeMap().get(target);
+		List<Node> colNodes = mm.getNodesMap().get(target);
+		List<Edge> edges = new ArrayList<Edge>();
+		int count = 0;
+		int sum = 0;
+		
+		// iterate through the matrix and create corresponding edges
+		for (int row = 0; row < rowSize; row++){
+			for (int col = 0; col < colSize; col++){
+				if (matrix.get(row, col) > 0){
+					Node from = rowNodes.get(row);
+					Node to = colNodes.get(col);
+					
+					Edge edge = new Edge();
+					edge.setFromNode(from);
+					edge.setToNode(to);
+					edge.setDirected(true);
+					//EdgeType type = new EdgeType("derived" + source + "." + link + "." + target + "." + row + "." + col);
+					edge.setType("d." + source + "." + link + "." + target);
+					edge.setWeight((float)matrix.get(row, col));
+					edges.add(edge);
+					count++;
+					
+					if (count >= 1000){						
+						// persist edges						
+						edgeDao.save(edges);
+						edges.clear();
+						count = 0;
+						sum += 1000;
+						logger.info("persisted " + sum + " edges...");
+					}
+				}
+			}
+		}
+		
+		// persist edges
+		edgeDao.save(edges);
+		sum += count;
+		logger.info("persisted " + sum + " edges...");		
+	}
+}

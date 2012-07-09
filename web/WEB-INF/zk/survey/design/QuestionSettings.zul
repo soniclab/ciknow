@@ -1,0 +1,101 @@
+
+<zk>
+    <caption id="caption" label="Question Settings"/>    
+    <grid id="questionForm" width="100%">
+        <columns>
+            <column width="80px"/>
+            <column width="100%"/>
+        </columns>
+        <rows>
+            <row>
+                ID
+                <label id="idLabel"/>
+            </row>  
+            <row>
+                Type
+                <label id="typeLabel"/>
+            </row>              
+            <row>
+                Name
+                <label id="shortNameLabel"/>
+            </row>		
+            <row>
+                Label
+                <textbox id="labelBox" constraint="no empty" maxlength="255" width="98%"/>
+            </row>
+            <row>
+                Page Size
+                <intbox id="pageSizeBox" constraint="no negative, no empty" width="98%"/>
+            </row>            
+        </rows>
+    </grid>
+    
+    <tabbox width="100%" height="340px">
+        <tabs>
+            <tab id="instructionTab" label="Instruction" visible="true"/>
+            <tab id="fieldsTab" label="Fields" visible="false"/>
+            <tab id="scalesTab" label="Scales" visible="false"/>
+            <tab id="textFieldsTab" label="TextFields" visible="false"/>
+            <tab id="contactFieldsTab" label="ContactFields" visible="false"/>
+            
+            <tab id="ccConfigTab" label="Config" visible="false"/>
+            <tab id="ccSortTab" label="Sort" visible="false"/>
+            
+            <tab id="respondentGroupsTab" label="RespondentGroups" visible="true"/>
+            <tab id="rowGroupsTab" label="RowGroups" visible="false"/>
+            <tab id="columnGroupsTab" label="ColumnGroups" visible="false"/>
+            
+            <tab id="miscTab" label="Options" visible="true"/>
+        </tabs>  
+        
+        <tabpanels>
+            <tabpanel id="instructionPanel" visible="true">
+                <ckeditor id="editorBox" height="200px" width="98%" customConfigurationsPath="/js/ckconfig.js"/>
+            </tabpanel>            
+            <tabpanel id="fieldsPanel" visible="false">
+           
+            </tabpanel>
+            
+            <tabpanel id="scalesPanel" visible="false">
+
+            </tabpanel>
+            
+            <tabpanel id="textFieldsPanel" visible="false">
+
+            </tabpanel>
+            
+            <tabpanel id="contactFieldsPanel" visible="false">
+ 
+            </tabpanel>
+            
+            <tabpanel id="ccConfigPanel" visible="false">
+
+            </tabpanel>
+            
+            <tabpanel id="ccSortPanel" visible="false">
+
+            </tabpanel>
+            
+            <tabpanel id="respondentGroupsPanel" visible="true">
+                <listbox id="respondentGroupBox" checkmark="true" vflex="1"/>
+            </tabpanel>
+            
+            <tabpanel id="rowGroupsPanel" visible="false">
+                <listbox id="rowGroupBox" checkmark="true" vflex="1"/>
+            </tabpanel>
+            
+            <tabpanel id="columnGroupsPanel" visible="false">
+                <listbox id="columnGroupBox" checkmark="true" vflex="1"/>
+            </tabpanel>
+            
+            <tabpanel id="optionPanel" visible="true">
+
+            </tabpanel>            
+        </tabpanels>
+    </tabbox>
+    
+    <toolbar>
+        <toolbarbutton id="saveBtn" label="Save"/>
+        <toolbarbutton id="cancelBtn" label="Cancel"/>
+    </toolbar>
+</zk>

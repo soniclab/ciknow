@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="ciknow.domain.Activity" table="activities">
+        <id name="id" type="java.lang.Long">
+            <column name="activity_id" />
+            <generator class="native"/>
+        </id>
+        <version name="version" type="java.lang.Long">
+            <column name="version" not-null="true"/>
+        </version>
+        
+        <many-to-one name="subject" class="ciknow.domain.Node" lazy="proxy">
+            <column name="subject_node_id" not-null="true"/>
+        </many-to-one>
+        <property name="predicate" type="string">
+            <column name="predicate" not-null="true"/>
+        </property>
+        <many-to-one name="object" class="ciknow.domain.Node" lazy="proxy">
+            <column name="object_node_id" not-null="false"/>
+        </many-to-one>   
+        
+        <property name="timestamp" type="timestamp">
+            <column name="timestamp" not-null="true"/>
+        </property>             
+    </class>
+</hibernate-mapping>

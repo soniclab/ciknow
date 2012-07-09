@@ -1,0 +1,76 @@
+
+<zk>
+    <caption id="caption" label="Survey Overview"/>
+	
+	<label style="color:blue; font-size:16px; font-style:italic">
+	You can update question/page label, delete question/page, or re-order question/page by drag-and-drop 
+	</label>	
+	
+    <tree id="surveyTree" width="100%" height="465px">
+
+    	<treecols>
+    		<treecol>Label</treecol>
+    		<treecol>Type</treecol>
+    	</treecols>
+
+    </tree>
+    
+    <toolbar>    	
+        <toolbarbutton id="updateBtn" label="Update"/>
+        <toolbarbutton id="copyBtn" label="Copy"/>
+        <toolbarbutton id="deleteBtn" label="Delete"/>
+        
+        <toolbarbutton label="     |     "/>
+        
+        <toolbarbutton id="saveBtn" label="Save"/>
+        <toolbarbutton id="cancelBtn" label="Cancel"/>
+        
+        <toolbarbutton label="Your changes won't be persisted until clicking Save button" style="font-style:italic; color:red"/>
+    </toolbar>	
+    
+    <window id="updateWindow" closable="true" mode="modal">
+		<grid vflex="min" width="300px">
+			<columns>
+				<column width="80px" />
+				<column width="99%" />
+			</columns>
+			<rows>
+				<row>
+					Old Label
+					<label id="oldLabel"/>
+				</row>
+				<row>
+					New Label
+					<textbox id="newLabelBox" constraint="no empty" maxlength="255" width="100%" />
+				</row>
+			</rows>
+		</grid>
+		<toolbar>
+			<toolbarbutton id="saveBtn" label="Confirm" />
+			<toolbarbutton id="cancelBtn" label="Cancel" />
+		</toolbar>
+	</window>
+	
+    <window id="copyWindow" closable="true" mode="modal">
+		<grid vflex="min" width="300px">
+			<columns>
+				<column width="80px" />
+				<column width="99%" />
+			</columns>
+			<rows>
+				<row>
+					Name
+					<textbox id="nameBox" constraint="no empty" maxlength="80" width="100%" />
+				</row>
+				<row>
+					Label
+					<textbox id="labelBox" constraint="no empty" maxlength="255" width="100%" />
+				</row>
+			</rows>
+		</grid>
+		<toolbar>
+			<toolbarbutton id="saveBtn" label="Confirm" />
+			<toolbarbutton id="cancelBtn" label="Cancel" />
+		</toolbar>
+	</window>	
+</zk>

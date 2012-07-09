@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="ciknow.domain.Visualization" table="visualizations">
+        <id name="id" type="java.lang.Long">
+            <column name="vis_id" />
+            <generator class="native"/>
+        </id>
+        <version name="version" type="java.lang.Long">
+            <column name="version" not-null="true"/>
+        </version>
+        
+        <many-to-one name="creator" class="ciknow.domain.Node">
+            <column name="creator_id" not-null="true"/>
+        </many-to-one>
+
+        <property name="name" type="string">
+            <column name="name" not-null="true"/>
+        </property>  
+        <property name="label" type="string">
+            <column name="label" not-null="true"/>
+        </property>                
+        <property name="type" type="string">
+            <column name="type" not-null="true"/>
+        </property>
+       
+        <property name="networkType" type="string">
+            <column name="network_type" not-null="true"/>
+        </property>
+        
+        <!-- 
+        type may not be enough and need to be changed to "mediumtext" 
+        or longtext" in database manually. 
+        http://dev.mysql.com/doc/refman/5.0/en/storage-requirements.html
+        -->
+        <property name="data" type="text">
+            <column name="data" length="1000000"/>
+        </property>
+        <property name="timestamp" type="timestamp">
+            <column name="timestamp"/>
+        </property>        
+
+        <set name="groups" table="visualization_group" lazy="false">
+            <key>
+                <column name="vis_id" not-null="true"/>
+            </key>
+            <many-to-many entity-name="ciknow.domain.Group">
+                <column name="group_id" not-null="true"/>
+            </many-to-many>
+        </set> 
+        
+        <set name="nodes" table="visualization_node" lazy="false">
+            <key>
+                <column name="vis_id" not-null="true"/>
+            </key>
+            <many-to-many entity-name="ciknow.domain.Node">
+                <column name="node_id" not-null="true"/>
+            </many-to-many>
+        </set>
+                
+        <map name="attributes" table="visualization_attributes" lazy="false">
+            <key column="vis_id"/>
+            <map-key type="string" column="attr_key"/>
+            <element type="string" column="attr_value" not-null="true"/>
+        </map>
+    </class>
+    
+</hibernate-mapping>

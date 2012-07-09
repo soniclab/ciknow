@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  - Sample namespace-based configuration
+  -
+  -->
+
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+    xmlns:beans="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd">
+
+    <global-method-security pre-post-annotations="enabled">
+        <!-- AspectJ pointcut expression that locates our "post" method and applies security that way
+        <protect-pointcut expression="execution(* bigbank.*Service.post*(..))" access="ROLE_TELLER"/>
+        -->
+    </global-method-security>
+			    
+    <http use-expressions="true">
+    	<!-- very secure: administrator(s) only -->
+        <intercept-url pattern="/secure/extreme/**" access="hasRole('ROLE_SUPERVISOR')"/>
+        
+        <!-- secure: authentication required -->
+        <intercept-url pattern="/secure/**" access="isAuthenticated()"/>    
+        <intercept-url pattern="/codebook.*" access="isAuthenticated()"/>
+        <intercept-url pattern="/vis_get_*" access="isAuthenticated()"/>
+        <intercept-url pattern="/teamDetails.jsp" access="isAuthenticated()"/>        
+        <intercept-url pattern="/survey.zul" access="isAuthenticated()"/>
+        <intercept-url pattern="/recommender.zul" access="isAuthenticated()"/>
+        <intercept-url pattern="/admin.html" access="isAuthenticated()"/>
+        
+        <!-- optional: these are opaque to client -->
+    	<intercept-url pattern="/messagebroker/*" access="isAuthenticated()"/>  
+    	<intercept-url pattern="/vis" access="isAuthenticated()"/> 
+    	<intercept-url pattern="/ac" access="isAuthenticated()"/>     
+    	<intercept-url pattern="/services/*" access="isAuthenticated()"/>       
+    	<intercept-url pattern="/su/**" access="permitAll()"/>
+    	<intercept-url pattern="/sd/**" access="permitAll()"/>    		
+    	<intercept-url pattern="/zkau/*" access="permitAll()"/>      
+    	
+    	<!-- everything else: open to public -->
+        <intercept-url pattern="/**" access="permitAll()"/>
+        
+        			
+        <form-login login-page="/oldlogin.jsp" 
+        			authentication-success-handler-ref="loginSuccessHandler" 
+        			authentication-failure-url="/oldlogin.jsp?login_error=1"/>
+        			         			
+        <logout success-handler-ref="logoutSuccessHandler"/>
+        
+        <!--
+        <custom-filter position="LOGOUT_FILTER" ref="logoutFilter"/>
+        -->
+        
+        <session-management>
+            <concurrency-control max-sessions="1"/>
+        </session-management>
+		
+		<access-denied-handler error-page="/accessDenied.jsp"/>
+    </http>
+
+    <authentication-manager>
+        <authentication-provider ref="daoAuthenticationProvider"/>
+    </authentication-manager>
+
+	<beans:bean id="daoAuthenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+		<beans:property name="userDetailsService" ref="userDetailsService"/>
+	</beans:bean>
+
+	<beans:bean id="userDetailsService" class="ciknow.security.CIKNOWUserDetailsService">
+		<beans:property name="nodeDao" ref="nodeDao"/>
+	</beans:bean>
+	
+	<beans:bean id="loginSuccessHandler" class="ciknow.security.CIKNOWAuthenticationSuccessHandler"> 
+		<beans:property name="activityDao" ref="activityDao"/>
+	</beans:bean>
+	
+	<beans:bean id="logoutSuccessHandler" class="ciknow.security.CIKNOWLogoutSuccessHandler"> 
+		<beans:property name="activityDao" ref="activityDao"/>
+	</beans:bean>	
+	<!-- 
+		This is to demonstrate the possibility of customizing default Spring Security Filter mechanism.
+		Beans defined below are used by custom-filter. 
+		Default LogoutFilter also include RememberMeService and CookieClearingLogoutHandler.
+		But they are not used in current CIKNOW security configuration, so the beans list doesn't include them.
+	 -->
+	 <!-- 
+	<beans:bean id="logoutFilter" class="org.springframework.security.web.authentication.logout.LogoutFilter">
+	    <beans:constructor-arg index="0" value="/login.jsp?logout=1"/>
+        <beans:constructor-arg index="1">
+            <beans:list>
+                <beans:ref bean="securityContextLogoutHandler"/>
+                <beans:ref bean="myLogoutHandler"/>
+            </beans:list>
+        </beans:constructor-arg>	
+	</beans:bean>
+	
+	<beans:bean id="securityContextLogoutHandler" class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler">
+	
+	</beans:bean>
+	
+	<beans:bean id="myLogoutHandler" class="ciknow.security.CIKNOWLogoutHandler">
+		<beans:property name="activityDao" ref="activityDao"/>
+	</beans:bean>
+	 -->
+</beans:beans>

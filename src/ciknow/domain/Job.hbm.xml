@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="ciknow.domain.Job" table="jobs">
+        <id name="id" type="java.lang.Long">
+            <column name="job_id" />
+            <generator class="native"/>
+        </id>
+        <version name="version" type="java.lang.Long">
+            <column name="version" not-null="true"/>
+        </version>
+        
+        <property name="name" type="string">
+            <column name="name" not-null="true"/>
+        </property>
+        <property name="type" type="string">
+            <column name="type" not-null="true"/>
+        </property>        
+        <property name="creator" type="string">
+            <column name="creator" not-null="true"/>
+        </property>        
+        <property name="scheduledRuntime" type="string">
+            <column name="scheduledRuntime" not-null="true"/>
+        </property>        
+        <property name="description" type="text">
+            <column name="description"/>
+        </property>        
+        <property name="beanName" type="string">
+            <column name="beanName" not-null="true"/>
+        </property>
+        <property name="className" type="string">
+            <column name="className" not-null="true"/>
+        </property>        
+        <property name="methodName" type="string">
+            <column name="methodName" not-null="true"/>
+        </property>
+        
+        <property name="parameterTypes" type="binary">
+            <column name="parameterTypes" sql-type="blob" length="65536" not-null="true"/>
+        </property>
+        
+        <property name="parameterValues" type="binary">
+        	<!-- set the length of blob to 65536 will change default MySQL BLOB type from tinyblob to blob  -->
+        	<!-- this mean the parameterTypes above will also be blob, not  tinyblob -->
+            <column name="parameterValues" sql-type="blob" length="65536" not-null="true"/>
+        </property>  
+        
+        <property name="enabled" type="boolean">
+            <column name="enabled" not-null="true"/>
+        </property>
+        <property name="createTS" type="timestamp">
+            <column name="createTS" not-null="true"/>
+        </property>
+        <property name="lastRunTS" type="timestamp">
+            <column name="lastRunTS" not-null="false"/>
+        </property>                            
+    </class>
+</hibernate-mapping>

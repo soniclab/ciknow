@@ -1,0 +1,65 @@
+
+<zk>
+	
+    <panel id="questionPanel" border="none" width="100%">
+        <panelchildren>
+		
+            <vlayout id="questionArea" style="padding: 0px 0px 0px 30px">	
+		        <hbox id="questionCaption" width="100%" style="background-color: #e4f0fb">	
+		        	<hbox hflex="1" align="center">
+		        		<button sclass="questionnumber" id="questionNumber" label="question number"/>
+		        		<label sclass="questionlabel" id="questionLabel" value="question label"/>		        	
+		        	</hbox>	
+		        	
+		        	<hbox id="toolbar" style="float:right">
+			            <button id="helpBtn" label="?" visible="false"/>	        	
+		        	</hbox>
+		        </hbox> 
+		                    
+                <html id="instruction"/>		
+                <label id="msg" visible="false"/>
+						
+                <listbox id="listbox" rows="20" width="300px">
+
+                </listbox>	
+                <hlayout>
+                	<button id="addContactBtn" label="Add"/>
+                	<button id="removeContactBtn" label="Remove"/>
+                </hlayout>                
+            </vlayout>
+			
+        </panelchildren>
+    </panel>
+	
+    <window id="helpWin" title="Help Information" closable="true">
+    	<iframe id="helpFrame" src="http://ciknow.northwestern.edu/documentation"
+    			 width="998px" height="600px"/>	
+  	</window>
+  	
+  	<window id="addContactWindow" closable="true">
+	    <grid id="form" vflex="min" width="300px">
+	        <columns>
+	            <column width="80px"/>
+	            <column width="100%"/>
+	        </columns>	    
+	        <rows>
+	            <row id="firstNameRow">
+	                <label id="firstNameLabel" value="First Name"/>
+	                <textbox id="firstNameBox" maxlength="80"/>
+	            </row>
+	            <row id="lastNameRow">
+	                <label id="lastNameLabel" value="Last Name"/>
+	                <textbox id="lastNameBox" maxlength="80"/>
+	            </row>
+	            <row id="labelRow">
+	                <label id="labelLabel" value="Label"/>
+	                <textbox id="labelBox" maxlength="255"/>
+	            </row>
+	        </rows>
+	    </grid>
+	    <toolbar>
+	        <toolbarbutton id="createBtn" label="Create"/>
+	        <toolbarbutton id="cancelBtn" label="Cancel"/>
+	    </toolbar>  	
+  	</window>
+</zk>

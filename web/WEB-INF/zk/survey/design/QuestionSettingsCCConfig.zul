@@ -1,0 +1,62 @@
+<zk>
+	<listbox id="listBox" vflex="1">
+	    <listhead>
+	        <listheader label="Name" width="200px"/>
+	        <listheader label="Label" width="100%"/>
+	    </listhead>
+	</listbox>
+	<toolbar>
+	    <toolbarbutton id="addPropertyBtn" label="Add Property"/>
+	    <toolbarbutton id="addAttributeBtn" label="Add Attribute"/>
+	    <toolbarbutton id="deleteBtn" label="Delete"/>
+	</toolbar>  
+	
+	<!-- popups -->
+	<window id="propertyWindow" closable="true" mode="modal">
+	    <caption id="caption" label="Add Property"/>
+	    <grid vflex="1" width="300px">
+	        <columns>
+	            <column width="50px"/>
+	            <column width="250px"/>
+	        </columns>
+	        <rows>
+	            <row>
+	                Name
+	                <combobox id="nameBox" width="100%" readonly="true"/>
+	            </row>		
+	            <row>
+	                Label
+	                <textbox id="labelBox" constraint="no empty" maxlength="255" width="100%"/>
+	            </row>
+	        </rows>
+	    </grid>
+	    <toolbar>
+	        <toolbarbutton id="saveBtn" label="Save"/>
+	        <toolbarbutton id="cancelBtn" label="Cancel"/>
+	    </toolbar>	                    
+	</window> 
+	
+	<window id="attributeWindow" closable="true" mode="modal">
+	    <caption id="caption" label="Add Attribute"/>
+	    <grid vflex="1" width="300px">
+	        <columns>
+	            <column width="80px"/>
+	            <column width="220px"/>
+	        </columns>
+	        <rows>
+	            <row>
+	                Question
+	                <combobox id="nameBox" width="100%" readonly="true"/>
+	            </row>		
+	            <row>
+	                Label
+	                <textbox id="labelBox" constraint="no empty" maxlength="255" width="100%"/>
+	            </row>
+	        </rows>
+	    </grid>
+	    <toolbar>
+	        <toolbarbutton id="saveBtn" label="Save"/>
+	        <toolbarbutton id="cancelBtn" label="Cancel"/>
+	    </toolbar>	                    
+	</window> 	
+</zk>

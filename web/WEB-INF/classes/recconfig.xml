@@ -1,0 +1,5 @@
+<config>
+	<identification/>
+	<selection/>
+	<alg name="ciknow.recommend.GenericRecommender"/>
+</config>

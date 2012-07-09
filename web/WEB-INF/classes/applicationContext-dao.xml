@@ -1,0 +1,197 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+						http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+						http://www.springframework.org/schema/context
+						http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+						 
+    <!---															-->
+	<!--- 					HIBERNATE DAO      						-->
+	<!---															-->      
+    <bean id="surveyDao" parent="hibernateTxTemplate" lazy-init="false">
+    	<property name="proxyInterfaces">
+    		<list>
+    			<value>ciknow.dao.SurveyDao</value>
+    		</list>
+    	</property>
+    	<property name="target">
+    		<bean class="ciknow.dao.hibernate.SurveyHibernateDao" parent="hibernateDaoTemplate"/>
+    	</property>
+    </bean>
+        
+    <bean id="pageDao" parent="hibernateTxTemplate" lazy-init="false">
+        <property name="proxyInterfaces">
+            <list>
+                <value>ciknow.dao.PageDao</value>
+            </list>
+        </property>
+        <property name="target">
+            <bean class="ciknow.dao.hibernate.PageHibernateDao" parent="hibernateDaoTemplate"/>
+        </property>
+    </bean>
+            
+    <bean id="questionDao" parent="hibernateTxTemplate" lazy-init="false">
+    	<property name="proxyInterfaces">
+    		<list>
+    			<value>ciknow.dao.QuestionDao</value>
+    		</list>
+    	</property>
+    	<property name="target">
+    		<bean class="ciknow.dao.hibernate.QuestionHibernateDao" parent="hibernateDaoTemplate"/>
+    	</property>
+    </bean>	 
+
+    <bean id="fieldDao" parent="hibernateTxTemplate" lazy-init="false">
+        <property name="proxyInterfaces">
+            <list>
+                <value>ciknow.dao.FieldDao</value>
+            </list>
+        </property>
+        <property name="target">
+            <bean class="ciknow.dao.hibernate.FieldHibernateDao" parent="hibernateDaoTemplate"/>
+        </property>
+    </bean>	 
+    
+    <bean id="scaleDao" parent="hibernateTxTemplate" lazy-init="false">
+        <property name="proxyInterfaces">
+            <list>
+                <value>ciknow.dao.ScaleDao</value>
+            </list>
+        </property>
+        <property name="target">
+            <bean class="ciknow.dao.hibernate.ScaleHibernateDao" parent="hibernateDaoTemplate"/>
+        </property>
+    </bean>	 
+    
+    <bean id="contactFieldDao" parent="hibernateTxTemplate" lazy-init="false">
+        <property name="proxyInterfaces">
+            <list>
+                <value>ciknow.dao.ContactFieldDao</value>
+            </list>
+        </property>
+        <property name="target">
+            <bean class="ciknow.dao.hibernate.ContactFieldHibernateDao" parent="hibernateDaoTemplate"/>
+        </property>
+    </bean>	 
+    
+    <bean id="textFieldDao" parent="hibernateTxTemplate" lazy-init="false">
+        <property name="proxyInterfaces">
+            <list>
+                <value>ciknow.dao.TextFieldDao</value>
+            </list>
+        </property>
+        <property name="target">
+            <bean class="ciknow.dao.hibernate.TextFieldHibernateDao" parent="hibernateDaoTemplate"/>
+        </property>
+    </bean>	    
+
+    <bean id="nodeDao" parent="hibernateTxTemplate" lazy-init="false">
+    	<property name="proxyInterfaces">
+    		<list>
+    			<value>ciknow.dao.NodeDao</value>
+    		</list>
+    	</property>
+    	<property name="target">
+    		<bean class="ciknow.dao.hibernate.NodeHibernateDao" parent="hibernateDaoTemplate"/>
+    	</property>
+    </bean> 
+                
+    <bean id="edgeDao" parent="hibernateTxTemplate" lazy-init="false">
+    	<property name="proxyInterfaces">
+    		<list>
+    			<value>ciknow.dao.EdgeDao</value>
+    		</list>
+    	</property>
+    	<property name="target">
+    		<bean class="ciknow.dao.hibernate.EdgeHibernateDao" parent="hibernateDaoTemplate"/>
+    	</property>
+    </bean>	
+    
+     <bean id="roleDao" parent="hibernateTxTemplate" lazy-init="false">
+    	<property name="proxyInterfaces">
+    		<list>
+    			<value>ciknow.dao.RoleDao</value>
+    		</list>
+    	</property>
+    	<property name="target">
+    		<bean class="ciknow.dao.hibernate.RoleHibernateDao" parent="hibernateDaoTemplate"/>
+    	</property>
+    </bean>
+    
+    <bean id="groupDao" parent="hibernateTxTemplate" lazy-init="false">
+    	<property name="proxyInterfaces">
+    		<list>
+    			<value>ciknow.dao.GroupDao</value>
+    		</list>
+    	</property>
+    	<property name="target">
+    		<bean class="ciknow.dao.hibernate.GroupHibernateDao" parent="hibernateDaoTemplate"/>
+    	</property>
+    </bean>
+
+    <bean id="metricDao" parent="hibernateTxTemplate" lazy-init="false">
+    	<property name="proxyInterfaces">
+    		<list>
+    			<value>ciknow.dao.MetricDao</value>
+    		</list>
+    	</property>
+    	<property name="target">
+    		<bean class="ciknow.dao.hibernate.MetricHibernateDao" parent="hibernateDaoTemplate"/>
+    	</property>
+    </bean>
+    
+    <bean id="visualizationDao" parent="hibernateTxTemplate" lazy-init="false">
+    	<property name="proxyInterfaces">
+    		<list>
+    			<value>ciknow.dao.VisualizationDao</value>
+    		</list>
+    	</property>
+    	<property name="target">
+    		<bean class="ciknow.dao.hibernate.VisualizationHibernateDao" parent="hibernateDaoTemplate"/>
+    	</property>
+    </bean>    
+
+    <bean id="jobDao" parent="hibernateTxTemplate" lazy-init="false">
+    	<property name="proxyInterfaces">
+    		<list>
+    			<value>ciknow.dao.JobDao</value>
+    		</list>
+    	</property>
+    	<property name="target">
+    		<bean class="ciknow.dao.hibernate.JobHibernateDao" parent="hibernateDaoTemplate"/>
+    	</property>
+    </bean> 
+    
+    <bean id="activityDao" parent="hibernateTxTemplate" lazy-init="false">
+    	<property name="proxyInterfaces">
+    		<list>
+    			<value>ciknow.dao.ActivityDao</value>
+    		</list>
+    	</property>
+    	<property name="target">
+    		<bean class="ciknow.dao.hibernate.ActivityHibernateDao" parent="hibernateDaoTemplate"/>
+    	</property>
+    </bean>	    
+    
+	<!---															-->
+	<!--- 					TEMPLATE	       						-->
+	<!---															-->
+	<bean id="hibernateDaoTemplate" abstract="true">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+    <bean id="hibernateTxTemplate" abstract="true" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager" ref="transactionManager"/>
+        <property name="transactionAttributes">
+            <props>
+                <prop key="*">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
+    </bean>
+    
+</beans>

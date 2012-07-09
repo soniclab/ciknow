@@ -1,0 +1,242 @@
+package ciknow.recommend.calculate;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import ciknow.dao.EdgeDao;
+import ciknow.dao.NodeDao;
+import ciknow.domain.Edge;
+import ciknow.domain.Node;
+import ciknow.util.Beans;
+import ciknow.util.GeneralUtil;
+import ciknow.util.StringUtil;
+import org.apache.log4j.Logger;
+import cern.colt.matrix.DoubleMatrix2D;
+import cern.colt.matrix.impl.SparseDoubleMatrix2D;
+
+/**
+ * 
+ * @author gyao
+ *
+ */
+public class MatrixMap {
+	private Logger logger = Logger.getLogger(this.getClass());
+
+	private NodeDao nodeDao;
+	private EdgeDao edgeDao;
+	private List<String> nodeTypes;
+	private Map<String, List<Node>> nodesMap;
+	private Map<String, Integer> nodesSizeMap;
+	private DoubleMatrix2D matrix;
+
+	public static void main(String[] args){
+		try{
+			MatrixMap mm = new MatrixMap();
+			Map<String, List<Node>> nodesMap = mm.getNodesMap();
+			List<Node> nodesList = null;
+			String type1 = null;
+			String type2 = null;
+			BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+			while(true){
+				System.out.println("please select your matrix:");
+				String line = reader.readLine();
+				System.out.println("line: " + line);
+				List<String> list = StringUtil.splitAsList(line, ",");
+				for (String type : list) System.out.println(type);
+
+				if (list.size() == 0) continue;
+				else if (list.size() == 1){
+					type1 = list.get(0);
+					System.out.println("type1: " + type1);
+					if (type1.equals("exit")) return;
+					
+					System.out.println("ROW TYPE ------------------------------------------");
+					nodesList = nodesMap.get("All");
+					for (Node node : nodesList){
+						System.out.println(node.getLabel());
+					}
+					if (type1.equals("grand")) {
+						System.out.println(mm.getMatrix());
+					}
+					else {
+						System.out.println("COL TYPE ------------------------------------------");
+						nodesList = nodesMap.get(type1);
+						for (Node node : nodesList){
+							System.out.println(node.getLabel());
+						}
+						System.out.println(mm.getSubMatrix(type1));
+					}
+				}
+				else if (list.size() == 2){
+					type1 = list.get(0);
+					type2 = list.get(1);
+					System.out.println("type1: " + type1 + " type2: " + type2);
+					System.out.println("ROW TYPE ------------------------------------------");
+					nodesList = nodesMap.get(type1);
+					for (Node node : nodesList){
+						System.out.println(node.getLabel());
+					}
+					System.out.println("COL TYPE ------------------------------------------");
+					nodesList = nodesMap.get(type2);
+					for (Node node : nodesList){
+						System.out.println(node.getLabel());
+					}
+					System.out.println(mm.getSubMatrix(type1, type2));
+				} else System.out.println("bad input");
+			}
+			} catch(Exception e){
+				e.printStackTrace();
+			}
+	}
+	
+	public MatrixMap(){
+		this(false);
+	}
+	
+	public MatrixMap(boolean includeDerived){
+		Beans.init();
+		nodeDao = (NodeDao) Beans.getBean("nodeHibernateDao");
+		edgeDao = (EdgeDao) Beans.getBean("edgeHibernateDao");
+		
+		initializeNodesMap();
+		initializeGrandMatrix(includeDerived);
+	}
+
+	///////////////////// getters ////////////////////////
+	public DoubleMatrix2D getMatrix() {
+		return matrix;
+	}
+
+	public Map<String, List<Node>> getNodesMap() {
+		return nodesMap;
+	}
+	
+	public List<String> getNodeTypes() {
+		return nodeTypes;
+	}
+	
+	public Map<String, Integer> getNodesSizeMap() {
+		return nodesSizeMap;
+	}
+	
+	public void initializeNodesMap(){
+		logger.info("initialize nodes map...");
+		nodesMap = new HashMap<String, List<Node>>();
+		nodesSizeMap = new HashMap<String, Integer>();
+		
+		// get node types
+		nodeTypes = nodeDao.getNodeTypes();
+		
+		// put nodes in map
+		List<Node> all = new ArrayList<Node>();
+		List<Node> nodes;
+		for (String type: nodeTypes){
+			nodes = nodeDao.findByType(type);
+			
+			// exclude admin from calculation
+			if (type.equals(Constants.NODE_TYPE_USER)){
+				Node node = nodeDao.findById(1L);
+				nodes.remove(node);
+			}
+			
+			nodesMap.put(type, nodes);
+			nodesSizeMap.put(type, nodes.size());
+			all.addAll(nodes);
+		}
+		nodesMap.put("All", all);
+		nodesSizeMap.put("All", all.size());		
+	}
+	
+	// get grand matrix for specified nodes
+	public void initializeGrandMatrix(boolean includeDerived){	
+		logger.info("initialize grand matrix...");
+		// create grand matrix
+		List<Node> nodes = nodesMap.get("All");
+		int size = nodes.size();
+		matrix = new SparseDoubleMatrix2D(size, size);
+		
+		// update edge weights (for relational rating and perceived relational rating questions)
+		try {
+			GeneralUtil.updateEdgeWeights();
+		} catch (Exception e) {
+			logger.error("Failed to update edge weights!");
+			e.printStackTrace();
+		}
+		
+		// iterate through all edges and set weight in grand matrix
+		List<Edge> edges = edgeDao.getAll();
+		for (Edge edge : edges){
+			if (edge.getType().indexOf("d.") >= 0 && !includeDerived) continue;			
+			
+			Node from = edge.getFromNode();
+			Node to = edge.getToNode();
+			
+			// grand matrix
+			int grandRowNumber = nodes.indexOf(from);
+			int grandColNumber = nodes.indexOf(to);
+			if (grandRowNumber == -1 || grandColNumber == -1) {
+				logger.warn("Failed to identify the nodes of the edge.");
+				continue;
+			}	
+			double oldWeight = matrix.getQuick(grandRowNumber, grandColNumber);
+			double newWeight = oldWeight + edge.getWeight();
+			matrix.setQuick(grandRowNumber, grandColNumber, newWeight);
+			if (!edge.isDirected()){
+				logger.info("edge is undirected!");
+				matrix.set(grandColNumber, grandRowNumber, newWeight);
+			}					
+		}	
+	}
+	
+	public DoubleMatrix2D getSubMatrix(String colTypeName){
+		int colTypeIndex = nodeTypes.indexOf(colTypeName);
+		int startColIndex = 0;
+		String type = null;
+		for (int i = 0; i <= colTypeIndex; i++){
+			type = nodeTypes.get(i);
+			if (type.equalsIgnoreCase(colTypeName)){
+				break;
+			}
+			
+			startColIndex += nodesSizeMap.get(type);
+		}
+		
+		return matrix.viewPart(0, startColIndex, nodesSizeMap.get("All"), nodesSizeMap.get(type));
+	}
+	
+	public DoubleMatrix2D getSubMatrix(String rowTypeName, String colTypeName){
+		String type = null;
+		
+		// calculate row start index
+		int rowTypeIndex = nodeTypes.indexOf(rowTypeName);
+		int startRowIndex = 0;
+		for (int i = 0; i <= rowTypeIndex; i++){
+			type = nodeTypes.get(i);
+			if (type.equalsIgnoreCase(rowTypeName)){
+				break;
+			}
+			
+			startRowIndex += nodesSizeMap.get(type);
+		}
+		
+		// calculate col start index
+		int colTypeIndex = nodeTypes.indexOf(colTypeName);
+		int startColIndex = 0;
+		for (int i = 0; i <= colTypeIndex; i++){
+			type = nodeTypes.get(i);
+			if (type.equalsIgnoreCase(colTypeName)){
+				break;
+			}
+			
+			startColIndex += nodesSizeMap.get(type);
+		}
+		
+		return matrix.viewPart(startRowIndex, 
+								startColIndex, 
+								nodesSizeMap.get(rowTypeName), 
+								nodesSizeMap.get(colTypeName));
+	}
+}

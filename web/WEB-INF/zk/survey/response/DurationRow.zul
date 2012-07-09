@@ -1,0 +1,12 @@
+
+<zk>
+    <label id="fieldLabel"/>
+
+    <spinner id="yearSpinner" value="0" width="50px" constraint="no empty, no negative, min 0 max 100"/>
+    <spinner id="monthSpinner" value="0" width="50px" constraint="no empty, no negative, min 0 max 12"/>
+    <spinner id="daySpinner" value="0" width="50px" constraint="no empty, no negative, min 0 max 31"/>
+    <spinner id="hourSpinner" value="0" width="50px" constraint="no empty, no negative, min 0 max 24"/>
+    <spinner id="minuteSpinner" value="0" width="50px" constraint="no empty, no negative, min 0 max 60"/>
+    <spinner id="secondSpinner" value="0" width="50px" constraint="no empty, no negative, min 0 max 60"/>
+</zk>
+

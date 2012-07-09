@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+<beans xmlns="http://www.springframework.org/schema/beans"      
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd"
+       >
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+						http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+						http://www.springframework.org/schema/context
+						http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+						
+    <!---															-->
+	<!--- 					WEB SERVICE      						-->
+	<!---                                                           -->
+    <bean id="recommenderServiceImpl" class="ciknow.recommend.service.RecommenderServiceImpl">
+        <property name="nodeDao" ref="nodeDao"/>
+        <property name="edgeDao" ref="edgeDao"/>
+        <property name="metricDao" ref="metricDao"/>
+        <property name="questionDao" ref="questionDao"/>
+    </bean>
+    
+    <!--
+    note: the 'address' here match to http://localhost:8080/services/recommenderService, 
+    the 'services' part is defined in web.xml url-mapping for CXFServlet
+    note: the 'address' here doesn't include ?wsdl postfix 
+    -->
+        	
+	<!--  
+    <import resource="classpath:META-INF/cxf/cxf.xml" />
+    <import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
+    <import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+	-->
+	
+    <!-- server 
+    <jaxws:endpoint
+            id="recommenderService"
+            implementor="#recommenderServiceImpl"
+            address="/recommenderService"/>
+    -->
+
+    <!-- client 
+    <bean id="recommenderServiceClient" factory-bean="recommenderServiceClientFactory" factory-method="create"/>
+    <bean id="recommenderServiceClientFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+      <property name="serviceClass" value="ciknow.recommend.service.RecommenderService"/>
+      <property name="address" value="http://localhost:8080/services/recommenderService"/>      
+    </bean>
+	-->
+	
+</beans>

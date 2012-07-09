@@ -1,0 +1,55 @@
+<zk>
+	<listbox id="listBox" vflex="1">
+	    <listhead>
+	        <listheader label="Name" width="100%"/>
+	        <listheader label="Case Sensitive" width="100px"/>
+	        <listheader label="Numeric" width="100px"/>
+	        <listheader label="Order" width="100px"/>
+	    </listhead>
+	</listbox>
+	<toolbar>
+	    <toolbarbutton id="addBtn" label="Add"/>
+	    <toolbarbutton id="deleteBtn" label="Delete"/>
+	</toolbar>  
+	
+	<!-- popups -->
+	<window id="sortWindow" closable="true" mode="modal" width="450px">
+	    <caption id="caption" label="Add Sort"/>
+	    <grid vflex="min" width="100%">
+	        <columns>
+	            <column width="100px"/>
+	            <column width="100%"/>
+	        </columns>
+	        <rows>
+	            <row>
+	                Name
+	                <combobox id="nameBox" width="100%" readonly="true"/>
+	            </row>	
+	            <row>
+	                Case Sensitive
+	                <checkbox id="caseBox" width="100%"/>
+	            </row>	            	            	
+	            <row>
+	                Is Numeric
+	                <checkbox id="numericBox" width="100%"/>
+	            </row>
+	            <row>
+	                Order
+	                <combobox id="orderBox" width="100%" readonly="true"/>
+	            </row>	            
+	        </rows>
+	    </grid>
+	    
+	    <label multiline="true">
+	    	'Alternating' order means 50% of users will see items in ascending order
+	    </label>
+	    <label multiline="true">
+	    	while others see items in descending order.
+	    </label>
+	    
+	    <toolbar>
+	        <toolbarbutton id="saveBtn" label="Save"/>
+	        <toolbarbutton id="cancelBtn" label="Cancel"/>
+	    </toolbar>	                    
+	</window> 
+</zk>
