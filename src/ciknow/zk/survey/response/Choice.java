@@ -136,6 +136,7 @@ public class Choice extends AbstractQuestionAttribute {
         }
 
         if (choiceLimit >= 0 && choiceLimit < count) {
+        	logger.info("choiceLimit: " + choiceLimit + " , count: " + count);
             Messagebox.show("You have made more selections than allowed.");
             return false;
         }
@@ -198,6 +199,7 @@ public class Choice extends AbstractQuestionAttribute {
             }
 
             if (choiceLimit >= 0 && choiceLimit < count) {
+            	logger.info("choiceLimit: " + choiceLimit + " , count: " + count);
                 Messagebox.show("You have made more selections than allowed.");
                 return;
             }

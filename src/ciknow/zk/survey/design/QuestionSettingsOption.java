@@ -168,11 +168,15 @@ public class QuestionSettingsOption extends Div implements IdSpace{
         	
         	isSingleChoiceBox.setChecked(question.isSingleChoice());
         	singleChoiceRenderBox.setChecked(question.showSingleChoiceAsList());
-        	maxChoiceSpinner.setConstraint("no empty, min 0 max" + question.getFields().size());
+
+    		String constraint = "no empty, min 0";
+    		int numFields = question.getFields().size();
+    		if (numFields > 0) constraint += (" max " + numFields);
+    		logger.info("Set constraint for maxChoiceSpinner: " + constraint);
+    		maxChoiceSpinner.setConstraint(constraint);
         	int maxChoice = question.getMaxChoice();
-        	if (maxChoice < 1 || maxChoice > question.getFields().size()) maxChoice = question.getFields().size();
+        	if (maxChoice < 0 || maxChoice > numFields) maxChoice = numFields;
         	maxChoiceSpinner.setValue(maxChoice);
-        	
 
         	ListModelList<String> model = new ListModelList<String>();
         	model.add("");
@@ -341,6 +345,9 @@ public class QuestionSettingsOption extends Div implements IdSpace{
         
         if (maxChoiceItem.isVisible()){
         	Integer max = maxChoiceSpinner.getValue();
+        	if (max == 0){
+        		max = question.getFields().size();
+        	}
         	question.setAttribute(Constants.CHOICE_LIMIT, max.toString());
         } else question.getAttributes().remove(Constants.CHOICE_LIMIT);
         
