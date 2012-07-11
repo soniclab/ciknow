@@ -4,4 +4,4 @@ ciknow
 C-IKNOW main project
 http://ciknow.northwestern.edu
 
-test with jenkins 2
+test with jenkins 3
