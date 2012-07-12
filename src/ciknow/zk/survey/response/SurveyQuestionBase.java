@@ -142,24 +142,29 @@ public class SurveyQuestionBase extends Div implements IdSpace, ISurveyQuestion 
                 }
         	} else {	// attribute based questions   	
 	            boolean showAddBtn = currentQuestion.allowUserCreatedChoice();
-	            if (showAddBtn){
+	            if (showAddBtn){            	
 	            	Button addBtn = new Button();
 	    	        if (currentQuestion.isContactInfo()) {	                	
 	            		addBtn.setId("addContactFieldBtn");
-	            		addBtn.setLabel("Add Contact Field");
-	            		addBtn.setWidth("120px");
-	            		toolbar.insertBefore(addBtn, helpBtn);
+	            		//addBtn.setLabel("Add Contact Field");
+	            		//addBtn.setWidth("120px");
 	    	        } else if (currentQuestion.isText()) {
 	            		addBtn.setId("addTextFieldBtn");
-	            		addBtn.setLabel("Add Text Field");
-	            		addBtn.setWidth("120px");
-	            		toolbar.insertBefore(addBtn, helpBtn);
+	            		//addBtn.setLabel("Add Text Field");
+	            		//addBtn.setWidth("120px");
 	    	        } else {
 	            		addBtn.setId("addFieldBtn");
-	            		addBtn.setLabel("Add Field");
-	            		addBtn.setWidth("80px");
-	            		toolbar.insertBefore(addBtn, helpBtn);
+	            		//addBtn.setLabel("Add Field");	            		
+	            		//addBtn.setWidth("80px");
 	    	        }
+	    	        addBtn.setLabel("Other");
+	    	        addBtn.setWidth("50px");
+	    	        
+	    	        //toolbar.insertBefore(addBtn, helpBtn);
+	            	Component questionArea = questionCaption.getParent();
+	            	Space bottomSpacer = (Space) questionArea.getFellow("bottomSpacer");
+	    	        if (bottomSpacer != null) questionArea.insertBefore(addBtn, bottomSpacer);
+	    	        else questionArea.appendChild(addBtn);
 	            } 
         	}
         }
