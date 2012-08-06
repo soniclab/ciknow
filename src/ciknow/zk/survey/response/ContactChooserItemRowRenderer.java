@@ -41,9 +41,9 @@ public class ContactChooserItemRowRenderer implements ListitemRenderer<ContactCh
             } else {
                 cell.setLabel(value);
                 if (data.isSelected()) {
-                    cell.setStyle("font-weight:bold; color:navy");
+                	item.setSelected(true);
                 } else {
-                    cell.setStyle("font-weight:normal; color:black");
+                	item.setSelected(false);
                 }
             }
         }

@@ -4,6 +4,8 @@ import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.ListitemRenderer;
 
+import ciknow.domain.Node;
+
 /**
  *
  * @author gyao
@@ -12,6 +14,7 @@ public class ContactChooserItemLabelRenderer implements ListitemRenderer<Contact
 
     @Override
     public void render(Listitem item, ContactChooserItem data, int index) throws Exception {
-        new Listcell(data.getContact().getLabel()).setParent(item);
+    	Node node = data.getContact();
+        new Listcell(node.getLabel()).setParent(item);
     }
 }

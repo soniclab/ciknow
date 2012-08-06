@@ -18,6 +18,18 @@
                 <label id="msg" visible="false"/>
 						
                 <hlayout valign="middle">
+                    <vlayout id="filterArea" width="200px" height="500px">
+                        <hlayout>
+                            Filter:
+                            <listbox id="filterBox" mold="select" rows="1" width="150px">
+
+                            </listbox>						
+                        </hlayout>		
+                        <grid id="filterGrid" vflex="1" hflex="1">
+                            <rows/>
+                        </grid>					
+                    </vlayout>
+                                    
                     <listbox id="availableContactsBox" height="500px" hflex="1" checkmark="true">
                         <auxhead id="auxhead">
 
@@ -30,24 +42,16 @@
                         </listfoot>
                     </listbox>
                     
+                    <!-- to be removed
                     <vbox width="50px" align="center">
                         <button id="selectBtn" label="&gt;" width="30px"/>
                         <button id="deselectBtn" label="&lt;" width="30px"/>
                     </vbox>
-                    
-                    <listbox id="selectedContactsBox" height="500px" width="200px" checkmark="true"/>						
+                     -->
+                     
+                    <listbox id="selectedContactsBox" height="500px" width="200px"/>						
 					
-                    <vlayout id="filterArea" width="200px" height="500px">
-                        <hlayout>
-                            Filter:
-                            <listbox id="filterBox" mold="select" rows="1" width="150px">
 
-                            </listbox>						
-                        </hlayout>		
-                        <grid id="filterGrid" vflex="1" hflex="1">
-                            <rows/>
-                        </grid>					
-                    </vlayout>
                 </hlayout>		
             </vlayout>
 			

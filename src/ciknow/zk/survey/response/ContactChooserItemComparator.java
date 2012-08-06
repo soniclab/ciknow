@@ -43,4 +43,38 @@ public class ContactChooserItemComparator implements Comparator<ContactChooserIt
 
         return result;
     }
+
+	public String getColumn() {
+		return column;
+	}
+
+	public void setColumn(String column) {
+		this.column = column;
+	}
+
+	public boolean isAscending() {
+		return ascending;
+	}
+
+	public void setAscending(boolean ascending) {
+		this.ascending = ascending;
+	}
+
+	public boolean isNumeric() {
+		return numeric;
+	}
+
+	public void setNumeric(boolean numeric) {
+		this.numeric = numeric;
+	}
+
+	public boolean isCasesensitive() {
+		return casesensitive;
+	}
+
+	public void setCasesensitive(boolean casesensitive) {
+		this.casesensitive = casesensitive;
+	}
+    
+    
 }

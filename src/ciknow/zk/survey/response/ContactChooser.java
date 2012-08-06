@@ -13,6 +13,7 @@ import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.InputEvent;
+import org.zkoss.zk.ui.event.SelectEvent;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.*;
@@ -86,6 +87,8 @@ public class ContactChooser extends SurveyQuestionBase {
         // image column
         if (showImage) {
             auxheader = new Auxheader();
+            auxheader.setLabel("Search: ");
+            auxheader.setAlign("right");
             auxheader.setParent(auxhead);
 
             listheader = new Listheader("Photo");
@@ -110,6 +113,7 @@ public class ContactChooser extends SurveyQuestionBase {
             columnLabel = "Label";
         }
         listheader = new Listheader(columnLabel);
+        listheader.setId("label");
         listheader.setSortAscending(new ContactChooserItemComparator("label", true, false, true));
         listheader.setSortDescending(new ContactChooserItemComparator("label", false, false, true));
         listheader.setParent(listhead);
@@ -129,6 +133,7 @@ public class ContactChooser extends SurveyQuestionBase {
             filterMap.put(column, searchBox);
 
             listheader = new Listheader(columnLabel);
+            listheader.setId(column);
             listheader.setSortAscending(new ContactChooserItemComparator(column, true, false, true));
             listheader.setSortDescending(new ContactChooserItemComparator(column, false, false, true));
             listheader.setParent(listhead);
@@ -138,6 +143,7 @@ public class ContactChooser extends SurveyQuestionBase {
         listhead = new Listhead();
         listhead.setParent(selectedContactsBox);
         selectedContactsHeader = new Listheader("Selected Contacts");
+        selectedContactsHeader.setSortDirection("ascending");
         selectedContactsHeader.setSortAscending(new ContactChooserItemComparator("label", true, false, true));
         selectedContactsHeader.setSortDescending(new ContactChooserItemComparator("label", false, false, true));
         selectedContactsHeader.setParent(listhead);
@@ -178,8 +184,7 @@ public class ContactChooser extends SurveyQuestionBase {
         selectedContactItems = new ArrayList<ContactChooserItem>();
         for (ContactChooserItem item : availableContactItems) {
             if (item.getContact().getGroups().contains(privateGroup)) {
-                selectedContactItems.add(item);
-                item.setSelected(true);
+                selectedContactItems.add(item);                
             }
         }
 
@@ -188,18 +193,27 @@ public class ContactChooser extends SurveyQuestionBase {
         if (comps == null || comps.isEmpty()) {
             comps.add(new ContactChooserItemComparator("label", true, false, true));
         }
+        for (Comparator<ContactChooserItem> comp : comps){
+        	ContactChooserItemComparator c = (ContactChooserItemComparator) comp;
+        	Listheader lh = (Listheader)listhead.query("#" + c.getColumn());
+        	if (lh != null) lh.setSortDirection(c.isAscending()?"ascending":"descending");
+        }
         ComparatorChain chain = new ComparatorChain(comps);
         Collections.sort(availableContactItems, chain);
         Collections.sort(selectedContactItems, new ContactChooserItemComparator("label", true, false, true));
-
+        
         // Attach assign model and renderer to listboxes
         availableContactsModel = new ListModelList<ContactChooserItem>(availableContactItems);
         availableContactsModel.setMultiple(true);
+        for (ContactChooserItem ccItem : selectedContactItems){
+        	ccItem.setSelected(true);
+        	availableContactsModel.addToSelection(ccItem);        	
+        }
         availableContactsBox.setModel(availableContactsModel);
         availableContactsBox.setItemRenderer(new ContactChooserItemRowRenderer());
 
         selectedContactsModel = new ListModelList<ContactChooserItem>(selectedContactItems);
-        selectedContactsModel.setMultiple(true);
+        //selectedContactsModel.setMultiple(true);
         selectedContactsBox.setModel(selectedContactsModel);
         selectedContactsBox.setItemRenderer(new ContactChooserItemLabelRenderer());
 
@@ -290,8 +304,26 @@ public class ContactChooser extends SurveyQuestionBase {
         // update UI
         updateSize();
     }
+    
 
-    @Listen("onClick = #selectBtn")
+    @SuppressWarnings({ "rawtypes"})
+	@Listen("onSelect = #availableContactsBox")
+    public void onSelect(SelectEvent e){    	
+    	Set<ContactChooserItem> selectedItems = availableContactsModel.getSelection();
+    	for (ContactChooserItem item : availableContactItems){
+    		if (selectedItems.contains(item)) item.setSelected(true);
+    		else item.setSelected(false);
+    	}
+    	
+    	selectedContactsModel.clear();
+    	selectedContactsModel.addAll(selectedItems);
+    	Collections.sort(selectedContactsModel.getInnerList(), new ContactChooserItemComparator("label", true, false, true));
+       
+    	updateSize();
+    }
+
+    /*
+    @Listen("onClick = #selectBtn")    
     public void select() {
         logger.info("select");
         Set<ContactChooserItem> items = availableContactsModel.getSelection();
@@ -342,7 +374,8 @@ public class ContactChooser extends SurveyQuestionBase {
         
         updateSize();
     }
-
+	*/
+    
     @Listen("onClick = #addNodeBtn")
     public void createContact() throws InterruptedException {
         AddContactWindow win = new AddContactWindow(this, columns);
@@ -357,12 +390,13 @@ public class ContactChooser extends SurveyQuestionBase {
      */
     public void onNewContactCreated(Node contact, boolean add) {
         ContactChooserItem item = new ContactChooserItem(contact, showImage, columns, questionMap);
-        if (add) {
-            item.setSelected(true);
-            selectedContactsModel.add(item);
-        }
         availableContactItems.add(item);
         availableContactsModel.add(item);
+        if (add) {
+            item.setSelected(true);    
+            availableContactsModel.addToSelection(item);
+            selectedContactsModel.add(item);
+        }
     }
 
     @Transactional
