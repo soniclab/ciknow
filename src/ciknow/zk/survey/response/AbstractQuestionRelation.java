@@ -4,6 +4,7 @@ import ciknow.domain.Edge;
 import ciknow.domain.Node;
 import ciknow.domain.Question;
 import ciknow.util.GeneralUtil;
+import ciknow.zk.survey.design.AddNodeViaContactChooserWindow;
 import ciknow.zk.survey.design.AddNodeWindow;
 
 import java.awt.Font;
@@ -87,10 +88,18 @@ public class AbstractQuestionRelation extends AbstractQuestion {
         save();
 
         // open addNodeWindow
-        AddNodeWindow win = new AddNodeWindow(this);
-        win.setWidth((GeneralUtil.getDesktopWidth() - 100) + "px");
-        win.setVflex("1");
-        win.doModal();
+        Question ccQuestion = currentQuestion.getContactChooserQuestion();
+        if (ccQuestion == null) {
+	        AddNodeWindow win = new AddNodeWindow(this);
+	        win.setWidth("250px");
+	        win.setVflex("1");
+	        win.doModal();
+        } else {
+	        AddNodeViaContactChooserWindow win = new AddNodeViaContactChooserWindow(this);
+	        win.setWidth((GeneralUtil.getDesktopWidth() - 100) + "px");
+	        win.setVflex("1");
+	        win.doModal();
+        }
     }
     
     protected int getFirstColumnWidth(){

@@ -396,6 +396,14 @@ public class NodeHibernateDao extends HibernateDaoSupport implements NodeDao {
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List<Node> matchByLabel(String pattern){
+		List<Node> list = null;
+		list = (List<Node>)getHibernateTemplate().find("from Node n where n.label like '" + pattern + "' order by label");
+		return list;
+	}
+	
+	
+	@SuppressWarnings("unchecked")
 	public List<Node> findConnected(final Collection<Node> nodes, boolean includeDerivedEdges) {
 		if (nodes == null || nodes.size() == 0) return new LinkedList<Node>();
 		logger.info("find outgoing nodes");

@@ -105,14 +105,10 @@ public class SurveyQuestionBase extends Div implements IdSpace, ISurveyQuestion 
         		addBtn.setWidth("80px");
         		toolbar.insertBefore(addBtn, settingsBtn);
         	} else if (currentQuestion.isRelational()){
-                Question ccQuestion = currentQuestion.getContactChooserQuestion();
-                if (ccQuestion != null
-                        && ccQuestion.allowUserCreatedNode()) {
-            		addBtn.setId("addNodeBtn");
-            		addBtn.setLabel("Add Node");
-            		addBtn.setWidth("80px");
-            		toolbar.insertBefore(addBtn, settingsBtn);
-                }
+        		addBtn.setId("addNodeBtn");
+        		addBtn.setLabel("Add Node");
+        		addBtn.setWidth("80px");
+        		toolbar.insertBefore(addBtn, settingsBtn);
         	}
         } else {
         	if (currentQuestion.isDisplayPage()){
@@ -130,10 +126,7 @@ public class SurveyQuestionBase extends Div implements IdSpace, ISurveyQuestion 
         		// do nothing
         	} else if (currentQuestion.isRelational()){	// relational based questions
                 boolean showAddBtn = currentQuestion.allowUserCreatedNode();
-                Question ccQuestion = currentQuestion.getContactChooserQuestion();
-                if (ccQuestion != null
-                        && ccQuestion.allowUserCreatedNode()
-                        && showAddBtn) {
+                if (showAddBtn) {
                 	Button addBtn = new Button();
             		addBtn.setId("addNodeBtn");
             		addBtn.setLabel("Add Node");

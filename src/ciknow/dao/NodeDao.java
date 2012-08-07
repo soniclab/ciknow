@@ -36,6 +36,8 @@ public interface NodeDao{
     public List<Node> findNodesByCriteria(Map request);
     public List<Node> findEnabledUser();
     
+    public List<Node> matchByLabel(String pattern);
+    
 	// Finds all nodes the given node links to.
 	public List<Node> findConnected(Collection<Node> nodes, boolean includeDerivedEdges);	
 	// Finds all nodes connecting to the given node.

@@ -1,0 +1,9 @@
+
+<zk>
+    <caption id="caption" label="Add Node"/>
+    <div id="questionArea" width="100%" height="100%"/>
+    <toolbar>
+        <toolbarbutton id="saveBtn" label="Save"/>
+        <toolbarbutton id="cancelBtn" label="Cancel"/>
+    </toolbar>
+</zk>
