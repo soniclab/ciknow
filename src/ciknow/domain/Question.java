@@ -762,6 +762,9 @@ public class Question implements java.io.Serializable {
         int choiceLimit = (choiceLimitString != null) ? Integer.parseInt(choiceLimitString) : fields.size();
         return choiceLimit;
     }
+    public boolean isMandatory() {
+        return GeneralUtil.verify(attributes, Constants.IS_MANDATORY);
+    }
     public Field getJumpCondition(){
     	String fieldName = getAttribute(Constants.JUMP_CONDITION);
     	if (fieldName == null) return null;

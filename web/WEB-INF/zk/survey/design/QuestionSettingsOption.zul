@@ -18,7 +18,11 @@
 			<row id="maxChoiceItem" visible="false">
 				<label value="Maximum Number of Choices" />
 				<spinner id="maxChoiceSpinner" />
-			</row>             		
+			</row>
+			<row id="isMandatoryItem" visible="false">
+				<label value="Respondent is required to provide at least one answer" />
+				<checkbox id="isMandatoryBox" />
+			</row>			             		
 			<row id="jumpConditionItem" visible="false">
 				<label value="Jump Condition"/>
 				<listbox id="jumpConditionBox" mold="select" rows="1" width="300px"/>        			

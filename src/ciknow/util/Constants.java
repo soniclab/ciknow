@@ -228,6 +228,7 @@ public class Constants {
 	// question attributes
 	//public static final String DEFAULT_FIELD = "defaultField"; // choice.mxml
 	//public static final String DEFAULT_SCALE = "defaultScale"; // rating.mxml, relationalrating.mxml
+	public static final String IS_MANDATORY = "isMandatory";	// choice (for now)
 	public static final String CHOICE_LIMIT = "choiceLimit"; // choice.mxml
 	public static final String SHOW_SINGLE_CHOICE_AS_LIST = "showSingleChoiceAsList";
 	public static final String DISPLAY_RATING_AS_DROPDOWN_LIST = "displayRatingAsDropdownList"; // rating, relational rating.mxml

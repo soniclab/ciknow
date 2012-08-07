@@ -122,8 +122,33 @@ public class Choice extends AbstractQuestionAttribute {
     }
 
     @Override
-    public boolean validate() {
-    	if (currentQuestion.isSingleChoice()) return true;
+    public boolean validate() { 
+    	String msg = "This question is mandatory (answer required)";
+    	boolean mandatory = currentQuestion.isMandatory();
+    	if (currentQuestion.isSingleChoice()) {
+    		if (!mandatory) return true;
+    		
+    		Field selection = null;
+    		if (currentQuestion.showSingleChoiceAsList()){
+    			ListModelList<Object> listModel = (ListModelList<Object>) listbox.getModel();
+                Iterator<Object> itr = listModel.getSelection().iterator();                
+                if (itr.hasNext()) {
+                    String fieldLabel = (String) itr.next();
+                    selection = currentQuestion.getFieldByLabel(fieldLabel);
+                }
+    		} else {
+                Radio radio = radioGroup.getSelectedItem();
+                if (radio != null) {
+                    String fieldName = radio.getValue();
+                    selection = currentQuestion.getFieldByName(fieldName);
+                }
+    		}
+    		
+			if (selection == null) {
+				Messagebox.show(msg);  
+				return false;
+			} else return true;
+    	}
     	
         Rows rows = grid.getRows();
         int count = 0;
@@ -135,6 +160,11 @@ public class Choice extends AbstractQuestionAttribute {
             }
         }
 
+        if (mandatory && count == 0) {
+        	Messagebox.show(msg);
+        	return false;
+        }
+        
         if (choiceLimit >= 0 && choiceLimit < count) {
         	logger.info("choiceLimit: " + choiceLimit + " , count: " + count);
             Messagebox.show("You have made more selections than allowed.");

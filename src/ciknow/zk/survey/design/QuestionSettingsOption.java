@@ -55,6 +55,10 @@ public class QuestionSettingsOption extends Div implements IdSpace{
     @Wire
     private Spinner maxChoiceSpinner;
     @Wire
+    private Row isMandatoryItem;
+    @Wire
+    private Checkbox isMandatoryBox;
+    @Wire
     private Row jumpConditionItem;
     @Wire
     private Listbox jumpConditionBox;
@@ -163,6 +167,7 @@ public class QuestionSettingsOption extends Div implements IdSpace{
         	} else {
         		maxChoiceItem.setVisible(true);   
         	}
+        	isMandatoryItem.setVisible(true);
         	jumpConditionItem.setVisible(true);
         	jumpQuestionItem.setVisible(true);
         	
@@ -178,6 +183,8 @@ public class QuestionSettingsOption extends Div implements IdSpace{
         	if (maxChoice < 0 || maxChoice > numFields) maxChoice = numFields;
         	maxChoiceSpinner.setValue(maxChoice);
 
+        	isMandatoryBox.setChecked(question.isMandatory());
+        	
         	ListModelList<String> model = new ListModelList<String>();
         	model.add("");
         	for (Field field : question.getFields()){
@@ -350,6 +357,10 @@ public class QuestionSettingsOption extends Div implements IdSpace{
         	}
         	question.setAttribute(Constants.CHOICE_LIMIT, max.toString());
         } else question.getAttributes().remove(Constants.CHOICE_LIMIT);
+        
+        if (isMandatoryItem.isVisible() && isMandatoryBox.isChecked()){
+        	question.setAttribute(Constants.IS_MANDATORY, "1");
+        } else question.getAttributes().remove(Constants.IS_MANDATORY);
         
         if (jumpConditionItem.isVisible()){
         	ListModelList model = (ListModelList)jumpConditionBox.getModel();
