@@ -127,7 +127,7 @@ public class AddNodeWindow extends Window {
         nodeDao.save(node);
         
         // update interface
-        p.refresh();
+        p.refreshWholePage();
     }
     
     

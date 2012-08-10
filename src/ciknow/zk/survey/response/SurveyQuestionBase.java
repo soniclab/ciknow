@@ -379,9 +379,21 @@ public class SurveyQuestionBase extends Div implements IdSpace, ISurveyQuestion 
         this.msg.setVisible(true);
     }
 
+    /**
+     * update current question only
+     */
     @Override
     public void refresh() {
         SurveyPage surveyPage = (SurveyPage) getParent();
-        surveyPage.updateQuestionInPage(currentQuestion);
+        surveyPage.updateQuestionInPage(currentQuestion);	
+    }
+    
+    /**
+     * update the whole page
+     */
+    @Override
+    public void refreshWholePage() {
+        SurveyPage surveyPage = (SurveyPage) getParent();
+        surveyPage.render(currentQuestion.getPage());		
     }
 }

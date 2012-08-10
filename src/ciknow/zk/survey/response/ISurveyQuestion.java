@@ -59,4 +59,9 @@ public interface ISurveyQuestion extends Component {
      * Refresh current question interface
      */
     public void refresh();
+
+    /**
+     * Refresh whole page interface
+     */
+	public void refreshWholePage();
 }
