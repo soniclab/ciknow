@@ -10,6 +10,7 @@ import ciknow.zk.survey.design.QuestionSettings;
 import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.stringtemplate.v4.ST;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.IdSpace;
 import org.zkoss.zk.ui.event.DropEvent;
@@ -215,6 +216,16 @@ public class SurveyQuestionBase extends Div implements IdSpace, ISurveyQuestion 
                 content = content.replaceAll("SIZE=\"[0-9]+\"", "");
                 logger.debug("htmlInstruction from flash version of C-IKNOW");
             }
+            
+            // processing metadata...
+            ST template = new ST(content, '{', '}');
+            template.add("user", respondent);
+            template.add("question", currentQuestion);
+            template.add("page", currentQuestion.getPage());
+            template.add("survey", currentQuestion.getPage().getSurvey());
+            content = template.render();
+            
+            // wrap the content
             StringBuilder sb = new StringBuilder();
             sb.append("<div "
                     + "style='"
