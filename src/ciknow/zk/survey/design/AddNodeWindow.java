@@ -195,7 +195,9 @@ public class AddNodeWindow extends Window {
     public void create() throws InterruptedException {
         createNode();
         AbstractQuestionRelation p = (AbstractQuestionRelation) getParent();
-        p.refresh();
+        
+        // update interface
+        p.refreshWholePage();
     }
 
     @Listen("onClick = #cancelCreateBtn, #cancelAddBtn")
