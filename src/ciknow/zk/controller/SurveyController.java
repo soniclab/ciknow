@@ -7,9 +7,7 @@ import ciknow.domain.Activity;
 import ciknow.domain.Node;
 import ciknow.domain.Page;
 import ciknow.domain.Survey;
-import ciknow.ro.GenericRO;
 import ciknow.service.ActivityService;
-import ciknow.util.Constants;
 import ciknow.util.GeneralUtil;
 import ciknow.util.SurveyUtil;
 import ciknow.zk.survey.design.AddPageWindow;
@@ -17,13 +15,6 @@ import ciknow.zk.survey.design.AddQuestionWindow;
 import ciknow.zk.survey.design.SurveyOverview;
 import ciknow.zk.survey.response.SurveyPage;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -61,25 +52,8 @@ public class SurveyController extends SelectorComposer<Component> {
     private ActivityDao activityDao;
     @WireVariable
     private ActivityService activityService;
-    @WireVariable
-    private GenericRO genericRO;
     
-    // components
-    @Wire
-    private Combobutton accountBtn;
-    @Wire
-    private Combobox projectBox;
-    /*
-    @Wire
-    private Button surveyBtn;    
-    @Wire
-    private Button visualizeBtn;
-    @Wire
-    private Button analyzeBtn;
-    @Wire
-    private Button projectSettingsBtn;
-    */
-    
+    // components   
     @Wire
     private Label surveyName;
     @Wire
@@ -95,8 +69,6 @@ public class SurveyController extends SelectorComposer<Component> {
     @Wire
     private Hbox projectBar;  
     @Wire
-    private Combobox nodeBox;
-    @Wire
     private Div pageArea;
     @Wire
     private Button prevBtn;
@@ -108,7 +80,6 @@ public class SurveyController extends SelectorComposer<Component> {
     // internal
     private SurveyPage surveyPage;
     private ListModelList<String> pagesModel;
-    private ListModelList<String> myProjectsModel;
     
     @Override
     public void doAfterCompose(Component comp) throws Exception {
@@ -148,6 +119,7 @@ public class SurveyController extends SelectorComposer<Component> {
     }
     
 	private void populate() {
+		logger.info("Creating survey interface ...");
         // theme indicator
         //String theme = Themes.getCurrentTheme();
     	String theme = "silvertail";
@@ -176,7 +148,6 @@ public class SurveyController extends SelectorComposer<Component> {
             }
             SurveyUtil.setRespondent(respondent);
         }
-        accountBtn.setLabel(login.getUsername());
         
         Page currentPage = null;
     	List<Page> visiblePages = survey.getVisiblePages(respondent);
@@ -189,6 +160,7 @@ public class SurveyController extends SelectorComposer<Component> {
 	    	logger.debug("Total: " + visiblePages.size());
     	}
     	*/
+    	
     	// get currentPage based on logged activities
     	List<Activity> acts = activityDao.getActivitiesBySubject(respondent);
     	String pageName = activityService.getLastEnteredPageName(acts);
@@ -208,18 +180,7 @@ public class SurveyController extends SelectorComposer<Component> {
     	} else {
     		// this survey is empty
     	}
-
-    	// Branding top bar
-        if (login.isAdmin()){
-        	// populate impersonate box
-        	populateImpersonateBox();
-        	
-        	// populate my projects box
-        	populateProjectsBox();
-        } else {
-        	accountBtn.setParent(null);
-        }
-        
+    	
         // Top Banner        
         surveyName.setValue(survey.getName());
         surveyDescription.setValue(survey.getDescription());        
@@ -255,97 +216,6 @@ public class SurveyController extends SelectorComposer<Component> {
         }
     }
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private void populateImpersonateBox() {		
-		List<Node> nodes = nodeDao.findByType(Constants.NODE_TYPE_USER);
-		List<String> labels = new ArrayList<String>();
-		for (Node node : nodes){
-			if (node.getUsername().equals("admin") && !GeneralUtil.getLogin().getUsername().equals("admin")) continue;
-			labels.add(node.getLabel());
-		}
-		Collections.sort(labels);
-		ListModelList model = new ListModelList(labels);
-		model.addToSelection(SurveyUtil.getRespondent().getLabel());
-		nodeBox.setModel(ListModels.toListSubModel(model, new NodeLabelComparator(), 15));
-	}
-    
-    private void populateProjectsBox(){
-    	try {
-    		Node login = GeneralUtil.getLogin();
-			Class.forName("com.mysql.jdbc.Driver");	
-			String url = "jdbc:mysql://localhost:3306/ciknowmgr";
-			Connection con = DriverManager.getConnection(url, "ciknowmgr", "ciknowmgr");
-			
-			// find user_id
-			Long userId;
-			String sql = "SELECT user_id FROM users WHERE username = '" + login.getUsername() + "'";
-			logger.debug(sql);			
-			Statement st = con.createStatement();
-			ResultSet rs = st.executeQuery(sql);			
-			if (rs.next()){
-				userId = rs.getLong(1);
-			} else throw new Exception("Cannot identify login with username=" + login.getUsername());
-			
-			// check if login is admin in ciknowmgr
-			sql = "SELECT role_id FROM user_role WHERE user_id = " + userId;
-			logger.debug(sql);
-			st = con.createStatement();
-			rs = st.executeQuery(sql);
-			boolean isAdmin = false;
-			while (rs.next()){
-				Long roleId = rs.getLong(1);
-				if (roleId.equals(1L)) {
-					isAdmin = true;
-					break;
-				}
-			}
-			
-			// retrieve projects
-			if (isAdmin){
-				sql = "SELECT name FROM projects WHERE enabled=true";
-				logger.debug(sql);
-				st = con.createStatement();
-				rs = st.executeQuery(sql);
-			} else {
-				StringBuilder query = new StringBuilder();
-				query.append("SELECT name FROM projects WHERE enabled=true AND project_id IN(");
-				
-				sql = "SELECT project_id FROM user_project WHERE user_id=" + userId;
-				logger.debug(sql);
-				st = con.createStatement();
-				rs = st.executeQuery(sql);
-				int count = 0;
-				while (rs.next()){
-					if (count > 0) query.append(",");
-					query.append(rs.getLong(1));
-					count++;
-				}
-				query.append(")");
-				
-				st = con.createStatement();
-				rs = st.executeQuery(query.toString());
-				logger.debug(query.toString());
-			}
-			
-			// construct model
-			List<String> projects = new ArrayList<String>();
-			while (rs.next()){
-				projects.add(rs.getString(1));
-			}
-			Collections.sort(projects);
-			logger.debug(projects);
-			myProjectsModel = new ListModelList<String>(projects);			
-	    	String baseURL = genericRO.getBaseURL();
-	    	String context = baseURL.substring(baseURL.lastIndexOf("/") + 1);
-	    	String projectName = context.substring(1);
-	    	myProjectsModel.addToSelection(projectName);
-			projectBox.setModel(myProjectsModel);
-    	} catch (Exception e){
-    		logger.error(e.getMessage());
-    		e.printStackTrace();
-    	}
-    }
-    
     public void populatePagesBox() {
         pagesModel = new ListModelList<String>();
         List<Page> visiblePages = SurveyUtil.getVisiblePages();
@@ -427,43 +297,6 @@ public class SurveyController extends SelectorComposer<Component> {
         
         // render
         render(false);
-    }
-    
-    @Listen("onClick = #accountBtn")
-    public void showAccountPopup(){
-    	accountBtn.open();
-    }
-    
-    @Listen("onSelect = #nodeBox")
-    public void impersonate(){
-    	String nodeLabel = nodeBox.getValue();
-    	List<Node> nodes = nodeDao.loadByLabel(nodeLabel);
-    	if (nodes ==null || nodes.isEmpty()) {
-    		Messagebox.show("Invalid node: " + nodeLabel);
-    		return;
-    	}
-    	Node node = nodes.get(0);
-    	SurveyUtil.setRespondent(node);
-    	
-    	Executions.sendRedirect(null);
-    }
-    
-    @Listen("onSelect = #projectBox")
-    public void navigateToProject(){
-    	String url = genericRO.getBaseURL();
-    	String prefix = url.substring(0, url.lastIndexOf("/") + 1);
-    	String context = url.substring(url.lastIndexOf("/") + 1);
-    	String newContext = "_" + myProjectsModel.getSelection().iterator().next();
-    	if (context.equals(newContext)) return;
-    	String newURL = prefix + newContext;
-    	Executions.sendRedirect(newURL);
-    }
-    
-    @Listen("onClick = #ciknowmgrBtn")
-    public void navigateToCiknowmgr(){
-    	String url = genericRO.getBaseURL();
-    	String prefix = url.substring(0, url.lastIndexOf("/") + 1);
-    	Executions.sendRedirect(prefix + "ciknowmgr");
     }
     
     @Listen("onClick = #overviewBtn")
@@ -600,20 +433,6 @@ public class SurveyController extends SelectorComposer<Component> {
     	}
     }
     
-    @Listen("onClick = #logoutBtn")
-    public void logout() {
-    	if (save()){
-        	Node respondent = SurveyUtil.getRespondent();
-        	
-        	Page page = SurveyUtil.getCurrentPage();
-        	if (page != null) activityService.leavePage(respondent, page);
-        	
-	        logger.info("logout: " + SurveyUtil.getRespondent().getLabel());
-	        Executions.sendRedirect("/j_spring_security_logout");
-    	}
-    }
-
-    
     @Transactional
     private boolean save() {
         // validate
@@ -631,16 +450,5 @@ public class SurveyController extends SelectorComposer<Component> {
     private void sync() {
         Node respondent = SurveyUtil.getRespondent();
         respondent.update(nodeDao.loadById(respondent.getId()));
-    }
-    
-    private class NodeLabelComparator implements Comparator<Object>{
-
-		@Override
-		public int compare(Object o1, Object o2) {
-			String s1 = ((String)o1).toLowerCase();
-			String s2 = ((String)o2).toLowerCase();
-			if (s2.contains(s1)) return 0;
-			else return -1;
-		}
     }
 }

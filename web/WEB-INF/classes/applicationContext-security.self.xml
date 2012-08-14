@@ -27,6 +27,8 @@
         <intercept-url pattern="/vis_get_*" access="isAuthenticated()"/>
         <intercept-url pattern="/teamDetails.jsp" access="isAuthenticated()"/>        
         <intercept-url pattern="/survey.zul" access="isAuthenticated()"/>
+        <intercept-url pattern="/data.zul" access="isAuthenticated()"/>
+        <intercept-url pattern="/io.zul" access="isAuthenticated()"/>
         <intercept-url pattern="/recommender.zul" access="isAuthenticated()"/>
         <intercept-url pattern="/admin.html" access="isAuthenticated()"/>
         

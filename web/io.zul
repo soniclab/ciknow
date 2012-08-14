@@ -1,0 +1,172 @@
+<?page title="C-IKNOW Import/Export" contentType="text/html;charset=UTF-8"?>
+
+<zk xmlns:n="native">
+
+    <style>
+	body{
+	    padding: 0 0;
+	    overflow:hidden;
+	}
+	
+    </style>
+
+    <borderlayout id="stage" width="100%" height="100%">    	
+    	<north size="24px" border="none">    		
+			<include src="brandingbar.zul"/>
+    	</north>        	
+		
+    	<west width="5%" border="none">
+    		<div style="background:#dddddd;" width="100%" height="100%"/>
+    	</west>
+
+    	<center autoscroll="true" flex="true" border="none">
+    		<vbox apply="ciknow.zk.controller.IOController" width="100%" height="100%">
+    			<grid id="ioGrid" vflex="1">
+    				<columns>
+    					<column width="150px"/>
+    					<column/>
+    				</columns>
+    				<rows>
+    					<row valign="top">
+    						<label>Photos</label>
+    						<button id="photosBtn" label="Import(*.jpg)" upload="true"/>
+    					</row>
+    					<row valign="top">
+    						<label>Survey Codebook</label>
+    						<button id="codebookBtn" label="View"/>
+    					</row>
+    					<row valign="top">
+    						<label>Survey Metadata</label>
+    						<vlayout>
+    							<button id="metadataImportBtn" label="Import(*.xml)" upload="true"/>
+    							<button id="metadataExportBtn" label="Export"/>
+    						</vlayout>
+    					</row>
+    					<row valign="top">
+    						<label>Network: GraphML</label>
+    						<vlayout>
+    							<button id="graphmlFormatBtn" label="Format"/>
+    							<hlayout>
+    								<button id="graphmlImportBtn" label="Import(*.xml)" upload="true"/>
+    								<checkbox id="graphmlImportOverwriteBox" label="Overwrite Existing Nodes"/>    								
+    							</hlayout>
+    							<hlayout>
+    								<button id="graphmlExportBtn" label="Export"/>
+    								<checkbox id="graphmlExportRoundtripEnabledBox" label="Roundtrip Enabled" checked="true"/>
+    							</hlayout>    							
+    						</vlayout>
+    					</row>
+    					<row valign="top">
+    						<label>Network: DL</label>
+    						<vlayout>
+    							<button id="dlFormatBtn" label="Format"/>
+    							<button id="dlImportBtn" label="Import" upload="true"/>
+    							<hlayout>
+    								<button id="dlExportBtn" label="Export"/>
+    								<checkbox id="dlExportLabelEmbeddedBox" label="Label Embedded" checked="true"/>
+    								<checkbox id="dlExportShowIsolateBox" label="Show Isolate" checked="true"/>
+    							</hlayout>    							
+    						</vlayout>
+    					</row>  
+    					
+    					<row></row> 
+    					 		
+    					<row valign="top">
+    						<label>Nodes</label>
+    						<vlayout>
+    							<button id="contactsFormatBtn" label="Format"/>
+    							<hlayout>
+    								<button id="contactsImportBtn" label="Import(*.txt)" upload="true"/>
+    								<checkbox id="contactsImportOverwriteBox" label="Overwrite Existing Nodes"/>
+    								<listbox id="contactsImportPurposeList" mold="select" rows="1">
+    									<listitem value="mixed" selected="true">
+    										<listcell label="Mixed"/>
+    									</listitem>
+    									<listitem value="create">
+    										<listcell label="Create New Nodes"/>
+    									</listitem>
+    									<listitem value="update">
+    										<listcell label="Update Existing Nodes"/>
+    									</listitem>
+    									<listitem value="validate">
+    										<listcell label="Validate Input File"/>
+    									</listitem>    									    									    									
+    								</listbox>
+    							</hlayout>
+    							<button id="contactsExportBtn" label="Export"/>
+    						</vlayout>
+    					</row>	
+    					<row valign="top">
+    						<label>Node Attributes</label>
+    						<vlayout>
+    							<button id="nodeAttrFormatBtn" label="Format"/>
+    							<button id="nodeAttrImportBtn" label="Import(*.txt)" upload="true"/>
+    						</vlayout>
+    					</row>	
+    					<row valign="top">
+    						<label>Node Data</label>
+    						<vlayout>
+    						
+    						</vlayout>
+    					</row>     					
+    					<row valign="top">
+    						<label>Node Roles</label>
+    						<vlayout>    							
+    							<button id="nodeRolesImportBtn" label="Import(*.txt)" upload="true"/>
+    							<button id="nodeRolesExportBtn" label="Export"/>
+    						</vlayout>
+    					</row> 
+    					<row valign="top">
+    						<label>Node Groups</label>
+    						<vlayout>    							
+    							<button id="nodeGroupsImportBtn" label="Import(*.txt)" upload="true"/>
+    							<button id="nodeGroupsExportBtn" label="Export"/>
+    						</vlayout>
+    					</row>  
+    					<row valign="top">
+    						<label>Group Attributes</label>
+    						<vlayout>
+    							<button id="groupAttrFormatBtn" label="Format"/>
+    							<button id="groupAttrImportBtn" label="Import(*.txt)" upload="true"/>
+    						</vlayout>
+    					</row>	
+    					
+    					<row></row>
+    					
+    					<row valign="top">
+    						<label>All Questions</label>
+    						<vlayout>
+    							<button id="surveyImportBtn" label="Import(*.txt)" upload="true"/>
+    							<hlayout>
+    								<listbox id="surveyExportNameList" mold="select" rows="1">
+    									<listitem value="name" selected="true">
+    										<listcell label="Name"/>
+    									</listitem>
+    									<listitem value="id">
+    										<listcell label="ID"/>
+    									</listitem>
+    									<listitem value="sequence">
+    										<listcell label="Sequence Number"/>
+    									</listitem>  									    									    									
+    								</listbox>    								
+    								<button id="surveyExportBtn" label="Export"/>
+    							</hlayout>
+    						</vlayout>
+    					</row>
+    					<row valign="top">
+    						<label>Individual Question</label>
+    						<vlayout>
+    						
+    						</vlayout>
+    					</row>   					
+    				</rows>
+    			</grid>
+    		</vbox>
+    	</center>
+
+    	<east width="5%" border="none">
+    		<div style="background:#dddddd;" width="100%" height="100%"/>
+    	</east>
+
+    </borderlayout>
+</zk>
