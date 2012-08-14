@@ -7,6 +7,7 @@ import ciknow.domain.Question;
 import ciknow.util.SurveyUtil;
 import ciknow.zk.survey.design.QuestionSettings;
 
+import java.util.Iterator;
 import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -223,6 +224,12 @@ public class SurveyQuestionBase extends Div implements IdSpace, ISurveyQuestion 
             template.add("question", currentQuestion);
             template.add("page", currentQuestion.getPage());
             template.add("survey", currentQuestion.getPage().getSurvey());
+            Iterator<ciknow.domain.Group> respondentGroups = currentQuestion.getVisibleGroups().iterator();
+            if (respondentGroups.hasNext()) {
+            	ciknow.domain.Group respondentGroup = respondentGroups.next();
+            	respondentGroup = groupDao.loadById(respondentGroup.getId());
+            	template.add("respondentGroup", respondentGroup);
+            }
             content = template.render();
             
             // wrap the content
