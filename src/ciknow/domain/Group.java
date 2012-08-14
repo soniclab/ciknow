@@ -1,6 +1,8 @@
 package ciknow.domain;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -18,7 +20,8 @@ public class Group implements java.io.Serializable {
     private Long version;
     private String name;
     private Set<Node> nodes = new HashSet<Node>(0);
-
+    private Map<String, String> attributes = new HashMap<String, String>();
+    
     public Group() {
     }
 
@@ -92,7 +95,15 @@ public class Group implements java.io.Serializable {
         this.nodes = nodes;
     }
 
-    @Override
+    public Map<String, String> getAttributes() {
+		return attributes;
+	}
+
+	public void setAttributes(Map<String, String> attributes) {
+		this.attributes = attributes;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;

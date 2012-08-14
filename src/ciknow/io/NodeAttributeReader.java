@@ -1,7 +1,6 @@
 package ciknow.io;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.util.*;
 
 import org.apache.commons.logging.Log;

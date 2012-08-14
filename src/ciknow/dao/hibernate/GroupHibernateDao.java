@@ -10,9 +10,13 @@ import java.util.Collection;
 import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.Hibernate;
+import org.hibernate.HibernateException;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
+import org.hibernate.criterion.CriteriaSpecification;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -30,24 +34,44 @@ public class GroupHibernateDao extends HibernateDaoSupport implements GroupDao {
         GroupDao groupDao = (GroupDao) Beans.getBean("groupDao");
 
         //testCreate(groupDao);
-        testUpdate(groupDao);
+        //testUpdate(groupDao);
         //testLoadById(groupDao);
         //testFindById(groupDao);
-        //testGetUserIdsByGroupId(groupDao);		
+        //testGetUserIdsByGroupId(groupDao);
+        testLoadAll(groupDao);
     }
 
-    private static void testCreate(GroupDao groupDao) {
+    @SuppressWarnings("unused")
+	private static void testCreate(GroupDao groupDao) {
         Group g = new Group();
         g.setName("test");
         groupDao.save(g);
     }
 
-    private static void testUpdate(GroupDao groupDao) {
+    @SuppressWarnings("unused")
+	private static void testUpdate(GroupDao groupDao) {
         Group g = groupDao.findByName("test");
         g.setName("test again");
         groupDao.save(g);
     }
 
+    private static void testLoadAll(GroupDao groupDao){
+    	List<Group> groups = groupDao.loadAll();
+    	for (Group group : groups){
+    		logger.info(group.getName() + ":" + group.getNodes().size());
+    	}
+    }
+    
+    @Override
+    public void save(Group g) {
+        getHibernateTemplate().saveOrUpdate(g);
+    }
+
+    @Override
+    public void save(Collection<Group> gs) {
+        getHibernateTemplate().saveOrUpdateAll(gs);
+    }
+    
     @Override
     public void delete(Group g) {
         getHibernateTemplate().delete(g);
@@ -71,30 +95,18 @@ public class GroupHibernateDao extends HibernateDaoSupport implements GroupDao {
         return (Group) getHibernateTemplate().get(Group.class, id);
     }
 
-    public Group loadById(Long id) {
-        String query = "from Group g left join fetch g.nodes where g.id = :id";
+    @SuppressWarnings("unchecked")
+	public Group loadById(Long id) {
+        String query = "from Group g " +
+        		"left join fetch g.nodes " +
+        		"left join fetch g.attributes " +
+        		"where g.id = :id";
         List<Group> groups = getHibernateTemplate().findByNamedParam(query, "id", id);
         if (groups != null && !groups.isEmpty()) {
             return (Group) groups.get(0);
         } else {
             return null;
         }
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public List<Group> getAll() {
-        return getHibernateTemplate().loadAll(Group.class);
-    }
-
-    @Override
-    public void save(Group g) {
-        getHibernateTemplate().saveOrUpdate(g);
-    }
-
-    @Override
-    public void save(Collection<Group> gs) {
-        getHibernateTemplate().saveOrUpdateAll(gs);
     }
 
     @Override
@@ -119,9 +131,13 @@ public class GroupHibernateDao extends HibernateDaoSupport implements GroupDao {
         }
     }
     
-    @Override
+    @SuppressWarnings("rawtypes")
+	@Override
     public Group loadByName(String name) {
-        String query = "from Group g left join fetch g.nodes where g.name = :name";
+        String query = "from Group g " +
+        		"left join fetch g.nodes " +
+        		"left join fetch g.attributes " +
+        		"where g.name = :name";
         List groups = getHibernateTemplate().findByNamedParam(query, "name", name);
         if (groups != null && !groups.isEmpty()) {
             return (Group) groups.get(0);
@@ -130,7 +146,7 @@ public class GroupHibernateDao extends HibernateDaoSupport implements GroupDao {
         }
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public List<Long> getNodeIdsByGroupId(final Long id) {
         HibernateTemplate ht = getHibernateTemplate();
@@ -148,7 +164,7 @@ public class GroupHibernateDao extends HibernateDaoSupport implements GroupDao {
         });
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public void updateNodesInGroup(final Long groupId, final Collection<Long> nodeIds) {
         logger.info("updating nodes in group (id=" + groupId + ")");
         HibernateTemplate ht = getHibernateTemplate();
@@ -195,4 +211,36 @@ public class GroupHibernateDao extends HibernateDaoSupport implements GroupDao {
         });
         logger.info("updating nodes in group (id=" + groupId + "), done");
     }
+
+
+    @Override
+    public List<Group> getAll() {
+        return getHibernateTemplate().loadAll(Group.class);
+    }
+    
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public List<Group> loadAll() {
+		/*
+        String query = "select distinct g from Group g " +
+        		"left join fetch g.nodes " +
+        		"left join fetch g.attributes";
+        return (List<Group>) getHibernateTemplate().find(query);
+        */
+		
+		List<Group> groups = getHibernateTemplate().executeFind(new HibernateCallback(){
+
+			public Object doInHibernate(Session session)
+					throws HibernateException, SQLException {
+				Criteria c = session.createCriteria(Group.class);
+				c.setFetchMode("attributes", FetchMode.JOIN);
+				c.setFetchMode("nodes", FetchMode.JOIN);
+				c.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);				
+				List<Group> groups = c.list();											
+				return groups;
+			}
+			
+		});
+		return groups;
+	}
 }

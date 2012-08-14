@@ -125,8 +125,10 @@ public class CodeBookWriter {
 			
 			pageElement.addAttribute("name", page.getName());
 			pageElement.addAttribute("label", page.getLabel());
-			
-			pageElement.addElement("instruction").addText(page.getInstruction());
+			String pageInstruction = page.getInstruction();
+			if (pageInstruction != null && !pageInstruction.isEmpty()){
+				pageElement.addElement("instruction").addText(pageInstruction);
+			}			
 			
 			Map<String, String> pageAttributes = page.getAttributes();
 			if (!pageAttributes.isEmpty()){

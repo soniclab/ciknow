@@ -22,5 +22,11 @@
                 <column name="node_id" not-null="true"/>
             </many-to-many>
         </set>
+        
+        <map name="attributes" table="group_attributes" fetch="subselect" lazy="true">
+            <key column="group_id"/>
+            <map-key type="string" column="attr_key"/>
+            <element type="string" column="attr_value" not-null="true"/>
+        </map>        
     </class>
 </hibernate-mapping>

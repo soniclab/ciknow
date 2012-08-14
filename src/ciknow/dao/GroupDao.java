@@ -32,4 +32,5 @@ public interface GroupDao {
     public void updateNodesInGroup(Long groupId, Collection<Long> nodeIds);
 
     public List<Group> getAll();
+    public List<Group> loadAll();
 }
