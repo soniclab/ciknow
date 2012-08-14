@@ -68,6 +68,10 @@
 		<property name="nodeDao" ref="nodeDao"/>
 	</bean>
 
+	<bean id="groupAttributeReader" class="ciknow.io.GroupAttributeReader">
+		<property name="groupDao" ref="groupDao"/>
+	</bean>
+	
 	<bean id="nodeDataWriter" class="ciknow.io.NodeDataWriter">
 		<property name="nodeDao" ref="nodeDao"/>
 		<property name="questionDao" ref="questionDao"/>	
