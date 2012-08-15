@@ -1,18 +1,19 @@
 <?page title="C-IKNOW Import/Export" contentType="text/html;charset=UTF-8"?>
-
+<?component name="brandingbar" inline="true" macroURI="brandingbar.zul"?>
 <zk xmlns:n="native">
 
     <style>
 	body{
 	    padding: 0 0;
 	    overflow:hidden;
-	}
-	
+	}	
     </style>
 
-    <borderlayout id="stage" width="100%" height="100%">    	
+    <borderlayout id="stage" apply="ciknow.zk.controller.IOController" width="100%" height="100%">    	
     	<north size="24px" border="none">    		
-			<include src="brandingbar.zul"/>
+			<div width="100%" height="100%">
+				<brandingbar/>
+			</div>
     	</north>        	
 		
     	<west width="5%" border="none">
@@ -20,7 +21,7 @@
     	</west>
 
     	<center autoscroll="true" flex="true" border="none">
-    		<vbox apply="ciknow.zk.controller.IOController" width="100%" height="100%">
+    		<vbox width="100%" height="100%">
     			<grid id="ioGrid" vflex="1">
     				<columns>
     					<column width="150px"/>

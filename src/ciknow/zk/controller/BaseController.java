@@ -1,6 +1,8 @@
 package ciknow.zk.controller;
 
+import ciknow.dao.ActivityDao;
 import ciknow.dao.NodeDao;
+import ciknow.dao.SurveyDao;
 import ciknow.domain.Node;
 import ciknow.domain.Page;
 import ciknow.ro.GenericRO;
@@ -22,9 +24,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
-import org.zkoss.zk.ui.Session;
-import org.zkoss.zk.ui.Sessions;
-import org.zkoss.zk.ui.event.MouseEvent;
+import org.zkoss.zk.ui.event.ClientInfoEvent;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.Selectors;
 import org.zkoss.zk.ui.select.annotation.Listen;
@@ -38,23 +38,23 @@ import org.zkoss.zul.*;
  * @author gyao
  */
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
-public class BrandingbarController extends SelectorComposer<Component> {
+public class BaseController extends SelectorComposer<Component> {
 
-    private static final long serialVersionUID = -9135576397887656457L;
-    private static final String ACTIVE_BUTTON = "activeButton";
-    private static final String BTN_SURVEY = "survey";
-    private static final String BTN_DATA = "data";
-    private static final String BTN_IO = "io";
+    private static final long serialVersionUID = -2135576397887656457L;
     
-    private static Log logger = LogFactory.getLog(BrandingbarController.class);
+    private static Log logger = LogFactory.getLog(BaseController.class);
     
     // variables
     @WireVariable
-    private NodeDao nodeDao;
+    protected NodeDao nodeDao;
     @WireVariable
-    private ActivityService activityService;
+    protected SurveyDao surveyDao;
     @WireVariable
-    private GenericRO genericRO;
+    protected ActivityDao activityDao;
+    @WireVariable
+    protected ActivityService activityService;
+    @WireVariable
+    protected GenericRO genericRO;
     
     // components
     @Wire
@@ -76,11 +76,11 @@ public class BrandingbarController extends SelectorComposer<Component> {
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
-        populate();
+        init();
     }
  
-	private void populate() {
-		logger.info("Creating branding bar...");
+	protected void init() {
+		logger.info("Creating Brandingbar...");
         Node login = GeneralUtil.getLogin();
         Node respondent = SurveyUtil.getRespondent();
         if (respondent == null) {
@@ -103,24 +103,6 @@ public class BrandingbarController extends SelectorComposer<Component> {
         } else {
         	accountBtn.setParent(null);
         } 
-        
-        // set active button
-        List<Component> comps = Selectors.find(this.getPage(), "hbox.topbar > button");
-        for (Component comp : comps){
-        	Button button = (Button)comp;
-        	button.setSclass("");
-        }
-        Session s = Sessions.getCurrent();
-        String b = (String)s.getAttribute(ACTIVE_BUTTON);
-        if (b == null) {
-        	b = BTN_SURVEY;
-        	s.setAttribute(ACTIVE_BUTTON, BTN_SURVEY);
-        }
-        Button btn = surveyBtn;
-        if (b.equalsIgnoreCase(BTN_DATA)) btn = dataBtn;
-        else if (b.equalsIgnoreCase(BTN_IO)) btn = ioBtn;
-        else btn = surveyBtn;
-        btn.setSclass("active");
     }
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -214,19 +196,20 @@ public class BrandingbarController extends SelectorComposer<Component> {
     	}
     }
 
-    @Listen("onClick = hbox.topbar > button")
-    public void showSurvey(MouseEvent event){
-    	Button btn = (Button)event.getTarget();
-    	String btnId = btn.getId();
-    	String btnName = btnId.substring(0, btnId.length() - 3);
-    	
-    	Session s = Sessions.getCurrent();
-    	String b = (String)s.getAttribute(ACTIVE_BUTTON);
-    	if (b.equalsIgnoreCase(btnName)) return;
-    	
-    	s.setAttribute(ACTIVE_BUTTON, btnName);
-    	Executions.sendRedirect(btnName + ".zul");
+    protected void disableButton(String b){
+        List<Component> comps = Selectors.find(this.getPage(), "hbox.topbar > button");
+        for (Component comp : comps){
+        	Button button = (Button)comp;
+        	button.setDisabled(false);
+        }
+
+        Button btn = null;
+        if (b.equalsIgnoreCase("data")) btn = dataBtn;
+        else if (b.equalsIgnoreCase("io")) btn = ioBtn;
+        else btn = surveyBtn;
+        btn.setDisabled(true);
     }
+
     
     @Listen("onClick = #accountBtn")
     public void showAccountPopup(){
@@ -274,6 +257,37 @@ public class BrandingbarController extends SelectorComposer<Component> {
     	
         logger.info("logout: " + SurveyUtil.getRespondent().getLabel());
         Executions.sendRedirect("/j_spring_security_logout");
+    }
+    
+    @Listen("onClientInfo = #stage")
+    public void onClientInfo$stage(ClientInfoEvent evt) {
+        Integer width = evt.getDesktopWidth();
+        Integer height = evt.getDesktopHeight();
+        logger.debug("screen.width: " + evt.getScreenWidth());
+        logger.debug("screen.height: " + evt.getScreenHeight());
+        logger.debug("desktop.width: " + width);
+        logger.debug("desktop.height: " + height);
+
+
+        Integer currentWidth = GeneralUtil.getDesktopWidth();
+        Integer currentHeight = GeneralUtil.getDesktopHeight();
+
+        // first hit
+        if (currentWidth == null || currentHeight == null) {
+            logger.debug("First Hit");
+            GeneralUtil.setDesktopWidth(width);
+            GeneralUtil.setDesktopHeight(height);
+            //Executions.sendRedirect(null);
+            return;
+        }
+
+        // browser resize
+        if (!width.equals(currentWidth) || !height.equals(currentHeight)) {
+            logger.debug("Browser Resize");
+            GeneralUtil.setDesktopWidth(width);
+            GeneralUtil.setDesktopHeight(height);
+            //Executions.sendRedirect(null);
+        }
     }
     
     private class NodeLabelComparator implements Comparator<Object>{

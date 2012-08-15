@@ -1,4 +1,5 @@
-<?page title="C-IKNOW Import/Export" contentType="text/html;charset=UTF-8"?>
+<?page title="C-IKNOW Data Management" contentType="text/html;charset=UTF-8"?>
+<?component name="brandingbar" inline="true" macroURI="brandingbar.zul"?>
 
 <zk xmlns:n="native">
 
@@ -6,25 +7,17 @@
 	body{
 	    padding: 0 0;
 	    overflow:hidden;
-	}
-	
+	}	
     </style>
-    
- 	<zscript>
-	<![CDATA[
-		public void handle(UploadEvent event){
-			org.zkoss.util.media.Media media = event.getMedia();
-			System.out.println(media.getStringData());
-		}
-	]]>
-	</zscript>
 	
     <borderlayout id="stage"
-    	apply="" 
+    	apply="ciknow.zk.controller.DataController" 
     	width="100%" height="100%">
     	
     	<north size="24px" border="none">    		
-			<include src="brandingbar.zul"/>
+			<div width="100%" height="100%">
+				<brandingbar/>
+			</div>
     	</north>        	
 		
     	<west width="5%" border="none">
@@ -33,7 +26,7 @@
 
     	<center border="none">
     		<div>
-    		   	Data Management
+    		   	<button id="testBtn" label="Data Management"/>
     		</div>
     	</center>
 
