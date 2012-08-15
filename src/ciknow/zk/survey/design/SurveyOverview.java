@@ -215,6 +215,7 @@ public class SurveyOverview extends Window {
     		
         	DefaultTreeNode pageNode = new DefaultTreeNode(newPage, new DefaultTreeNode[]{});
         	for (Question question : newPage.getQuestions()){
+        		question.setShortName(name + "_" + question.getShortName()); // important!
         		DefaultTreeNode questionNode = new DefaultTreeNode(question);
         		pageNode.add(questionNode);
         	}        	
