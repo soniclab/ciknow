@@ -12,6 +12,7 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.stringtemplate.v4.ST;
+import org.stringtemplate.v4.compiler.STException;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.IdSpace;
 import org.zkoss.zk.ui.event.DropEvent;
@@ -219,18 +220,22 @@ public class SurveyQuestionBase extends Div implements IdSpace, ISurveyQuestion 
             }
             
             // processing metadata...
-            ST template = new ST(content, '{', '}');
-            template.add("user", respondent);
-            template.add("question", currentQuestion);
-            template.add("page", currentQuestion.getPage());
-            template.add("survey", currentQuestion.getPage().getSurvey());
-            Iterator<ciknow.domain.Group> respondentGroups = currentQuestion.getVisibleGroups().iterator();
-            if (respondentGroups.hasNext()) {
-            	ciknow.domain.Group respondentGroup = respondentGroups.next();
-            	respondentGroup = groupDao.loadById(respondentGroup.getId());
-            	template.add("respondentGroup", respondentGroup);
+            try {
+	            ST template = new ST(content, '{', '}');
+	            template.add("user", respondent);
+	            template.add("question", currentQuestion);
+	            template.add("page", currentQuestion.getPage());
+	            template.add("survey", currentQuestion.getPage().getSurvey());
+	            Iterator<ciknow.domain.Group> respondentGroups = currentQuestion.getVisibleGroups().iterator();
+	            if (respondentGroups.hasNext()) {
+	            	ciknow.domain.Group respondentGroup = respondentGroups.next();
+	            	respondentGroup = groupDao.loadById(respondentGroup.getId());
+	            	template.add("respondentGroup", respondentGroup);
+	            }
+	            content = template.render();
+            } catch (STException e){
+            	Messagebox.show("The template for question instruction is not well-formed! Raw template text is displayed instead.");
             }
-            content = template.render();
             
             // wrap the content
             StringBuilder sb = new StringBuilder();
