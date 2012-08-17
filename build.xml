@@ -427,6 +427,21 @@
         </java>   	
     </target>
 	
+    <target name="copyPagesWithDynamicGroup" depends="compile">
+        <replace file="${build}/WEB-INF/classes/applicationContext-datasource.xml"
+                 token="_ciknow" value="${context}"/>  
+    	
+        <java classname="ciknow.tmp.PageCopyWithDynamicGroup"
+        	fork="true"
+        	maxmemory="256m"
+        	failonerror="true">
+        	<classpath refid="classpath"/>
+        	<arg line="1 COPY C:/Users/gyao/git/ciknow/web/groups.txt"/>
+        </java>  
+    	
+        <replace file="${build}/WEB-INF/classes/applicationContext-datasource.xml"
+                 token="${context}" value="_ciknow"/>     	
+    </target>
 
 
 	<!-- ############################### JAR ############################### -->

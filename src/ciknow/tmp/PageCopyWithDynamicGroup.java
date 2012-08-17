@@ -21,14 +21,21 @@ public class PageCopyWithDynamicGroup {
 	private static final Log logger = LogFactory.getLog(PageCopyWithDynamicGroup.class);
 	
 	public static void main(String[] args) throws IOException{
+		if (args.length != 3) {
+			logger.warn("Invalid arguments.");
+			System.exit(1);
+		}
+		String pageId = args[0];
+		String pageNamePrefix = args[1];
+		String groupFilename = args[2];
+		logger.info("Target Page Id: " + pageId);
+		logger.info("Page Name Prefix: " + pageNamePrefix);
+		logger.info("Group names file: " + groupFilename);
+		
 		Beans.init();
 		PageDao pageDao = (PageDao)Beans.getBean("pageDao");
 		SurveyDao surveyDao = (SurveyDao)Beans.getBean("surveyDao");
-		GroupDao groupDao = (GroupDao)Beans.getBean("groupDao");
-		
-		String pageId = "1";
-		String pageNamePrefix = "CTSA";
-		String groupFilename = "C:/Users/gyao/git/ciknow/web/groups.txt";
+		GroupDao groupDao = (GroupDao)Beans.getBean("groupDao");		
 		
 		// read groups
 		Survey survey = surveyDao.findById(1L);
