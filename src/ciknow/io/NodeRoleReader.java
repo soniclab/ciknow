@@ -1,7 +1,6 @@
 package ciknow.io;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.util.*;
 
 import org.apache.commons.logging.Log;
@@ -42,6 +41,11 @@ public class NodeRoleReader{
         logger.debug("reading each row (each node)");
         String line = reader.readLine();
         while (line != null){
+        	line = line.trim();
+        	if (line.isEmpty()) {
+        		line = reader.readLine();
+        		continue;
+        	}
             logger.debug(line);
             String[] texts = line.split("\t", -1);
             

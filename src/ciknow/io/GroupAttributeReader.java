@@ -29,9 +29,15 @@ public class GroupAttributeReader{
         
         logger.debug("reading each row (each group)");
         String line = reader.readLine();
-        String[] attrNames = line.split("\t", -1);
+        String[] attrNames = line.trim().split("\t", -1);
         line = reader.readLine();
         while (line != null){
+        	line = line.trim();
+        	if (line.isEmpty()) {
+        		line = reader.readLine();
+        		continue;
+        	}
+        	
             String[] texts = line.split("\t", -1);
             
             // get group
