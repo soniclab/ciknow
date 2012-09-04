@@ -62,7 +62,7 @@ public class QuestionReader{
     		readOption(line, options);
     		line = reader.readLine();
     	}
-    	String shortName = line.substring(line.indexOf(":") + 1);
+    	String shortName = line.substring(line.indexOf(":") + 1).trim();
     	Question question = questionDao.findByShortName(shortName);
     	if (question == null) throw new Exception("Cannot find question with shortName = " + shortName);
     	
