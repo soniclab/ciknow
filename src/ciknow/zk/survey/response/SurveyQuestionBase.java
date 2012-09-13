@@ -102,11 +102,14 @@ public class SurveyQuestionBase extends Div implements IdSpace, ISurveyQuestion 
         	toolbar.insertBefore(settingsBtn, deleteBtn);
         	        	
         	Button addBtn = new Button();
-        	if (currentQuestion.isContactChooser()){              		
+        	if (currentQuestion.isContactChooser()){ 
+        		// this is move inside ContactChooser.zul
+        		/*
         		addBtn.setId("addNodeBtn");
         		addBtn.setLabel("Add Node");
         		addBtn.setWidth("80px");
         		toolbar.insertBefore(addBtn, settingsBtn);
+        		*/
         	} else if (currentQuestion.isRelational()){
         		addBtn.setId("addNodeBtn");
         		addBtn.setLabel("Add Node");
@@ -119,11 +122,14 @@ public class SurveyQuestionBase extends Div implements IdSpace, ISurveyQuestion 
         	} else if (currentQuestion.isContactChooser()){
         		boolean showAddBtn = currentQuestion.allowUserCreatedNode();
         		if (showAddBtn){
+        			// this is move inside ContactChooser.zul
+        			/*
                 	Button addBtn = new Button();
             		addBtn.setId("addNodeBtn");
             		addBtn.setLabel("Add Node");
             		addBtn.setWidth("80px");
             		toolbar.insertBefore(addBtn, helpBtn);
+            		*/
         		}
         	} else if (currentQuestion.isContactProvider()){
         		// do nothing

@@ -49,9 +49,10 @@
                     </vbox>
                      -->
                      
-                    <listbox id="selectedContactsBox" height="500px" width="200px"/>						
-					
-
+                    <vlayout height="500px" width="200px">
+                    	<button id="addNodeBtn" label="Add Node" width="100%"/>
+                    	<listbox id="selectedContactsBox"/>	
+                    </vlayout> 
                 </hlayout>		
             </vlayout>
 			
