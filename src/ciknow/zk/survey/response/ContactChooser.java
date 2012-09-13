@@ -45,6 +45,9 @@ public class ContactChooser extends SurveyQuestionBase {
     private Listbox filterBox;
     @Wire
     private Grid filterGrid;
+    @Wire
+    private Button addNodeBtn;
+    
     // state
     private boolean showImage;
     private Map<String, Question> questionMap;
@@ -77,6 +80,11 @@ public class ContactChooser extends SurveyQuestionBase {
         filterMap = new HashMap<String, Textbox>();
         FilterEventListener listener = new FilterEventListener();
 
+        // allow adding new node?
+        if (!respondent.isAdmin() && !currentQuestion.allowUserCreatedNode()){
+        	addNodeBtn.setVisible(false);
+        }
+        
         // Determine availableContactsBox columns
         showImage = currentQuestion.showCCImage();
         columns = currentQuestion.getCCColumns();
@@ -300,6 +308,9 @@ public class ContactChooser extends SurveyQuestionBase {
         }
         Collections.sort(filteredItems, new ContactChooserItemComparator("label", true, false, true));
         availableContactsModel.addAll(filteredItems);
+        for (ContactChooserItem item : filteredItems){
+        	if (item.isSelected()) availableContactsModel.addToSelection(item);
+        }
         
         // update UI
         updateSize();
@@ -308,15 +319,19 @@ public class ContactChooser extends SurveyQuestionBase {
 
     @SuppressWarnings({ "rawtypes"})
 	@Listen("onSelect = #availableContactsBox")
-    public void onSelect(SelectEvent e){    	
+    public void onSelect(SelectEvent e){    
+    	List<ContactChooserItem> availableContactsList = availableContactsModel.getInnerList();
     	Set<ContactChooserItem> selectedItems = availableContactsModel.getSelection();
-    	for (ContactChooserItem item : availableContactItems){
-    		if (selectedItems.contains(item)) item.setSelected(true);
-    		else item.setSelected(false);
+    	for (ContactChooserItem item : availableContactsList){
+    		if (!selectedItems.contains(item)) {
+    			item.setSelected(false);
+    		} else item.setSelected(true);
     	}
     	
     	selectedContactsModel.clear();
-    	selectedContactsModel.addAll(selectedItems);
+    	for (ContactChooserItem item : availableContactItems){
+    		if (item.isSelected()) selectedContactsModel.add(item);
+    	}
     	Collections.sort(selectedContactsModel.getInnerList(), new ContactChooserItemComparator("label", true, false, true));
        
     	updateSize();
@@ -476,6 +491,7 @@ public class ContactChooser extends SurveyQuestionBase {
 
                 if (matched) {
                     availableContactsModel.add(item);
+                    if (item.isSelected()) availableContactsModel.addToSelection(item);
                 }
             }
 
