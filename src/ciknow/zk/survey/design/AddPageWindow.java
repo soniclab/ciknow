@@ -17,7 +17,6 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
-import org.zkoss.zk.ui.event.InputEvent;
 import org.zkoss.zk.ui.select.Selectors;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
@@ -60,11 +59,13 @@ public class AddPageWindow extends Window {
         Selectors.wireEventListeners(this, this);
     }
 
+    /*
     @Listen("onChanging = #nameBox")
     public void onChanging$nameBox(InputEvent e) {
         String value = e.getValue();
         labelBox.setValue(value);
     }
+    */
     
     @Listen("onClick = #createBtn")
     public void create() throws Exception {

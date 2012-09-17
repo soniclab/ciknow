@@ -11,7 +11,6 @@ import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.zkoss.zk.ui.Executions;
-import org.zkoss.zk.ui.event.InputEvent;
 import org.zkoss.zk.ui.select.Selectors;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
@@ -59,12 +58,14 @@ public class AddContactFieldWindow extends Window {
         predefinedBox.setModel(predefinedModel);
     }
 
+    /*
     @Listen("onChanging = #nameBox")
     public void onChanging$nameBox(InputEvent e) {
         String value = e.getValue();
         labelBox.setValue(value);
     }
-
+	*/
+    
     @Listen("onFocus = #predefinedBox")
     public void onFocus$predefinedBox() {
         predefinedBtn.setChecked(true);

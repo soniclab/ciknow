@@ -14,7 +14,6 @@ import org.zkoss.zk.ui.IdSpace;
 import org.zkoss.zk.ui.event.DropEvent;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
-import org.zkoss.zk.ui.event.InputEvent;
 import org.zkoss.zk.ui.select.Selectors;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
@@ -107,6 +106,7 @@ public class QuestionSettingsScale extends Div implements IdSpace{
         win.setParent(this);
     }
 
+    /*
     @Listen("onChanging = #win #nameBox")
     public void onScaleNameChanging(InputEvent e) {
         String value = e.getValue().trim();
@@ -115,7 +115,8 @@ public class QuestionSettingsScale extends Div implements IdSpace{
         nameBox.setFocus(true);
         nameBox.setSelectionRange(value.length(), value.length());
     }
-
+	*/
+    
     @Listen("onClick = #win #saveBtn")
     public void saveScale() {
         Scale scale;
