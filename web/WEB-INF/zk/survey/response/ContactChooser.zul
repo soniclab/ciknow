@@ -49,10 +49,10 @@
                     </vbox>
                      -->
                      
-                    <vlayout height="500px" width="200px">
+                    <vlayout height="500px" width="250px">
                     	<hlayout>
-                    		<button id="addNodeBtn" label="Add Node" width="100%" style="color: #ff0000; font-weight: bold; font-size: 16"/>
-                    		<button id="deselectNodeBtn" label="Remove Contact" width="100%" style="color: #ff0000; font-weight: bold; font-size: 16"/>
+                    		<button id="addNodeBtn" label="Add New Contact" style="color: #ff0000; font-weight: bold;"/>
+                    		<button id="deselectNodeBtn" label="Remove Contact" style="color: #ff0000; font-weight: bold;"/>
                     	</hlayout>                    	
                     	<listbox id="selectedContactsBox"/>	
                     </vlayout> 
