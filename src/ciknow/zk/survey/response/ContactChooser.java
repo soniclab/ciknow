@@ -221,7 +221,7 @@ public class ContactChooser extends SurveyQuestionBase {
         availableContactsBox.setItemRenderer(new ContactChooserItemRowRenderer());
 
         selectedContactsModel = new ListModelList<ContactChooserItem>(selectedContactItems);
-        //selectedContactsModel.setMultiple(true);
+        selectedContactsModel.setMultiple(true);
         selectedContactsBox.setModel(selectedContactsModel);
         selectedContactsBox.setItemRenderer(new ContactChooserItemLabelRenderer());
 
@@ -337,6 +337,29 @@ public class ContactChooser extends SurveyQuestionBase {
     	updateSize();
     }
 
+    @Listen("onClick = #deselectNodeBtn")
+    public void deSelect(){
+    	Set<ContactChooserItem> selectedItems = selectedContactsModel.getSelection();
+    	if (selectedItems.isEmpty()) return;
+    	    	
+    	for (ContactChooserItem item : selectedItems){
+    		item.setSelected(false);
+    	}    	
+    	
+    	availableContactsModel.clearSelection();
+    	for (ContactChooserItem item : availableContactsModel.getInnerList()){
+    		if (item.isSelected()) availableContactsModel.addToSelection(item);
+    	}
+    	
+    	selectedContactsModel.clear();
+    	for (ContactChooserItem item : availableContactItems){
+    		if (item.isSelected()) selectedContactsModel.add(item);
+    	}
+    	Collections.sort(selectedContactsModel.getInnerList(), new ContactChooserItemComparator("label", true, false, true));
+       
+    	updateSize();
+    }
+    
     /*
     @Listen("onClick = #selectBtn")    
     public void select() {

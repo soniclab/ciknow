@@ -50,7 +50,10 @@
                      -->
                      
                     <vlayout height="500px" width="200px">
-                    	<button id="addNodeBtn" label="Add Node" width="100%"/>
+                    	<hlayout>
+                    		<button id="addNodeBtn" label="Add Node" width="100%" style="color: #ff0000; font-weight: bold; font-size: 16"/>
+                    		<button id="deselectNodeBtn" label="Remove Contact" width="100%" style="color: #ff0000; font-weight: bold; font-size: 16"/>
+                    	</hlayout>                    	
                     	<listbox id="selectedContactsBox"/>	
                     </vlayout> 
                 </hlayout>		
