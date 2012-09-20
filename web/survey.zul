@@ -18,7 +18,7 @@
 	        
 	.addQuestionWindow{
 	    width: 500px;
-	    height: 470px;            
+	    height: 500px;            
 	} 
 	
 	.questionSettingsWindow{

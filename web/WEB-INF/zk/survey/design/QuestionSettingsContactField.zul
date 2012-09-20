@@ -14,15 +14,18 @@
 	<!-- popups -->
 	<window id="win" closable="true" mode="modal">
 		<caption id="caption" label="Add Contact Field" />
-		<grid vflex="min" width="300px">
+	   	<label style="color:green; font-style:italic">
+		Note: The name cannot contain any spaces, the label can contain spaces
+		</label>		
+		<grid vflex="min" width="450px">
 			<columns>
 				<column width="50px" />
-				<column width="99%" />
+				<column width="100%" />
 			</columns>
 			<rows>
 				<row>
 					Name
-					<combobox id="nameBox" constraint="no empty" maxlength="80" width="100%">
+					<combobox id="nameBox" constraint="no empty" maxlength="80" width="98%">
 						<comboitem label="AddressLine1" value="AddressLine1" />
 						<comboitem label="AddressLine2" value="AddressLine2" />
 						<comboitem label="City" value="City" />
@@ -41,7 +44,7 @@
 				</row>
 				<row>
 					Label
-					<textbox id="labelBox" constraint="no empty" maxlength="255" width="100%" />
+					<textbox id="labelBox" constraint="no empty" maxlength="255" width="98%" />
 				</row>
 			</rows>
 		</grid>

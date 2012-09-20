@@ -1,19 +1,22 @@
 
 <zk>
     <caption id="caption" label="Add Text Field"/>
-    <grid vflex="min" width="300px">
+   	<label style="color:green; font-style:italic">
+	Note: The name cannot contain any spaces, the label can contain spaces
+	</label>    
+    <grid vflex="min" width="450px">
         <columns>
             <column width="50px"/>
-            <column width="250px"/>
+            <column width="100%"/>
         </columns>
         <rows>
             <row>
                 Name
-                <textbox id="nameBox" constraint="no empty" maxlength="80" width="100%"/>
+                <textbox id="nameBox" constraint="no empty" maxlength="80" width="98%"/>
             </row>		
             <row>
                 Label
-                <textbox id="labelBox" constraint="no empty" maxlength="255" width="100%"/>
+                <textbox id="labelBox" constraint="no empty" maxlength="255" width="98%"/>
             </row>
         </rows>
     </grid>

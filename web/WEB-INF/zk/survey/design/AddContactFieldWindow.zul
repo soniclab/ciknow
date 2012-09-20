@@ -1,13 +1,15 @@
 
 <zk>
     <caption id="caption" label="Add Contact Field"/>
-	
+	<label style="color:green; font-style:italic">
+	Note: The name cannot contain any spaces, the label can contain spaces
+	</label>
     <radiogroup id="cfGroup"/>
 	
-    <grid vflex="min" width="400px">
+    <grid vflex="min" width="450px">
         <columns>
             <column width="100px"/>
-            <column width="300px"/>
+            <column width="100%"/>
         </columns>	
         <rows>
             <row>
@@ -23,10 +25,10 @@
                     </columns>					
                     <rows>
                         <row>Name
-                            <textbox id="nameBox" maxlength="80" width="100%"/>
+                            <textbox id="nameBox" maxlength="80" width="98%"/>
                         </row>					
                         <row>Label
-                            <textbox id="labelBox" maxlength="255" width="100%"/>
+                            <textbox id="labelBox" maxlength="255" width="98%"/>
                         </row>						
                     </rows>
                 </grid>

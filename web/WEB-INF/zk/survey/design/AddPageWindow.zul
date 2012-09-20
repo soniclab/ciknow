@@ -1,7 +1,10 @@
 
 <zk>
     <caption id="caption" label="Add Page"/>
-    <grid vflex="1" width="300px">
+   	<label style="color:green; font-style:italic">
+	Note: The name cannot contain any spaces, the label can contain spaces
+	</label>    
+    <grid vflex="1" width="450px">
         <columns>
             <column width="80px"/>
             <column width="100%"/>
