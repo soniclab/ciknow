@@ -1,0 +1,11 @@
+1, checkout code from github (ciknow, ciknowclient, ciknowmgr)
+2, make changes as needed
+3, commit and push to github
+4, the Jenkins server in sonicserver.northwestern.edu will get notified by github, 
+   and start building ciknow deployment artifacts. 
+   (There is a glitch here: the timestamp show in the ciknow manager application 
+    will only be updated if the ciknowmgr project is updated. In order to get the
+    updated timestamp, you can login to sonicserver.northwestern.edu/jenkins, and
+    manually "build" the ciknowmgr project.)
+5, in jenkins, click "build" for the "deploy2sonicserver" or "deploy2ciknow". This
+   will deploy the new code base to sonicserver or production(ciknow) server.
