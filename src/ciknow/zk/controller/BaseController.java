@@ -95,12 +95,15 @@ public class BaseController extends SelectorComposer<Component> {
         
     	// Branding top bar
         if (login.isAdmin()){
+        	ioBtn.setVisible(true);
+        	
         	// populate impersonate box
         	populateImpersonateBox();
         	
         	// populate my projects box
-        	populateProjectsBox();
+        	populateProjectsBox();        	
         } else {
+        	ioBtn.setVisible(false);
         	accountBtn.setParent(null);
         } 
     }
